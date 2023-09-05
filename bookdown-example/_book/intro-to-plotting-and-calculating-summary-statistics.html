@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 2 Intro to plotting and calculating summary statistics | RAP Workshop</title>
+<meta name="author" content="Data Science Team">
+<meta name="description" content="This page will take you through the steps of reading, filtering and saving data. Then we will plot the data and generate summary statistics. The final stage will be an exercise to test your...">
+<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta property="og:title" content="Chapter 2 Intro to plotting and calculating summary statistics | RAP Workshop">
+<meta property="og:type" content="book">
+<meta property="og:description" content="This page will take you through the steps of reading, filtering and saving data. Then we will plot the data and generate summary statistics. The final stage will be an exercise to test your...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 2 Intro to plotting and calculating summary statistics | RAP Workshop">
+<meta name="twitter:description" content="This page will take you through the steps of reading, filtering and saving data. Then we will plot the data and generate summary statistics. The final stage will be an exercise to test your...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">RAP Workshop</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> RAP Workshop</a></li>
+<li><a class="active" href="intro-to-plotting-and-calculating-summary-statistics.html"><span class="header-section-number">2</span> Intro to plotting and calculating summary statistics</a></li>
+<li><a class="" href="exercise.html"><span class="header-section-number">3</span> Exercise</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="intro-to-plotting-and-calculating-summary-statistics" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> Intro to plotting and calculating summary statistics<a class="anchor" aria-label="anchor" href="#intro-to-plotting-and-calculating-summary-statistics"><i class="fas fa-link"></i></a>
+</h1>
+<p>This page will take you through the steps of reading, filtering and saving data. Then we will plot the data and generate summary statistics. The final stage will be an exercise to test your knowledge.</p>
+<div id="reading-in-data" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> Reading in data<a class="anchor" aria-label="anchor" href="#reading-in-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>To obtain the data needed for this exercise, we use the onsr package, which reads in data using the ONS API. We’ll be using data on online job adverts.</p>
+<p>ONS gives the following information on this dataset:</p>
+<p>“Adzuna is an online job search engine who collate information from thousands of different sources in the UK. These range from direct employers’ websites to recruitment software providers to traditional job boards thus providing a comprehensive view of current online job adverts. Adzuna is working in partnership with ONS and have made data available for analysis including online advert job descriptions, job titles, job locations, job categories and salary information. The data provided are a point-in-time estimate of all job adverts indexed in Adzuna’s job search engine during the point of data extraction.</p>
+<p>These indices are created based upon job adverts provided by Adzuna. This data includes information on several million job advert entries each month, live across the UK, broken down by job category and UK countries and English regions.”</p>
+<pre><code># read in info on ONS datasets and display
+datasets &lt;- ons_datasets()
+print(datasets$id)
+
+# select a dataset
+job_ads &lt;- ons_get(id = "online-job-advert-estimates")</code></pre>
+</div>
+<div id="filtering-data" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Filtering data<a class="anchor" aria-label="anchor" href="#filtering-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>We will use the package dplyr to clean the data and filter for last year’s Health and Social care jobs data. We can then extract week number as a number to allow plotting the data to be straightforward.</p>
+<pre><code># remove NAs, filter by job category, filter to 2022
+health_jobs &lt;- job_ads %&gt;%
+  filter(!is.na(v4_1)) %&gt;%
+  filter(AdzunaJobsCategory == "Healthcare and Social care") %&gt;%
+  filter(Time == 2022)
+
+# extract week number and sort by
+health_jobs_sorted &lt;- health_jobs %&gt;%
+  mutate(week_no = str_extract(Week, "[0-9]+")) %&gt;%
+  mutate(week_no = as.numeric(week_no)) %&gt;%
+  arrange(week_no)</code></pre>
+<p>Once we have a cleaned dataset, we save as a csv.</p>
+<pre><code># save data to csv
+write_csv(
+  health_jobs_sorted,
+  file = "./output/health_jobs_data.csv"</code></pre>
+</div>
+<div id="plotting-data" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> Plotting data<a class="anchor" aria-label="anchor" href="#plotting-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>Now we will plot the data using the package ggplot2.</p>
+<p>We read in the csv:</p>
+<pre><code>health_jobs_sorted = read_csv("./output/health_jobs_data.csv")</code></pre>
+<p>Set up the plot</p>
+<pre><code># plot
+
+ggplot() +
+  DHSCcolours::theme_dhsc() +
+  geom_line(
+    data = health_jobs_sorted,
+    aes(week_no, v4_1, colour = AdzunaJobsCategory),
+    linewidth = 1
+  ) +
+  theme(legend.position="none") +
+  DHSCcolours::scale_colour_dhsc_d() +
+  labs(
+    title = "Healthcare and Social care job adverts",
+    subtitle = "2022",
+    x = "Week number",
+    y = "Value")</code></pre>
+<pre><code># save the plot
+ggsave("./output/health_jobs_chart.svg",
+         height = 5,
+         width = 10,
+         units="in",
+         dpi=300)</code></pre>
+<div class="figure">
+<img src="health_jobs_chart.svg" alt=""><p class="caption">alt text</p>
+</div>
+</div>
+<div id="generating-summary-stats" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Generating summary stats<a class="anchor" aria-label="anchor" href="#generating-summary-stats"><i class="fas fa-link"></i></a>
+</h2>
+<p>Finally, we will generate some summary statistics of the dataset.</p>
+<p>We read in the data:</p>
+<pre><code>health_jobs_sorted = read_csv("./output/health_jobs_data.csv")</code></pre>
+<p>We calculate key stats and then filter on the maxiumum and minimum values to find which week these occcured in:</p>
+<pre><code># get stats
+
+minimum &lt;- min(health_jobs_sorted$v4_1)
+maximum &lt;- max(health_jobs_sorted$v4_1)
+average &lt;- mean(health_jobs_sorted$v4_1)
+median &lt;- median(health_jobs_sorted$v4_1)
+
+stats = list("minimum" = min(health_jobs_sorted$v4_1),
+             "maximum"= max(health_jobs_sorted$v4_1))
+
+# get week values for stats, print
+
+for (name in names(stats)) {
+  stat_value = stats[[name]]
+
+  week_no &lt;- health_jobs_sorted %&gt;%
+    filter(v4_1 == stats[[name]]) %&gt;%
+    select(week_no) %&gt;%
+    pull
+
+  print(paste("the ",name, "value is", stat_value, "(week:", week_no, ")"))
+}
+
+print(paste("the average value is",round(average,1)))
+print(paste("the median value is",round(median)))</code></pre>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html"><span class="header-section-number">1</span> RAP Workshop</a></div>
+<div class="next"><a href="exercise.html"><span class="header-section-number">3</span> Exercise</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#intro-to-plotting-and-calculating-summary-statistics"><span class="header-section-number">2</span> Intro to plotting and calculating summary statistics</a></li>
+<li><a class="nav-link" href="#reading-in-data"><span class="header-section-number">2.1</span> Reading in data</a></li>
+<li><a class="nav-link" href="#filtering-data"><span class="header-section-number">2.2</span> Filtering data</a></li>
+<li><a class="nav-link" href="#plotting-data"><span class="header-section-number">2.3</span> Plotting data</a></li>
+<li><a class="nav-link" href="#generating-summary-stats"><span class="header-section-number">2.4</span> Generating summary stats</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/rstudio/bookdown-demo/blob/master/01-plots-summary.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/rstudio/bookdown-demo/edit/master/01-plots-summary.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>RAP Workshop</strong>" was written by Data Science Team. It was last built on 2023-09-05.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

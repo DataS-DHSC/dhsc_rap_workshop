@@ -32,9 +32,9 @@ logger$set_threshold("log.console", "INFO")
 logger$info("[Begin]")
 
 # add source of run script and entry point to code below
-source("./R/ons_read_and_filter.R", local = TRUE)
-source("./R/example_plot_data.R", local = TRUE)
-source("./R/example_summary_stats.R", local = TRUE)
+source("./R/01_ons_read_and_filter.R", local = TRUE)
+source("./R/02_example_plot_data.R", local = TRUE)
+source("./R/03_example_summary_stats.R", local = TRUE)
 
 load_data()
 plot_data()
