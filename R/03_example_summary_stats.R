@@ -1,6 +1,5 @@
 library(readr)
 library(dplyr)
-library(tidyr)
 
 health_jobs_sorted = read_csv("./output/health_jobs_data.csv")
 
@@ -15,8 +14,8 @@ summary_stats <- function(){
   average <- mean(health_jobs_sorted$v4_1)
   median <- median(health_jobs_sorted$v4_1)
 
-  stats = list("minimum" = min(health_jobs_sorted$v4_1),
-               "maximum"= max(health_jobs_sorted$v4_1))
+  stats = list("minimum" = minimum,
+               "maximum"= maximum)
 
   # get week values for stats, print
 

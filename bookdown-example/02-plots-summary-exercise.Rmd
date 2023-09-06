@@ -1,10 +1,10 @@
 # Exercise
 
-In this section, you will test your R skills by completing an exercise on the subjects covered in this section.
+In this section, you will test your R skills by completing an exercise on the subjects covered on the previous page.
 
 Please complete the following tasks:
 
-1. Download and clean the ONS data for Education job adverts in 2023. 
+1. Download and clean the ONS data for Education job adverts in 2022. 
 
 2. Plot a time series chart for vacancies, using DHSC colours. 
 

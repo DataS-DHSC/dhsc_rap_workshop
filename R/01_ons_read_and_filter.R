@@ -1,6 +1,5 @@
 library(onsr)
 library(dplyr)
-library(purrr)
 library(stringr)
 library(readr)
 
@@ -38,5 +37,3 @@ load_data <- function(){
   )
 
 }
-
-
