@@ -1,0 +1,9 @@
+# Exercise solution
+
+Minimum: -1.4% (2020)
+
+Maximum: 12.5% (2018)
+
+Average: 7.4%
+
+![alt text](info_gdp_chart.svg)

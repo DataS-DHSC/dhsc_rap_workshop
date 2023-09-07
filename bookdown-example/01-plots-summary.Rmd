@@ -1,126 +1,92 @@
-# Intro to plotting and calculating summary statistics
+# Plotting and calculating summary statistics
 
-This page will take you through the steps of reading, filtering and plotting data. We will then generate summary statistics. The next page is an exercise to test your knowledge. 
-
-## Dataset background
-
-To obtain the data needed for this exercise, we use the onsr package, which reads in data from the ONS using their API. For this section, we'll be using data on online job adverts. 
-
-For some context to the dataset, ONS gives the following information on this dataset:
-
-> Adzuna is an online job search engine who collate information from thousands of different sources in the UK. These range from direct employers’ websites to recruitment software providers to traditional job boards thus providing a comprehensive view of current online job adverts. 
-
-> Adzuna is working in partnership with ONS and have made data available for analysis including online advert job descriptions, job titles, job locations, job categories and salary information.
-
-> The data provided are a point-in-time estimate of all job adverts indexed in Adzuna’s job search engine during the point of data extraction.
-
-> These indices are created based upon job adverts provided by Adzuna. This data includes information on several million job advert entries each month, live across the UK, broken down by job category and UK countries and English regions."
+This page will take you through the steps for the data analysis we wish to do. It will comprise of manipulating and plotting data and generating statistics. 
 
 ## Reading in the data
 
-We start by reading in a selection of libraries, which are collections of pre-written code that we can use to perform tasks for us. 
+We start by reading in two libraries:
 
 ```
-library(onsr)
 library(dplyr)
-library(stringr)
 library(readr)
 ```
-These packages do the following:
 
-- onsr: allows up to read in data from the ONS API
-- dplyr: popular package used to manipulate datasets
-- stringr: we will use this to manipulate strings in the dataset to pull out the week number
-- readr: allows us to save a dataframe as a csv file
+First, we can print the column names of the dataset and the unique industry types in the dataset. 
 
 ```
-# read in info on ONS datasets and display
-datasets <- ons_datasets()
-print(datasets$id)
-
-# select a dataset
-job_ads <- ons_get(id = "online-job-advert-estimates")
-
 # print columns
-print(colnames(job_ads))
+print(colnames(df))
 
-# print job types
-print(unique(job_ads$AdzunaJobsCategory))
+# print industry types
+print(unique(df$UnofficialStandardIndustrialClassification))
 ```
-
-We can then call the ons_datasets function to read in various datasets. We then call the ons_get() to select the job adverts data we want. From this, we can print the column names of the dataset to see what our data looks like. We are interested in the types of jobs presented in the dataset, so we print the unique values in the AdzunaJobsCategory column. 
 
 ## Filtering data
 
-We will use the package dplyr to clean the data and filter for last year's Health and Social care jobs data. We remove rows where the value is NA and filter the job category and time columns.
+We will now clean the data and filter for data on the health and social care industry in England and by type of growth rate we wish to analyse. 
 
 ```
-# remove NAs, filter by job category, filter to 2022
-health_jobs <- job_ads %>%
+# remove NAs, filter by industry, geography and growth rate figure
+health_gdp_time_series <- df %>%
   filter(!is.na(v4_1)) %>%
-  filter(AdzunaJobsCategory == "Healthcare and Social care") %>%
-  filter(Time == 2022)
+  filter(UnofficialStandardIndustrialClassification == "Q: Human health and social work activities") %>%
+  filter(Geography == "England") %>%
+  filter(GrowthRate == "Annual growth rate")
 ```
-We can then extract week number as a number (using the stringr package) to allow plotting of the data to be straightforward. Note, the "v4_1" column is the index values we will look to plot later. 
+We can then set the year column as a number to allow plotting of the data to be straightforward. Note, the "v4_1" column are the values we will look to plot later. 
 
 ```
-# extract week number and sort by
-health_jobs_sorted <- health_jobs %>%
-  mutate(week_no = str_extract(Week, "[0-9]+")) %>%
-  mutate(week_no = as.numeric(week_no)) %>%
-  arrange(week_no)
+# set year as a number and sort by
+health_gdp_time_series_sorted <- health_gdp_time_series %>%
+  mutate(Time = as.numeric(Time)) %>%
+  arrange(Time)
 ```
 
-Once we have a cleaned dataset, we save as a csv. 
+Once we have a cleaned dataset, we can save it as a csv for future use. 
 
 ```
 # save data to csv
 write_csv(
-  health_jobs_sorted,
-  file = "./output/health_jobs_data.csv"
+  health_gdp_time_series_sorted,
+  file = "./output/health_gdp_time_series_sorted.csv")
 ```
 
 ## Plotting data
 
-Now we will plot the data using the package ggplot2. 
+Now we will plot the data using ggplot2. 
 
-We read in the following packages:
+We read in ggplot2:
 
 ```
-library(readr)
 library(ggplot2)
 ```
 
-We read in the csv we just created:
-
-```
-health_jobs_sorted = read_csv("./output/health_jobs_data.csv")
-```
-Here we set up the plot - reading in DHSC colours, plotting a line of the index values and set the chart labels. 
+Here we set up the plot - reading in DHSC colours, plotting a line of the values and set the chart labels. 
 
 ```
 # plot
 
-ggplot() +
+ggplot(data = df,
+       aes(Time,
+           v4_1,
+           colour = UnofficialStandardIndustrialClassification)) +
   DHSCcolours::theme_dhsc() +
-  geom_line(
-    data = health_jobs_sorted,
-    aes(week_no, v4_1, colour = AdzunaJobsCategory),
-    linewidth = 1
-  ) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
   theme(legend.position="none") +
   DHSCcolours::scale_colour_dhsc_d() +
   labs(
-    title = "Healthcare and Social care job adverts",
-    subtitle = "2022",
-    x = "Week number",
-    y = "Value")
+    title = "Annual growth rate of Human health and social work activities, England",
+    subtitle = "2023-2021",
+    x = "Year",
+    y = "Annual growth rate (%)") +
+  scale_x_continuous(breaks=seq(2013,2021,1))
 ```
 And save the plot
 
 ```
 # save the plot
-ggsave("./output/health_jobs_chart.svg",
+ggsave("./output/health_gdp_chart.svg",
          height = 5,
          width = 10,
          units="in",
@@ -129,24 +95,15 @@ ggsave("./output/health_jobs_chart.svg",
 
 It will look like this:
 
-![alt text](health_jobs_chart.svg)
+![alt text](health_gdp_chart.svg)
 
 
 ## Generating summary stats
 
 Finally, we will generate some summary statistics of the dataset.
 
-We read in some now familiar packages:
-
 ```
-library(readr)
 library(dplyr)
-```
-
-We read in the dataset:
-
-```
-health_jobs_sorted = read_csv("./output/health_jobs_data.csv")
 ```
 
 We calculate various stats:
@@ -154,38 +111,36 @@ We calculate various stats:
 ```
 # get stats
 
-minimum <- min(health_jobs_sorted$v4_1)
-maximum <- max(health_jobs_sorted$v4_1)
-average <- mean(health_jobs_sorted$v4_1)
-median <- median(health_jobs_sorted$v4_1)
+minimum <- min(df$v4_1)
+maximum <- max(df$v4_1)
+average <- mean(df$v4_1)
 ```
 
-We then want to filter the dataset on the maximum and minimum values to find which week these occurred in. 
+We then want to filter the dataset on the maximum and minimum values to find the year in which these occurred. 
 
 We start by creating a list where the now already defined variables for maximum and minimum are mapped to a string, which we can print in the output i.e. set the max value to the string "maximum". 
 
-We then loop over these values, retrieve the numerical value, filter on the dataset and pull the week number out. We then print these values along with the average and median already calculated. 
+We then loop over these values, retrieve the numerical value, filter on the dataset and pull the year figures out. We then print these values along with the average already calculated. 
 
 ```
-stats = list("minimum" = maximum,
-             "maximum"= minimum)
+stats = list("minimum" = minimum,
+             "maximum"= maximum)
 
 # get week values for stats, print
 
 for (name in names(stats)) {
   stat_value = stats[[name]]
 
-  week_no <- health_jobs_sorted %>%
+  year_val <- df %>%
     filter(v4_1 == stats[[name]]) %>%
-    select(week_no) %>%
+    select(Time) %>%
     pull
 
-  print(paste("the ",name, "value is", stat_value, "(week:", week_no, ")"))
+  print(paste("the ",name, "value is", stat_value, "(year:", year_val, ")"))
 }
 
 print(paste("the average value is",round(average,1)))
-print(paste("the median value is",round(median)))
 ```
-This gives us some information about the dataset.
+This gives us some basic information about the dataset.
 
-In the next section, you'll use these techniques to perform your own analysis on a different dataset.
+In the next section, you'll use these techniques to perform your own analysis on a different dataset, which you will then take on to generate into a RAP project.

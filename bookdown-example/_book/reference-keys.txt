@@ -1,8 +1,8 @@
 rap-workshop
-intro-to-plotting-and-calculating-summary-statistics
-dataset-background
+plotting-and-calculating-summary-statistics
 reading-in-the-data
 filtering-data
 plotting-data
 generating-summary-stats
 exercise
+exercise-solution

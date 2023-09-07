@@ -1,15 +1,13 @@
 # Exercise
 
-In this section, you'll test your R skills by completing an exercise on the subjects covered on the previous page.
+In this section, you'll perform your own analyis on a new dataset, which can be taken forward to use in your RAP project.
 
 Please complete the following tasks:
 
-1. Download and clean the ONS data for Education job adverts in 2022. 
+1. Download and clean the ONS data for Information and communication activities annual GDP growth rate in England. 
 
-2. Plot a time series chart for vacancies, using DHSC colours. 
+2. Plot a time series chart for annual growth rate, using DHSC colours. 
 
-3. Establish which weeks had the lowest and highest index values respectively for teaching job adverts.
+3. Establish which years had the lowest and highest GDP growth rate values respectively in this dataset.
 
-4. Calculate the median and mean index values for Education job adverts in 2022. 
-
-
+4. Calculate the mean GDP growth rate value in this dataset.

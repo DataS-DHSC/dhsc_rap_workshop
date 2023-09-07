@@ -17,9 +17,4 @@ csl: chicago-fullnote-bibliography.csl
 
 # RAP Workshop
 
-This document contains the examples and exercises for the DHSC Data Science RAP Workshop in R. This will take you through:
-
-- Reading in data
-- Manipulating data
-- Plotting data
-- Calculating statistics
+This document contains the examples and exercises for the DHSC Data Science RAP Workshop in R. This will take you through a basic data analysis example that you can apply the RAP template to. 
