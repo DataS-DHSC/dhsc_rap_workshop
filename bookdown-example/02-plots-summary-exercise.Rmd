@@ -1,6 +1,6 @@
 # Exercise
 
-In this section, you will test your R skills by completing an exercise on the subjects covered on the previous page.
+In this section, you'll test your R skills by completing an exercise on the subjects covered on the previous page.
 
 Please complete the following tasks:
 

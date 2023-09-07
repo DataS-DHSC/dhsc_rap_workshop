@@ -4,9 +4,9 @@ This page will take you through the steps of reading, filtering and plotting dat
 
 ## Dataset background
 
-To obtain the data needed for this exercise, we use the onsr package, which reads in data from the ONS using their API. For this section, we'll be using data regarding online job adverts. 
+To obtain the data needed for this exercise, we use the onsr package, which reads in data from the ONS using their API. For this section, we'll be using data on online job adverts. 
 
-ONS gives the following information on this dataset:
+For some context to the dataset, ONS gives the following information on this dataset:
 
 > Adzuna is an online job search engine who collate information from thousands of different sources in the UK. These range from direct employers’ websites to recruitment software providers to traditional job boards thus providing a comprehensive view of current online job adverts. 
 
@@ -28,9 +28,9 @@ library(readr)
 ```
 These packages do the following:
 
-- onsr: reading in data from the ONS API
-- dplyr: used to manipulate datasets
-- stringr: we will use to manipulate strings
+- onsr: allows up to read in data from the ONS API
+- dplyr: popular package used to manipulate datasets
+- stringr: we will use this to manipulate strings in the dataset to pull out the week number
 - readr: allows us to save a dataframe as a csv file
 
 ```
@@ -52,7 +52,7 @@ We can then call the ons_datasets function to read in various datasets. We then 
 
 ## Filtering data
 
-We will use the package dplyr to clean the data and filter for last year's Health and Social care jobs data. We remove rows where the value is NA and filter the job category and time columns. We can then extract week number as a number (using the stringr package) to allow plotting the data to be straightforward. Note, the "v4_1" column is the index values we will look to plot later. 
+We will use the package dplyr to clean the data and filter for last year's Health and Social care jobs data. We remove rows where the value is NA and filter the job category and time columns.
 
 ```
 # remove NAs, filter by job category, filter to 2022
@@ -60,7 +60,10 @@ health_jobs <- job_ads %>%
   filter(!is.na(v4_1)) %>%
   filter(AdzunaJobsCategory == "Healthcare and Social care") %>%
   filter(Time == 2022)
+```
+We can then extract week number as a number (using the stringr package) to allow plotting of the data to be straightforward. Note, the "v4_1" column is the index values we will look to plot later. 
 
+```
 # extract week number and sort by
 health_jobs_sorted <- health_jobs %>%
   mutate(week_no = str_extract(Week, "[0-9]+")) %>%
@@ -124,6 +127,8 @@ ggsave("./output/health_jobs_chart.svg",
          dpi=300)
 ```
 
+It will look like this:
+
 ![alt text](health_jobs_chart.svg)
 
 
@@ -138,7 +143,7 @@ library(readr)
 library(dplyr)
 ```
 
-We read in the data:
+We read in the dataset:
 
 ```
 health_jobs_sorted = read_csv("./output/health_jobs_data.csv")
@@ -155,7 +160,11 @@ average <- mean(health_jobs_sorted$v4_1)
 median <- median(health_jobs_sorted$v4_1)
 ```
 
-We then want to filter the dataset on the maximum and minimum values to find which week these occurred in. We start by creating a list where the now already defined variables for maximum and minimum are mapped to a string, which we can print in the output i.e. set the max value to the string "maximum". We then loop over these values, retrieve the numerical value, filter on the dataset and pull the week number out. We then print these values along with the average and median already calculated. 
+We then want to filter the dataset on the maximum and minimum values to find which week these occurred in. 
+
+We start by creating a list where the now already defined variables for maximum and minimum are mapped to a string, which we can print in the output i.e. set the max value to the string "maximum". 
+
+We then loop over these values, retrieve the numerical value, filter on the dataset and pull the week number out. We then print these values along with the average and median already calculated. 
 
 ```
 stats = list("minimum" = maximum,
