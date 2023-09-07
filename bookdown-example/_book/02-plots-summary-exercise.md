@@ -8,7 +8,7 @@ Please complete the following tasks:
 
 2. Plot a time series chart for vacancies, using DHSC colours. 
 
-3. Establish which weeks had the lowest and highest index values respectfully for teaching job adverts.
+3. Establish which weeks had the lowest and highest index values respectively for teaching job adverts.
 
 4. Calculate the median and mean index values for Education job adverts in 2022. 
 

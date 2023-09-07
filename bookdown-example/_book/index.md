@@ -1,7 +1,7 @@
 --- 
 title: "RAP Workshop"
 author: "Data Science Team"
-date: "2023-09-06"
+date: "2023-09-07"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -17,7 +17,7 @@ csl: chicago-fullnote-bibliography.csl
 
 # RAP Workshop
 
-This document contains the examples and exercises for the DHSC Data Science RAP Workshop in R. This take you through:
+This document contains the examples and exercises for the DHSC Data Science RAP Workshop in R. This will take you through:
 
 - Reading in data
 - Manipulating data

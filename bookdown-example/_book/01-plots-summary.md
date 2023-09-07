@@ -8,13 +8,13 @@ To obtain the data needed for this exercise, we use the onsr package, which read
 
 ONS gives the following information on this dataset:
 
-"Adzuna is an online job search engine who collate information from thousands of different sources in the UK. These range from direct employers’ websites to recruitment software providers to traditional job boards thus providing a comprehensive view of current online job adverts. 
+> Adzuna is an online job search engine who collate information from thousands of different sources in the UK. These range from direct employers’ websites to recruitment software providers to traditional job boards thus providing a comprehensive view of current online job adverts. 
 
-Adzuna is working in partnership with ONS and have made data available for analysis including online advert job descriptions, job titles, job locations, job categories and salary information.
+> Adzuna is working in partnership with ONS and have made data available for analysis including online advert job descriptions, job titles, job locations, job categories and salary information.
 
-The data provided are a point-in-time estimate of all job adverts indexed in Adzuna’s job search engine during the point of data extraction.
+> The data provided are a point-in-time estimate of all job adverts indexed in Adzuna’s job search engine during the point of data extraction.
 
-These indices are created based upon job adverts provided by Adzuna. This data includes information on several million job advert entries each month, live across the UK, broken down by job category and UK countries and English regions."
+> These indices are created based upon job adverts provided by Adzuna. This data includes information on several million job advert entries each month, live across the UK, broken down by job category and UK countries and English regions."
 
 ## Reading in the data
 
