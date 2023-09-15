@@ -22,11 +22,12 @@ plot_data <- function(df){
 
   # save the plot
   ggsave("./output/health_gdp_chart.svg",
-           height = 5,
-           width = 10,
-           units="in",
-           dpi=300)
+         height = 5,
+         width = 10,
+         units="in",
+         dpi=300)
 
 }
+
 
 

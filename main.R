@@ -32,10 +32,10 @@ logger$set_threshold("log.console", "INFO")
 logger$info("[Begin]")
 
 # add source of run script and entry point to code below
+source("./R/01_download.R", local = TRUE)
 source("./R/02_filter_data.R", local = TRUE)
 source("./R/03_example_plot_data.R", local = TRUE)
 source("./R/04_example_summary_stats.R", local = TRUE)
-source("./R/01_download.R", local = TRUE)
 
 # read in configuration
 config_path <- file.path("input", "config.yml")

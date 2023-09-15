@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 4 Exercise solution | RAP Workshop</title>
 <meta name="author" content="Data Science Team">
-<meta name="description" content="Minimum: -1.4% (2020) Maximum: 12.5% (2018) Average: 7.4% alt text">
+<meta name="description" content="Minimum: -1.4% (2020) Maximum: 12.5% (2018) Average: 7.4% alt text  4.1 Code Data filtering script: library(dplyr) library(readr) filter_data &lt;- function(df){  # print columns  print(colnames(df))...">
 <meta name="generator" content="bookdown 0.35 with bs4_book()">
 <meta property="og:title" content="Chapter 4 Exercise solution | RAP Workshop">
 <meta property="og:type" content="book">
-<meta property="og:description" content="Minimum: -1.4% (2020) Maximum: 12.5% (2018) Average: 7.4% alt text">
+<meta property="og:description" content="Minimum: -1.4% (2020) Maximum: 12.5% (2018) Average: 7.4% alt text  4.1 Code Data filtering script: library(dplyr) library(readr) filter_data &lt;- function(df){  # print columns  print(colnames(df))...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 4 Exercise solution | RAP Workshop">
-<meta name="twitter:description" content="Minimum: -1.4% (2020) Maximum: 12.5% (2018) Average: 7.4% alt text">
+<meta name="twitter:description" content="Minimum: -1.4% (2020) Maximum: 12.5% (2018) Average: 7.4% alt text  4.1 Code Data filtering script: library(dplyr) library(readr) filter_data &lt;- function(df){  # print columns  print(colnames(df))...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
@@ -64,14 +64,119 @@
 <div class="figure">
 <img src="info_gdp_chart.svg" alt=""><p class="caption">alt text</p>
 </div>
+<div id="code" class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Code<a class="anchor" aria-label="anchor" href="#code"><i class="fas fa-link"></i></a>
+</h2>
+<p>Data filtering script:</p>
+<pre><code><a href="https://dplyr.tidyverse.org">library(dplyr)
+library(readr)
 
+filter_data &lt;- function(df){
+
+  # print columns
+  print(colnames(df))
+
+  # print industry types
+  print(unique(df$UnofficialStandardIndustrialClassification))
+
+  # remove NAs, filter by industry, geography and growth rate figure
+  health_gdp_time_series &lt;- df %&gt;%
+    filter(!is.na(v4_1)) %&gt;%
+    filter(UnofficialStandardIndustrialClassification == "J: Information and communication") %&gt;%
+    filter(Geography == "England") %&gt;%
+    filter(GrowthRate == "Annual growth rate")
+
+  # set year as a number and sort by
+  health_gdp_time_series_sorted &lt;- health_gdp_time_series %&gt;%
+    mutate(Time = as.numeric(Time)) %&gt;%
+    arrange(Time)
+
+  # save data to csv
+  write_csv(
+    health_gdp_time_series_sorted,
+    file = "./output/info_gdp_time_series_sorted.csv"
+  )
+
+}
+</a></code></pre>
+<p>Plotting:</p>
+<pre><code><a href="https://ggplot2.tidyverse.org">library(ggplot2)
+
+plot_data &lt;- function(df){
+
+  # plot
+
+  ggplot(data = df,
+         aes(Time,
+             v4_1,
+             colour = UnofficialStandardIndustrialClassification)) +
+    DHSCcolours::theme_dhsc() +
+    geom_line(linewidth = 1) +
+    geom_point(size = 3) +
+    theme(legend.position="none") +
+    DHSCcolours::scale_colour_dhsc_d() +
+    labs(
+      title = "Annual growth rate of Information and communication activities, England",
+      subtitle = "2023-2021",
+      x = "Year",
+      y = "Annual growth rate (%)") +
+    scale_x_continuous(breaks=seq(2013,2021,1))
+
+  # save the plot
+  ggsave("./output/information_gdp_chart.svg",
+           height = 5,
+           width = 10,
+           units="in",
+           dpi=300)
+
+}
+
+</a></code></pre>
+<p>Summary stats:</p>
+<pre><code><a href="https://dplyr.tidyverse.org">library(dplyr)
+
+#get summary stats
+
+summary_stats &lt;- function(df){
+
+  # get stats
+
+  minimum &lt;- min(df$v4_1)
+  maximum &lt;- max(df$v4_1)
+  average &lt;- mean(df$v4_1)
+
+  stats = list("minimum" = minimum,
+               "maximum"= maximum)
+
+  # get week values for stats, print
+
+  for (name in names(stats)) {
+    stat_value = stats[[name]]
+
+    year_val &lt;- df %&gt;%
+      filter(v4_1 == stats[[name]]) %&gt;%
+      select(Time) %&gt;%
+      pull
+
+    print(paste("the ",name, "value is", stat_value, "(year:", year_val, ")"))
+  }
+
+  print(paste("the average value is",round(average,1)))
+
+}</a></code></pre>
+
+</div>
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="exercise.html"><span class="header-section-number">3</span> Exercise</a></div>
 <div class="empty"></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav"><li><a class="nav-link" href="#exercise-solution"><span class="header-section-number">4</span> Exercise solution</a></li></ul>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#exercise-solution"><span class="header-section-number">4</span> Exercise solution</a></li>
+<li><a class="nav-link" href="#code"><span class="header-section-number">4.1</span> Code</a></li>
+</ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
