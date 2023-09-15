@@ -7,3 +7,4 @@ generating-summary-stats
 exercise
 exercise-solution
 code
+adding-your-project-to-github

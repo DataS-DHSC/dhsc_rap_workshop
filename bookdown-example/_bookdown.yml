@@ -8,4 +8,5 @@ language:
 rmd_files: ["index.Rmd",
             "01-plots-summary.Rmd",
             "02-plots-summary-exercise.Rmd",
-            "03-exercise-solution.Rmd"]
+            "03-exercise-solution.Rmd",
+            "04-github.Rmd"]
