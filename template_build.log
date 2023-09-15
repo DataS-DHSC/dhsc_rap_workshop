@@ -1,0 +1,82 @@
+
+-- Provisioning DHSC template -----------------------------------------
+ÿþâˆš Setting active project to 'C:/Users/gball/OneDrive - Department of Health and Social Care/Documents/dhsc_rap_workshop'
+ÿþ
+-- Creating file skeleton --
+
+[1] "skeleton/_.gitignore"
+ÿþâˆš Writing '.gitignore'
+ÿþ[1] "skeleton/_.Rbuildignore"
+ÿþâˆš Writing '.Rbuildignore'
+ÿþ[1] "skeleton/_.Renviron"
+ÿþâˆš Writing '.Renviron'
+ÿþ[1] "skeleton/__pkgdown.yml"
+ÿþâˆš Writing '_pkgdown.yml'
+ÿþ[1] "skeleton/_README.Rmd"
+ÿþâˆš Writing 'README.Rmd'
+ÿþÿþâˆš Creating 'input/'
+ÿþÿþâˆš Adding '^input$' to '.Rbuildignore'
+ÿþ[1] "skeleton/input/_.gitignore"
+ÿþâˆš Writing 'input/.gitignore'
+ÿþÿþâˆš Creating 'output/'
+ÿþÿþâˆš Adding '^output$' to '.Rbuildignore'
+ÿþ[1] "skeleton/output/_.gitignore"
+ÿþâˆš Writing 'output/.gitignore'
+ÿþÿþâˆš Creating 'R/'
+ÿþ[1] "with_example/_main.R"
+ÿþâˆš Writing 'main.R'
+ÿþ[1] "with_example/R/_download.R"
+ÿþâˆš Writing 'R/download.R'
+ÿþ[1] "with_example/R/_process.R"
+ÿþâˆš Writing 'R/process.R'
+ÿþ[1] "with_example/R/_run_analysis.R"
+ÿþâˆš Writing 'R/run_analysis.R'
+ÿþ[1] "with_example/R/_visualise.R"
+ÿþâˆš Writing 'R/visualise.R'
+ÿþ[1] "with_example/input/_config.yml"
+ÿþâˆš Writing 'input/config.yml'
+ÿþÿþâˆš Adding '^main\\.R$', '^README\\.Rmd$', '^template_build\\.log$' to '.Rbuildignore'
+ÿþÿþâˆš Writing 'CODE_OF_CONDUCT.md'
+ÿþÿþâˆš Adding '^CODE_OF_CONDUCT\\.md$' to '.Rbuildignore'
+ÿþÿþâˆš Writing 'R/dhsc.rap.workshop-package.R'
+ÿþÿþâˆš Writing 'dhsc_rap_workshop.Rproj'
+ÿþÿþâˆš Adding '^dhsc_rap_workshop\\.Rproj$' to '.Rbuildignore'
+ÿþÿþâˆš Writing 'template_howto.qmd'
+ÿþÿþâˆš Adding '^template_howto\\.qmd$' to '.Rbuildignore'
+ÿþÿþâˆš Adding '^template_howto*' to '.Rbuildignore'
+ÿþ...done
+
+-- Adding DESCRIPTION and LICENSE --
+
+ÿþâˆš Writing 'DESCRIPTION'
+ÿþPackage: dhsc.rap.workshop
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R (parsed):
+    * First Last <email@dhsc.gov.uk> [aut, cre]
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+ÿþâˆš Writing 'LICENSE'
+ÿþÿþâˆš Writing 'LICENSE.md'
+ÿþÿþâˆš Adding '^LICENSE\\.md$' to '.Rbuildignore'
+ÿþ...done
+
+-- Setting up pkgdown for html documentation --
+
+ÿþâˆš Adding '^_pkgdown\\.yml$', '^docs$', '^pkgdown$' to '.Rbuildignore'
+ÿþÿþâˆš Adding 'docs' to '.gitignore'
+ÿþÿþâˆš Leaving '_pkgdown.yml' unchanged
+ÿþ* Edit '_pkgdown.yml'
+...done
+
+-- Configuring git --
+
+* Check Git config correct
+i Name: George Ball
+i Email: george.ball@dhsc.gov.uk
+ÿþâˆš Creating '.git/hooks/'
+ÿþÿþâˆš Writing '.git/hooks/pre-commit'
+ÿþ...done
