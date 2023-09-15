@@ -1,6 +1,6 @@
 # Exercise
 
-In this section, you'll perform your own analyis on a new dataset, which can be taken forward to use in your RAP project.
+In this section, you'll perform your own analysis on a new dataset, which can be taken forward to use in your RAP project.
 
 Please complete the following tasks:
 

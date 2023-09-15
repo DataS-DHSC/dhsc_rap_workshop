@@ -5,3 +5,7 @@ delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
+rmd_files: ["index.Rmd",
+            "01-plots-summary.Rmd",
+            "02-plots-summary-exercise.Rmd",
+            "03-exercise-solution.Rmd"]
