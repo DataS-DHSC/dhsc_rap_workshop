@@ -20,19 +20,12 @@ if (is.na(df))
 ## Download Code
 
 ```
-# Load required packages --------------------------------------------------
+# Load required packages
 library(tidyverse)
 library(httr)
 library(dplyr)
 library(jsonlite)
 
-
-# Function definitions ----------------------------------------------------
-#' Download ONS data - retrieves ONS data using the ID specified in the config file
-#'
-#' @param config - contains I/O directory structure, ONS url and id for desired data
-#'
-#' @return ons_data as a dataframe
 download_ons_data <- function(config) {
 
   # First I want to get a list of data made available via ONS API

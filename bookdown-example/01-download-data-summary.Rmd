@@ -174,4 +174,4 @@ Note that the return statement has been commented out, but in normal circumstanc
   # return(df_data) 
 ```
 
-In the next section, you'll use these techniques to perform your own analysis on a different dataset, which you will then take on to generate into a RAP project.
+In the next section, you'll practice these techniques using a different ONS dataset.

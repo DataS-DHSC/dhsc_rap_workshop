@@ -82,19 +82,12 @@ if (is.na(df))
 <h2>
 <span class="header-section-number">4.2</span> Download Code<a class="anchor" aria-label="anchor" href="#download-code"><i class="fas fa-link"></i></a>
 </h2>
-<pre><code><a href="https://tidyverse.tidyverse.org"># Load required packages --------------------------------------------------
+<pre><code><a href="https://tidyverse.tidyverse.org"># Load required packages
 library(tidyverse)
 library(httr)
 library(dplyr)
 library(jsonlite)
 
-
-# Function definitions ----------------------------------------------------
-#' Download ONS data - retrieves ONS data using the ID specified in the config file
-#'
-#' @param config - contains I/O directory structure, ONS url and id for desired data
-#'
-#' @return ons_data as a dataframe
 download_ons_data &lt;- function(config) {
 
   # First I want to get a list of data made available via ONS API
@@ -230,7 +223,7 @@ download_ons_data &lt;- function(config) {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>RAP Workshop</strong>" was written by Data Science Team. It was last built on 2023-09-15.</p>
+    <p>"<strong>RAP Workshop</strong>" was written by Data Science Team. It was last built on 2023-09-18.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

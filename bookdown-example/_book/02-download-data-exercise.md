@@ -4,7 +4,7 @@ In this section, you'll perform your own analysis on a new dataset, which can be
 
 Please complete the following tasks:
 
-1. Update the data_id paramter in config.yml: look at the data dictionary and choose any data_id you want
+1. Update the data_id parameter in config.yml: look at the data dictionary and choose any data_id you want
 
 2. Get the url for the latest version of the file with you chosen data_id
 
