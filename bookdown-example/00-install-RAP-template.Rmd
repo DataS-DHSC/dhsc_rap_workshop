@@ -1,0 +1,139 @@
+# Downloading the DHSC RAP R templates
+
+This page will take you through the steps for downloading the R template for Reproducible Analytical Pipelines (RAPs) from the DHSC tools repository, and how to set that template up. It will involve: 
+
+- installing the relevant packages
+- changing your working directory
+- downloading the RAP template
+- pushing the project to GitHub.
+
+Many of these steps assume you may be starting from scratch. If there are steps that do not apply (e.g. you have set up a GitHub account, you have already linked and configured RStudio and Git together, etc.), please skip them! If you simply want to know how to download the template, you can [click here](#download) to jump that section.
+
+There will then be an exercise portion for you to try this yourself.
+
+## Installing packages
+
+There are two packages required for this exercise. The first is `devtools`. If you do not have it installed, it can be installed like a typical package using the following command:
+
+```
+install.packages("devtools")
+```
+
+You will then need to load the library:
+
+```
+library(devtools)
+```
+
+The second package required is the DHSC-developed tools package, which will need to be installed from GitHub. When installing packages from GitHub, you need to remember to include both the author and the name of the package. In this case, the author is `DataS-DHSC`, and the name of the package is `DHSCtools`, like so:
+
+```
+install_github("DataS-DHSC/DHSCtools")
+```
+
+Make sure for follow any instructions in the console during installation.
+
+One the package is installed, load the library:
+
+```
+library(DHSCtools)
+```
+
+## Set up the working directory
+
+Now that you have installed the DHSCtools package, the function you need to download the RAP template is available. 
+
+To set up the template, you must first make sure you are in the correct working directory in your RStudio IDE. The working directory is the folder where R reads and saves files. You can either:
+
+- Navigate to the correct directory using the `setwd()` function, giving the relevant file path in the brackets;
+- Use the RStudio menu to change your working directory under Session > Set Working Directory > Choose Directory.
+
+Whichever option you choose, make sure that the correct directory appears in the 'Files' pane in the RStudio IDE. (Don't worry about setting up a specific directory for the project you intend to work on; this is handled by the template function.)
+
+## Download the RAP template {#download}
+
+You can now download the DHSC RAP template using the `create_template` function. For example:
+
+```
+create_template("name_of_project")
+```
+
+This will create a folder named 'name_of_project' within the working directory you previously specified, and will also download the relevant files needed, including input and output directories, a log file, a .gitignore file, and a README.
+
+## Pushing the project to GitHub
+
+If you have not yet set up a Git account, [now is the time to do so!](https://github.com/join) Make sure you make a note of your Git username, and the email address you used to make the account.
+
+Now you have set the project up on your local machine, it's time to push the project to GitHub. This has many advantages, including code versioning and transparency.
+
+### Install Git
+
+Git is a program available from within the Company Portal in your Start menu. The software is called 'Git For Windows', and will be available in the 'Apps' category. You will need to install this software before proceeding any further.
+
+### Link Git and RStudio
+
+Once you have installed Git, or if you already have it installed, start by telling RStudio where it can find Git. The first thing you will need to do is to identify where Git has been installed on your computer. In the Terminal tab (please note: this is *not* the same as the Console tab) in RStudio, type the following:
+
+```
+where git
+```
+
+This should produce the location of the installation of Git on your machine.
+
+Once you have done this, you will need to:
+
+- Navigate to the `Tools` menu, and select `Global Options`.
+- Click on `Git/SVN`.
+- Check *Enable version control interface for Rstudio projects*.
+- Set the path to the path given when using the `where git` command in the terminal.
+- Check *use Git bash as shell for Git projects*.
+
+### Configure GitHub in RStudio
+
+You now need to tell GitHub who you are. Open Git Shell by navigating to `Tools > Shell` in the RStudio menu. In the shell, type the following command (replacing "mygithubusername" with your actual GitHub username, keeping the quotation marks):
+
+```
+git config --global user.name "yourgithubusername"
+```
+
+Next, type the following command, including the email address you used to make your account:
+
+```
+git config --global user.email "your@email.address"
+```
+
+You can then check the configuration was successful by typing `git config --global --list`. It should return something like the following:
+
+```
+user.name=yourgithubusername
+user.email=your@email.address
+```
+
+### Push your project to GitHub
+
+Now that you're set up with Git and RStudio, it's time to push your new project to GitHub.
+
+Open GitHub in your web browser, and create a new repository. You can do this as a personal repository, or from within any GitHub organisation to which you have access (e.g. DATAS-DHSC). Make sure you give it the exact same name as your RStudio project, but do **not** check the *Initialize this repository with a README* option. Finish this by clicking the *Create Project* option.
+
+From your GitHub browser window, you will need to copy the two lines of code from the box labelled *Push an existing repository from the command line* They may look something like this, depnding on whether it is a personal or organisation-level repository:
+
+```
+git remote add origin https://github.com/USERNAME/PROJECT.git
+git push -u origin master
+```
+
+Back in RStudio, make sure RStudio is using your new project as the working directory, and ensure the `Git` tab is available in the top right window. (This is the window that also contains the `Environment` and `History` tabs, among others.)
+
+Open `Tools > Shell` again, and paste in the two lines of code you copied from GitHub. Press enter or return to finish. Your repository, and all its template files, should now be available within the online repository.
+
+## Exercise: set up your own project template
+
+In this section, you'll set up a project template of your own. Using any required steps above, you should:
+
+1. Install the needed packages.
+
+2. Download the RAP template and create a project called 'Hello-World'.
+
+3. Add a script that prints "Hello World" to the console.
+
+4. Push the project to GitHub.
