@@ -1,0 +1,6 @@
+# see https://cran.r-project.org/web/packages/ymlthis/vignettes/yaml-overview.html
+# for details of writing yaml files
+data_dictionary_url: "https://api.beta.ons.gov.uk/v1/datasets"
+data_id: "regional-gdp-by-year"
+input_dir: ./input
+output_dir: ./output

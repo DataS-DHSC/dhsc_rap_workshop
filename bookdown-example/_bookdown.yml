@@ -1,0 +1,14 @@
+book_filename: "bookdown-example"
+new_session: true
+before_chapter_script: _common.R
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+rmd_files: ["index.Rmd",
+            "01-download-data-summary.Rmd",
+            "02-download-data-exercise.Rmd",
+            "03-download-data-solution.Rmd",
+            "04-plots-summary.Rmd",
+            "05-plots-summary-exercise.Rmd",
+            "06-exercise-solution.Rmd"]
