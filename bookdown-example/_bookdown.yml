@@ -12,5 +12,6 @@ rmd_files: ["index.Rmd",
             "04-plots-summary.Rmd",
             "05-plots-summary-exercise.Rmd",
             "06-exercise-solution.Rmd",
-            "07-documentation-readme-summary.Rmd",
-            "08-documentation-readme-exercise.Rmd"]
+            "07-documentation-github.Rmd",
+            "08-documentation-readme-summary.Rmd",
+            "09-documentation-readme-exercise.Rmd"]
