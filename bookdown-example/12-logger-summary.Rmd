@@ -1,0 +1,43 @@
+# Logging messages with logger
+
+You may recall in 2.5 Print summary stats and finish, we printed the log message. In this section, we will add the log message to the log instead using [logger](https://cran.r-project.org/web/packages/logger/vignettes/Intro.html).
+
+
+## Set up
+
+To set up logger, the following code is used:
+
+```
+library(logger)
+# Setup logging
+logger <- DHSClogger::get_dhsc_logger()
+# Set threshold of console log to information and above
+logger$set_threshold("log.console", "INFO")
+```
+
+## Basic structure
+
+To add something to the log, we use `logger$info()`. Here is the general structure:
+
+```
+logger$info("[Begin]")
+
+# add source of run script and entry point to code below
+source("./R/main.R", local = TRUE)
+run_analysis()
+
+logger$info("[End]")
+```
+
+
+To have the log_message from 2.5 saved to the log.txt file, we simply replace `print(log_message)` with `logger$info(log_message)`
+
+```
+ rowcount <- nrow(df_data)
+  log_message <- sprintf("Number of rows downloaded for %s was: %d",
+                         config$data_id,
+                         rowcount)
+                         
+  logger$info(log_message)
+  # return(df_data) 
+```
