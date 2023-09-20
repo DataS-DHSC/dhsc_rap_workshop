@@ -1,0 +1,39 @@
+# Solution
+
+Data filtering script, now with logger:
+```
+library(dplyr)
+library(readr)
+
+filter_data <- function(df){
+
+  # print columns
+  print(colnames(df))
+
+  # print industry types
+  print(unique(df$UnofficialStandardIndustrialClassification))
+
+  # remove NAs, filter by industry, geography and growth rate figure
+  health_gdp_time_series <- df %>%
+    filter(!is.na(v4_1)) %>%
+    filter(UnofficialStandardIndustrialClassification == "J: Information and communication") %>%
+    filter(Geography == "England") %>%
+    filter(GrowthRate == "Annual growth rate")
+
+  # set year as a number and sort by
+  health_gdp_time_series_sorted <- health_gdp_time_series %>%
+    mutate(Time = as.numeric(Time)) %>%
+    arrange(Time)
+    
+  logger::loginfo(
+  sprintf("Number of rows in the data:", nrow(health_gdp_time_series_sorted))
+  )
+  
+  # save data to csv
+  write_csv(
+    health_gdp_time_series_sorted,
+    file = "./output/info_gdp_time_series_sorted.csv"
+  )
+
+}
+```
