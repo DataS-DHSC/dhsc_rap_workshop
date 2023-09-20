@@ -1,0 +1,15 @@
+# Exercise
+
+In this section, you’ll add some status messages to the log regarding your analysis in 5 Plotting and calculating summary statistics.
+
+Please complete the following tasks:
+
+1. Set up logger
+
+2. Add messages to the log in `filter_data()`:
+  a. All column names in `df`
+  b. All industry types in `df`
+  c. Count of rows in `df`
+  d. Count of rows in `health_gdp_time_series`
+
+3. Run the code and view the log in output/log.txt
