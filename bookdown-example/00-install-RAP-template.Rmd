@@ -61,7 +61,7 @@ Now that you have installed the DHSCtools package, the function you need to down
 To set up the template, you must first make sure you are in the correct working directory in your RStudio IDE. The working directory is the folder where R reads and saves files. You can either:
 
 - Navigate to the correct directory using the `setwd()` function, giving the relevant file path in the brackets;
-- Use the RStudio menu to change your working directory under Session > Set Working Directory > Choose Directory.
+- Use the RStudio menu to change your working directory under `Session > Set Working Directory > Choose Directory`.
 
 Whichever option you choose, make sure that the correct directory appears in the 'Files' pane in the RStudio IDE. (Don't worry about setting up a specific directory for the project you intend to work on; this is handled by the template function.)
 
