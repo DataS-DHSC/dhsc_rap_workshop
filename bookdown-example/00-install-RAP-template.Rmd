@@ -1,0 +1,87 @@
+# Downloading the DHSC RAP R templates
+
+This page will take you through the steps for downloading the R template for Reproducible Analytical Pipelines (RAPs) from the DHSC tools repository, and how to set that template up. It will involve: 
+
+- what the template contains
+- installing the relevant packages
+- changing your working directory
+- downloading the RAP template.
+
+Many of these steps assume you may be starting from scratch. If there are steps that do not apply, please skip them! If you simply want to know how to download the template, you can [click here](#download) to jump that section.
+
+There will then be an exercise portion for you to try this yourself.
+
+## What the RAP template contains
+
+The template contains the following folders:
+- input: this is used for storing data or file you would like the code to read in, or otherwise access.
+- output: this is the folder the code should use to store outputs, including .csvs and data sets you have created/cleaned in your code.
+- R: this the folder you should use to store functions and other pieces of R code you want to be able to access.
+
+The template will also create a variety of files with DHSC default settings, including: 
+- `.gitignore`
+- `.Rbuildignore`
+- `.Renviron`
+- `_pckgdown.yml`
+- `README.Rmd`
+- `template-build.log`
+
+## Installing packages
+
+There are two packages required for this exercise. The first is `devtools`. If you do not have it installed, it can be installed like a typical package using the following command:
+
+```
+install.packages("devtools")
+```
+
+You will then need to load the library:
+
+```
+library(devtools)
+```
+
+The second package required is the DHSC-developed tools package, which will need to be installed from GitHub. When installing packages from GitHub, you need to remember to include both the author and the name of the package. In this case, the author is `DataS-DHSC`, and the name of the package is `DHSCtools`, like so:
+
+```
+install_github("DataS-DHSC/DHSCtools")
+```
+
+Make sure for follow any instructions in the console during installation.
+
+One the package is installed, load the library:
+
+```
+library(DHSCtools)
+```
+
+## Set up the working directory
+
+Now that you have installed the DHSCtools package, the function you need to download the RAP template is available. 
+
+To set up the template, you must first make sure you are in the correct working directory in your RStudio IDE. The working directory is the folder where R reads and saves files. You can either:
+
+- Navigate to the correct directory using the `setwd()` function, giving the relevant file path in the brackets;
+- Use the RStudio menu to change your working directory under `Session > Set Working Directory > Choose Directory`.
+
+Whichever option you choose, make sure that the correct directory appears in the 'Files' pane in the RStudio IDE. (Don't worry about setting up a specific directory for the project you intend to work on; this is handled by the template function.)
+
+## Download the RAP template {#download}
+
+You can now download the DHSC RAP template using the `create_template` function. For example:
+
+```
+create_template("name_of_project")
+```
+
+This will create a folder named 'name_of_project' within the working directory you previously specified, and will also download the relevant files needed, including input and output directories, a log file, a .gitignore file, and a README.
+
+
+## Exercise: set up your own project template
+
+In this section, you'll set up a project template of your own. Using any required steps above, you should:
+
+1. Install the needed packages.
+
+2. Download the RAP template and create a project called 'Hello-World'.
+
+3. Add a script that prints "Hello World" to the console.
