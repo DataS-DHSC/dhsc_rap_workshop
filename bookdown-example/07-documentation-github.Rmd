@@ -10,4 +10,71 @@ You should make a commit of the current version of the project by using Git>Comm
 
 Now, you can run the snippet of code under the header "Adding GitHub support", which will generate a private Github repository in the DHSC organisation. 
 
+## Pushing the project to GitHub
+
+If you have not yet set up a Git account, [now is the time to do so!](https://github.com/join) Make sure you make a note of your Git username, and the email address you used to make the account.
+
+Now you have set the project up on your local machine, it's time to push the project to GitHub. This has many advantages, including code versioning and transparency.
+
+### Install Git
+
+Git is a program available from within the Company Portal in your Start menu. The software is called 'Git For Windows', and will be available in the 'Apps' category. You will need to install this software before proceeding any further.
+
+### Link Git and RStudio
+
+Once you have installed Git, or if you already have it installed, start by telling RStudio where it can find Git. The first thing you will need to do is to identify where Git has been installed on your computer. In the Terminal tab (please note: this is *not* the same as the Console tab) in RStudio, type the following:
+
+```
+where git
+```
+
+This should produce the location of the installation of Git on your machine.
+
+Once you have done this, you will need to:
+
+- Navigate to the `Tools` menu, and select `Global Options`.
+- Click on `Git/SVN`.
+- Check *Enable version control interface for Rstudio projects*.
+- Set the path to the path given when using the `where git` command in the terminal.
+- Check *use Git bash as shell for Git projects*.
+
+### Configure GitHub in RStudio
+
+You now need to tell GitHub who you are. Open Git Shell by navigating to `Tools > Shell` in the RStudio menu. In the shell, type the following command (replacing "mygithubusername" with your actual GitHub username, keeping the quotation marks):
+
+```
+git config --global user.name "yourgithubusername"
+```
+
+Next, type the following command, including the email address you used to make your account:
+
+```
+git config --global user.email "your@email.address"
+```
+
+You can then check the configuration was successful by typing `git config --global --list`. It should return something like the following:
+
+```
+user.name=yourgithubusername
+user.email=your@email.address
+```
+
+### Push your project to GitHub
+
+Now that you're set up with Git and RStudio, it's time to push your new project to GitHub.
+
+Open GitHub in your web browser, and create a new repository. You can do this as a personal repository, or from within any GitHub organisation to which you have access (e.g. DATAS-DHSC). Make sure you give it the exact same name as your RStudio project, but do **not** check the *Initialize this repository with a README* option. Finish this by clicking the *Create Project* option.
+
+From your GitHub browser window, you will need to copy the two lines of code from the box labelled *Push an existing repository from the command line* They may look something like this, depnding on whether it is a personal or organisation-level repository:
+
+```
+git remote add origin https://github.com/USERNAME/PROJECT.git
+git push -u origin master
+```
+
+Back in RStudio, make sure RStudio is using your new project as the working directory, and ensure the `Git` tab is available in the top right window. (This is the window that also contains the `Environment` and `History` tabs, among others.)
+
+Open `Tools > Shell` again, and paste in the two lines of code you copied from GitHub. Press enter or return to finish. Your repository, and all its template files, should now be available within the online repository.
+
+
 
