@@ -75,6 +75,8 @@ On the left hand side it has a list of QA checks to be completed. These are spli
 7. Code is reviews and signed-off with unit testing used where appropriate
 8. All dependencies and environment settings are documented and minimised
 
+If you are familiar enough with what needs to be covered under these headings, it may not be necessary to fill out every line of the checklist. The level of detail you provide as QAer should be proportionate to the level of QA required e.g. light touch QA of an ad hoc piece of analysis may only require a brief summary under each of the 8 headings above.
+
 The checklist asks you to complete the following information:
 
 * Contact of person who performed the check
