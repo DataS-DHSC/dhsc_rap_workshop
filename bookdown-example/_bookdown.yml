@@ -15,6 +15,8 @@ rmd_files: ["index.Rmd",
             "07-documentation-github.Rmd",
             "08-documentation-readme-summary.Rmd",
             "09-documentation-readme-exercise.Rmd",
-            "10-logger-summary.Rmd",
-            "11-logger-exercise.Rmd",
-            "12-logger-solution.Rmd"]
+            "10-logger-exercise.Rmd",
+            "11-logger-solution.Rmd",
+            "12-logger-summary.Rmd",
+            "13-QA-checklist.Rmd",
+            "14-QA-exercise.Rmd"]
