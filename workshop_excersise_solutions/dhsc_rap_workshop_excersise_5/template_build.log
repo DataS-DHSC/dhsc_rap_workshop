@@ -1,0 +1,74 @@
+
+── Provisioning DHSC template ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+✔ Setting active project to 'C:/Users/TMorris2/OneDrive - Department of Health and Social Care/Documents/rap_workshop_example_projects/dhsc_rap_workshop_excersise_5'
+
+── Creating file skeleton ──
+
+[1] "skeleton/_.gitignore"
+✔ Writing '.gitignore'
+[1] "skeleton/_.Rbuildignore"
+✔ Writing '.Rbuildignore'
+[1] "skeleton/_.Renviron"
+✔ Writing '.Renviron'
+[1] "skeleton/__pkgdown.yml"
+✔ Writing '_pkgdown.yml'
+[1] "skeleton/_README.Rmd"
+✔ Writing 'README.Rmd'
+✔ Creating 'input/'
+✔ Adding '^input$' to '.Rbuildignore'
+[1] "skeleton/input/_.gitignore"
+✔ Writing 'input/.gitignore'
+✔ Creating 'output/'
+✔ Adding '^output$' to '.Rbuildignore'
+[1] "skeleton/output/_.gitignore"
+✔ Writing 'output/.gitignore'
+✔ Creating 'R/'
+[1] "without_example/_main.R"
+✔ Writing 'main.R'
+[1] "without_example/input/_config.yml"
+✔ Writing 'input/config.yml'
+✔ Adding '^main\\.R$', '^README\\.Rmd$', '^template_build\\.log$' to '.Rbuildignore'
+✔ Writing 'CODE_OF_CONDUCT.md'
+✔ Adding '^CODE_OF_CONDUCT\\.md$' to '.Rbuildignore'
+✔ Writing 'R/dhsc.rap.workshop.excersise.5-package.R'
+✔ Writing 'dhsc_rap_workshop_excersise_5.Rproj'
+✔ Adding '^dhsc_rap_workshop_excersise_5\\.Rproj$' to '.Rbuildignore'
+✔ Writing 'template_howto.qmd'
+✔ Adding '^template_howto\\.qmd$' to '.Rbuildignore'
+✔ Adding '^template_howto*' to '.Rbuildignore'
+...done
+
+── Adding DESCRIPTION and LICENSE ──
+
+✔ Writing 'DESCRIPTION'
+Package: dhsc.rap.workshop.excersise.5
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R (parsed):
+    * First Last <email@dhsc.gov.uk> [aut, cre]
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.0
+✔ Writing 'LICENSE'
+✔ Writing 'LICENSE.md'
+✔ Adding '^LICENSE\\.md$' to '.Rbuildignore'
+...done
+
+── Setting up pkgdown for html documentation ──
+
+✔ Adding '^_pkgdown\\.yml$', '^docs$', '^pkgdown$' to '.Rbuildignore'
+✔ Adding 'docs' to '.gitignore'
+✔ Leaving '_pkgdown.yml' unchanged
+• Edit '_pkgdown.yml'
+...done
+
+── Configuring git ──
+
+✔ Initialising Git repo
+• Check Git config correct
+ℹ Name: Alan Smithee
+ℹ Email: Alan.Smithee@dhsc.gov.uk
+✔ Writing '.git/hooks/pre-commit'
+...done

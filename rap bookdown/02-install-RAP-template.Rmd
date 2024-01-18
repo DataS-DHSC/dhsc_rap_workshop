@@ -1,0 +1,73 @@
+# Downloading the DHSC RAP R templates
+
+This page will take you through the steps for downloading the R template for Reproducible Analytical Pipelines (RAPs) from the DHSC tools repository, and how to set that template up. It will involve: 
+
+- what the template contains
+- installing the relevant packages
+- changing your working directory
+- downloading the RAP template.
+
+This template provides a framework for your RAP, ensuring you have all the right elements prepared. Using a uniform template throughout the department will make QA and handover more straightforward, as it will create a level of inital similarity between projects.
+
+Many of these steps assume you may be starting from scratch. If there are steps that do not apply, please skip them! If you simply want to know how to download the template, you can [click here](#download) to jump that section.
+
+There will then be an exercise portion for you to try this yourself.
+
+## What the RAP template contains
+
+The template contains the following folders:
+
+- input: this is used for storing data or file you would like the code to read in, or otherwise access.
+- output: this is the folder the code should use to store outputs, including .csvs and data sets you have created/cleaned in your code.
+- R: this the folder you should use to store functions and other pieces of R code you want to be able to access.
+
+The template will also create a variety of files with DHSC default settings, including: 
+
+- `.gitignore`
+- `.Rbuildignore`
+- `.Renviron`
+- `_pckgdown.yml`
+- `README.Rmd`
+- `template-build.log`
+
+## Installing packages
+
+There are two packages required for this exercise. The first is `devtools`. If you do not have it installed, it can be installed like a typical package using the following command:
+
+```
+install.packages("devtools")
+```
+
+You will then need to load the library:
+
+```
+library(devtools)
+```
+
+The second package required is the DHSC-developed tools package, which will need to be installed from GitHub. When installing packages from GitHub, you need to remember to include both the author and the name of the package. In this case, the author is `DataS-DHSC`, and the name of the package is `DHSCtools`, like so:
+
+```
+install_github("DataS-DHSC/DHSCtools")
+```
+
+Make sure for follow any instructions in the console during installation.
+
+One the package is installed, load the library:
+
+```
+library(DHSCtools)
+```
+
+After installing the package, to use the DHSC project template go to File > New Project… then select New Directory followed by DHSC Project Template. Make sure to untick the "Include example code?" checkbox. 
+
+The optional example code contains similar examples to those in this book, but including them here may cause some confusion later.
+
+
+## Exercise: set up your own project template
+
+In this section, you'll set up a project template of your own. Using any required steps above, you should:
+
+1. Install the needed packages.
+
+2. Download the RAP template and create a project.
+

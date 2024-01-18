@@ -1,0 +1,13 @@
+## Exercise
+
+In this section, you’ll add some logging to an example function. We will be able to use the same format in later stages. 
+
+Please complete the following tasks:
+
+1. Set up logger
+
+2. Create an example function in a new script and log the output:
+  a. Create new script and example function that returns a dataframe
+  b. Log the number of rows in your data frame
+
+3. Run the code and view the log in output/log.txt

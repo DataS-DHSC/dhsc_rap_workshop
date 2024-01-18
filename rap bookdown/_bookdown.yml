@@ -1,0 +1,23 @@
+book_filename: "bookdown-example"
+new_session: true
+before_chapter_script: _common.R
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+rmd_files: ["00-index.Rmd",
+            "01-using_this_book.Rmd",
+            "02-install-RAP-template.Rmd",
+            "03-documentation-readme-summary.Rmd",
+            "04-documentation-readme-exercise.Rmd",
+            "05-documentation-logger-summary.Rmd",
+            "06-documentation-logger-exercise.Rmd",
+            "07-documentation-logger-solution.Rmd",
+            "08-documentation-inline.Rmd",
+            "09-download-data-summary.Rmd",
+            "10-download-data-exercise.Rmd",
+            "11-download-data-solution.Rmd",
+            "12-plots-summary.Rmd",
+            "13-plots-summary-exercise.Rmd",
+            "14-plots-summary-exercise-solution.Rmd",
+            "15-documentation-github.Rmd"]

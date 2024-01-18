@@ -1,0 +1,49 @@
+# In line documentation
+
+
+- Comments
+- Using Roxygen2
+
+It's important to add comments to your code to help future users (including yourself) understand how your code works, and why you have made the decisions you have.
+
+Having documentation in the same place as your code is important as you cannot garuntee users of your code will read all the other documentation you have put together, and comments ensure they will know what your code does.
+
+A good way to do this is using the roxygen2 package.
+
+Roxygen2 helps you write consistent in line documentation for your functions, making sure all the information needed is recorded. It can also automatically transform your comments into a useful document, which is particularly useful if you plan on turning your RAP into a package.
+
+```
+install.packages("roxygen2")
+library(roxygen2)
+```
+
+## Basic Structure
+
+Roxygen2 is written around functions, and describing the arguments and outputs.There is a specific syntax needed for these comments which are slightly different to normal.
+
+Below is an example simple function, showing how to format roxygen2 comments.
+
+```
+' Add together two numbers
+#'
+#' @param x A number.
+#' @param y A number.
+#' @return A number.
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+add <- function(x, y) {
+  z = x + y
+  return(z)
+}
+```
+
+Once you have added roxygen2 comments to your code you can use `roxygen2::roxygenise()` or `devtools::document()` to run roxygen. This will create a new folder called `man` and a file called `add.Rd` that will contain a formatted version of your comments.
+
+
+
+
+
+
+
+

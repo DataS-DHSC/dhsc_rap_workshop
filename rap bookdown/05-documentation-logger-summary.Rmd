@@ -1,0 +1,70 @@
+# Logging messages with logger
+
+If we are going to batch run scripts, or set them to run automatically, we need a way of recording what they are doing, whether they have run correctly, and any issues that have occured. To do this we use logging.
+
+Logging is simply adding lines to your code that record outputs into a log file, stored in our project folders.
+
+We will look at:
+
+- Setting up logger
+- Basic Structure of using logger
+
+## Set up
+
+To set up logger, the following code is used:
+
+```
+library(logger)
+# Setup logging
+logger <- DHSClogger::get_dhsc_logger()
+# Set threshold of console log to information and above
+logger$set_threshold("log.console", "INFO")
+```
+
+Here we are using DHSClogger, a package written to simplfy the logging process.
+
+R has three levels of message it can return in your console: `INFO`, `WARN` and `ERROR`. In the above code we we set our threshold to `INFO`, meaning all messages `INFO` and up are logged. If this is changed to i.e. `ERROR`, only error mesages will be logged.
+
+You can find more information about logger [here](https://cran.r-project.org/web/packages/logger/vignettes/Intro.html).
+
+
+## Basic structure
+
+To add something to the log, we use `logger$info()`. Here is the general structure:
+
+```
+#Start the logger
+logger$info("[Begin]")
+
+# add source of run script and entry point to code below
+source("./R/main.R", local = TRUE)
+run_analysis()
+
+#Stop the logger
+logger$info("[End]")
+```
+
+To have the save a log message to the log.txt file, we use `logger$info(log_message)`. This will add the log_message variable to the logfile with a time stamp so you can see what result was produced and when.
+
+```
+ rowcount <- nrow(df_data)
+  log_message <- sprintf("Number of rows downloaded for %s was: %d",
+                         config$data_id,
+                         rowcount)
+                         
+  logger$info(log_message)
+  # return(df_data) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

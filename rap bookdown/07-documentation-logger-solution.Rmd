@@ -1,0 +1,26 @@
+## Solution
+
+This function returns a data frame of random length with two columns containing random values. It logs the length of the data frame and the max values in each column.
+
+```
+
+log_test <- function(){
+ 
+ number_of_rows <- round(runif(n = 1, min = 1, max = 50))
+ 
+ example_df <- data.frame(x = runif(n = number_of_rows, min = 1, max = 50),
+                          y = runif(n = number_of_rows, min = 1, max = 50))
+  
+ logger::loginfo(
+    sprintf("Number of rows in the data:", nrow(example_df)),
+    sprintf("Max value in column x:", max(example_df$x)),
+    sprintf("Max value in column y:", max(example_df$y))
+  )
+ 
+ return(example_df)
+                          
+}
+
+
+
+```

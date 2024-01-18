@@ -1,0 +1,15 @@
+## Exercise
+
+In this section, you'll perform your own analysis on a new dataset, which can be taken forward to use in your RAP project.
+
+Please complete the following tasks:
+
+1. Download and clean the ONS data for Information and communication activities annual GDP growth rate in England. 
+
+2. Plot a time series chart for annual growth rate, using DHSC colours. 
+
+3. Establish which years had the lowest and highest GDP growth rate values respectively in this dataset.
+
+4. Calculate the mean GDP growth rate value in this dataset.
+
+5. Add appropriate logging and comments

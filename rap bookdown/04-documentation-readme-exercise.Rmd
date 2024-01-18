@@ -1,0 +1,14 @@
+## Exercise
+
+In this section, you'll create a readme file for your project.
+
+Open the README.Rmd file in your project's root directory and add the following:
+
+1. Short statement of intent
+2. Longer description describing the problem that your project solves and how it solves it
+3. Basic installation instructions or link to installation guide
+4. Example usage
+5. Screenshot if your project has a graphical user interface (but make sure to mask any data if it is not in the public domain)
+6. Links to related projects 
+
+Knit the Rmd file and review the results.

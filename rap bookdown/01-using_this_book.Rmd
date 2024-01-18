@@ -1,0 +1,43 @@
+# Using this book
+
+The aim of this book is to provide a template for using RAP for analysis.
+
+It gives the necessary steps to ensure your RAP is easily maintained, updated and understood.
+
+It has been primarliy designed to accompany a workshop going through the exercises within, but can also be used as reference material to help build your RAP independently.
+
+
+## Prerequisites
+
+The prerequisites for taking part in the workshop and completeing the excersises are:
+
+* RStuido installed
+* Git installed
+* A Github account, and being a member of the DHSC organisaion on Github
+
+
+## Workshop
+
+The worshop will take place over a day taking around 3 hours. We will go through each section of the book, completing the exercises, and by the end you should have a functioning example RAP.
+
+## Contents
+
+This book covers:
+
+* Downloading and using the DHSC RAP project template for R.
+* Documenting your RAP using R Markdown, logging, and Roxygen
+* Implementing a logger to understand outputs and errors
+* Downloading your data from a URL
+* Performing your analysis
+* Version control
+
+## Further Links
+
+* [NHSE RAP Community of Practice](https://nhsdigital.github.io/rap-community-of-practice/)
+* [DHSCTools](https://github.com/DataS-DHSC/DHSCtools)
+* [Analysis Function RAP strategy](https://analysisfunction.civilservice.gov.uk/policy-store/reproducible-analytical-pipelines-strategy/)
+* [AQUA Book](https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government)
+* [Duck Book](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html)
+* [Goldacre Review](https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis)
+* [NHSE Health RAP Playbook](https://nhsengland.github.io/Health-RAP-Playbook-Alpha/)
+

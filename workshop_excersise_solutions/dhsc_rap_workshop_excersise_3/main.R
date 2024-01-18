@@ -2,38 +2,32 @@
 # Project launch file
 # Source this file to run code
 
+
 # Load global packages ----------------------------------------------------
 
 # check librarian package management installed
 if (!requireNamespace("librarian")) install.packages("librarian", quiet = TRUE)
 
-librarian::shelf(bookdown)
+librarian::shelf(logger)
 
 # use suppress to prevent build warnings
 # note can install from github
-suppressWarnings(
-  librarian::stock(
-    DataS-DHSC/DHSClogger,
-    DataS-DHSC/DHSCtools,
-    DataS-DHSC/DHSCcolours,
-    yaml, tidyverse,
-    tools, fs,
-    curl, httr, polite, rvest,
-    tidyxl, unpivotr, writexl, lubridate,
-    ggrepel, scales, sf, svglite,
-    quiet = TRUE
-  )
-)
+suppressWarnings(librarian::stock(DataS-DHSC/DHSClogger))
+
 
 # Setup logging -----------------------------------------------------------
+
 logger <- DHSClogger::get_dhsc_logger()
+
 # set threshold of console log to information and above
 logger$set_threshold("log.console", "INFO")
 
+
 # Call main code ----------------------------------------------------------
+
 logger$info("[Begin]")
 
 # add source of run script and entry point to code below
-bookdown::render_book(input = "./rap bookdown")
+source("./R/log_example.R", local = T)
 
 logger$info("[End]")
