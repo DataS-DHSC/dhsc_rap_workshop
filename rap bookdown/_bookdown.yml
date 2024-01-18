@@ -20,4 +20,5 @@ rmd_files: ["00-index.Rmd",
             "12-plots-summary.Rmd",
             "13-plots-summary-exercise.Rmd",
             "14-plots-summary-exercise-solution.Rmd",
-            "15-documentation-github.Rmd"]
+            "15-QA-checklist.Rmd",
+            "16-documentation-github.Rmd"]
