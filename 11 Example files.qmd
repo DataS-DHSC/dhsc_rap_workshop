@@ -1,0 +1,261 @@
+# Example scripts {sec-example}
+
+::: {.panel-tabset .nav-pills}
+# main.r
+
+```{r, eval=F}
+# install packages if needed
+
+if (!requireNamespace("librarian")) install.packages("librarian", quiet = TRUE)
+
+suppressWarnings(
+  librarian::shelf(
+    DataS-DHSC/DHSClogger,
+    ggplot2,
+    httr,
+    jsonlite,
+    dplyr,
+    readr,
+    DHSCcolours,
+    quiet = TRUE))
+
+# Setup logging
+logger <- DHSClogger::get_dhsc_logger()
+
+# set threshold of console log to information and above
+logger$set_threshold("log.console", "INFO")
+
+# read in config.yml
+config <- yaml::read_yaml(
+  file.path("input", "config.yml")
+)
+
+#run analysis
+source("r/run_analysis.r")
+run_analysis()
+
+
+logger$info("[End]")
+
+```
+
+# run_analysis.r
+
+```{r, eval=F}
+
+
+run_analysis <- function(){
+
+  #read in your analysis functions
+  source("r/ingest_data.r")
+  source("r/process_data.r")
+  source("r/plot_data.r")
+
+  #read in data
+  download_data_from_ons(data_id = config$data_id)
+
+  #process data
+  ons_data <- process_data(data_id = config$data_id,
+                           industry = config$industry,
+                           geography = config$geography,
+                           metric = config$metric)
+
+  #plot data
+  chart <- ts_line_chart_data(data = ons_data,
+                              industry = config$industry,
+                              metric = config$metric,
+                              title = config$chart_title,
+                              subtitle = config$subchart_title,
+                              xlab = config$xlab,
+                              ylab = config$ylab)
+
+  chart
+
+}
+
+
+```
+
+# config.yml
+
+    # see https://cran.r-project.org/web/packages/ymlthis/vignettes/yaml-overview.html
+    # for details of writing yaml files
+
+    data_dictionary_url: "https://api.beta.ons.gov.uk/v1/datasets"
+    data_id: "regional-gdp-by-year"
+    input_dir: ./input
+    output_dir: ./output
+    industry : "Q: Human health and social work activities"
+    geography : "England"
+    metric : "Annual growth rate"
+    chart_title : "Annual growth rate of Human health and social work activities, England"
+    subtitle : "2013 to 2021"
+    xlab : "Year"
+    ylab : "Annual growth rate (%)"
+
+# ingest_data.r
+
+```{r, eval=F}
+#' Downloads a csv from the ONS API, and saves to input folder
+#'
+#' @param data_dictionary_url
+#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
+#'
+#' @import dplyr
+#' @import httr
+#' @import jsonlite
+#' @import logger
+#' @import readr
+#'
+#'
+download_data_from_ons <- function(data_dictionary_url, data_id){
+# request the data dictionary from the ONS api endpoint
+  path <- config$data_dictionary_url
+  request <- httr::GET(url = path)
+  content <- rawToChar(request$content)
+  content_flat <- jsonlite::fromJSON(content, flatten = TRUE) 
+  
+  logger$info(paste0("Response recieved from: ", path))
+          
+# create a dataframe with the downloaded data dictionary to what data is available
+  df <- data.frame(id = content_flat$items$id,
+                   title = content_flat$items$title,
+                   release_frequency = content_flat$items$release_frequency,
+                   next_release = content_flat$items$next_release,
+                   description = content_flat$items$description,
+                   links_latest_versions = content_flat$items$links.latest_version.href,
+                   links_self_href= content_flat$items$links.self.href,
+                   qmi_href= content_flat$items$qmi.href)
+      
+  file_latest_version <- df %>%
+   dplyr::filter(id == data_id) %>%
+   dplyr::select(links_latest_versions) %>%
+   dplyr::pull()
+      
+# Using the links_latest_versions we can get the meta data for the latest file
+# and this meta data includes the url for the latest file in either csv or xlsx
+# format. We choose .csv here. Extract it from downloads$csv$href
+      
+ request <- httr::GET(url = file_latest_version)
+        
+ logger$info(paste0("Response recieved from: ", file_latest_version))
+       
+ content <- rawToChar(request$content)
+ content_flat <- jsonlite::fromJSON(content, flatten=TRUE)
+ file_url <- content_flat$downloads$csv$href
+      
+      
+#Read data from latest file endpoint
+ df_data <- readr::read_csv(file_url)
+ data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
+ readr::write_csv(df_data, data_filepath)
+ logger$info(paste0("data output to: ", data_filepath))
+      
+}
+```
+
+# process_data.r
+
+```{r, eval=F}
+#' Filters relevant data and sorts it
+#'
+#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
+#' @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry
+#' @param geography is a string of the geography we want to look at. This is stored in config.yml as config$geography
+#' @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric
+#'
+#'
+#' @import dplyr
+#' @import logger
+#' @import readr
+#'
+#'
+process_data <- function(data_id, industry, geography, metric){
+
+  #read in data from data ingest
+
+  data_file_path <- paste0(config$output_dir, "/", data_id, ".csv")
+  data <- readr::read_csv(data_file_path)
+
+  logger$info(paste0("Data read from: ", data_file_path))
+
+  data_time_series <- data %>%
+    dplyr::filter(!is.na(v4_1)) %>%
+    dplyr::filter(UnofficialStandardIndustrialClassification == industry) %>%
+    dplyr::filter(Geography == geography) %>%
+    dplyr::filter(GrowthRate == metric)
+
+  # set year as a number and sort by
+  data_time_series_sorted <- data_time_series %>%
+    dplyr::mutate(Time = as.numeric(Time)) %>%
+    dplyr::arrange(Time)
+
+  # save data to csv
+  output_file_name <- paste0("output/", data_id, "_", metric, "_time_series_sorted.csv")
+
+  readr::write_csv(
+    data_time_series_sorted,
+    file = output_file_name)
+
+  logger$info(paste0("processed data saved to ", output_file_name))
+
+  return(data_time_series_sorted)
+
+  }
+
+```
+
+# plot_data.r
+
+```{r, eval=F}
+#' Plot data as time series
+#'
+#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
+#' @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry
+#' @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric
+#' @param title is a string that will be the title of the chart
+#' @param subtitle is a string that will be the subtitle of the chart
+#' @param xlab is a string that is the x axis label
+#' @param ylab is a string that is the y axis label
+#'
+#' @import DHSCtools
+#' @import ggplot2
+#'
+#'
+
+ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, ylab){
+
+  graph <- ggplot2::ggplot(data = data,
+                          aes(Time,
+                              v4_1,
+                              industry)) +
+    DHSCcolours::theme_dhsc() +
+    geom_line(linewidth = 1) +
+    geom_point(size = 3) +
+    theme(legend.position="none") +
+    DHSCcolours::scale_colour_dhsc_d() +
+    labs(
+      title = title,
+      subtitle = subtitle,
+      x = xlab,
+      y = ylab) +
+    scale_x_continuous(breaks=seq(2013,2021,1))
+
+    #save chart
+  chart_path <- paste0("./output/", metric, "_chart.svg")
+
+  ggplot2::ggsave(chart_path,
+                  plot = graph,
+                  height = 5,
+                  width = 10,
+                  units="in",
+                  dpi=300)
+
+  logger$info(paste0("Graph saved to: ", chart_path))
+
+  return(graph)
+
+}
+
+```
+:::

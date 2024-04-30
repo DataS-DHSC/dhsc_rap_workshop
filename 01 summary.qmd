@@ -1,0 +1,71 @@
+# Summary
+
+The aim of this book is to provide a template for using RAP for analysis.
+
+It gives the necessary steps to ensure your RAP is easily maintained, updated and understood.
+
+It has been primarliy designed to accompany a workshop going through the exercises within, but can also be used as reference material to help build your RAP independently.
+
+# Prerequisites
+
+The prerequisites for taking part in the workshop and completing the exercises are:
+
+[RStuido installed](https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/) - This can be done via the IT service portal
+
+[Git installed](https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/) - This can be done via the IT service portal
+
+A [Github account](https://github.com/), and being a member of the DHSC organisation on Github - Create an account online, then email the [Data Science Hub inbox](datascience@dhsc.gov.uk) to be added to the organisation
+
+# Contents
+
+@sec-template
+
+-   The DHSC RAP template provides structure in which to build your RAP. It helps keep projects across the department consistent, and provides you with the key files you need to get started.
+
+@sec-git
+
+-   Version control is incredibly important for your RAP. Providing an audit trail for the work, and reverse any breaking changes. We use git and github to manage version control, and help with working collaboratively.
+
+@sec-readme
+
+-   A Readme document explains your work to new users. It should explain what is being done, how to run the code, which data is being used, and why any decisions have been made.
+
+@sec-inline
+
+-   Having documentation in the same place as your code is important as you cannot guarantee users of your code will read all the other documentation you have put together. Comments will ensure they know what your code does.
+
+@sec-logging
+
+-   When your code is running with no or minimal manual steps, having logging to tell you what is being done is very useful. It will make discovering the cause behind any issues much easier, and speed up any fixes needed.
+
+@sec-download
+
+@sec-process
+
+@sec-plot
+
+-   You should divide the code for your RAP into discrete sections, and wrap them in functions. This modularisation will improve the overall readability of your code, make future additions easier, and allow faster debugging.
+
+@sec-qa
+
+-   Quality assurance is an essential part of all analytical work. Analytical code needs additional steps, as set out in the Duck book. The steps outlined above will put you in a good position for effective quality assurance.
+
+@sec-example
+
+-   This sections gives examples of the key scripts used to put a RAP together.
+
+# Further Links
+
+This book is a brief intro to RAP, there is more detial in the links below.
+
+-   [NHSE RAP Community of Practice](https://nhsdigital.github.io/rap-community-of-practice/)
+
+-   [DHSCTools](https://github.com/DataS-DHSC/DHSCtools)
+
+-   [Analysis Function RAP strategy](https://analysisfunction.civilservice.gov.uk/policy-store/reproducible-analytical-pipelines-strategy/)
+
+-   [AQUA Book](https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government)
+
+-   [Duck Book](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html)
+
+-   [Goldacre Review](https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis)

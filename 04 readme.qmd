@@ -1,0 +1,102 @@
+# Project documentation - Readme files {#sec-readme}
+
+::: callout-note
+## Key Points
+
+-   You should include a Readme file for in your RAP explaining what you have done, and how the code ca be used.
+
+-   You should write your Readme with markdown to help with readability.
+:::
+
+A good Readme file is a key component of reproducible analysis and it should give users of your analysis/code sufficient information to understand what it does, and how they can install and run it without recourse to the project's original author. The Readme file is displayed on the front page of your github repository.
+
+The [Aqua book](https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government) gives guidance on what Readme files should include, which can be summarised as:
+
+1.  Short statement of intent
+
+2.  Longer description describing the problem that your project solves and how it solves it
+
+3.  Basic installation instructions or link to installation guide
+
+4.  Example usage
+
+5.  Screenshot if your project has a graphical user interface (but make sure to mask any data if it is not in the public domain)
+
+6.  Links to related projects
+
+Descriptions of code or data you add to your readme could potentially get into the public domain and so it is critical you treat readme descriptions and data examples in the same way you would treat unpublished data and/or sensitive models.
+
+### Project description
+
+Your Readme should describe what your RAP does, and why you have made the choices you have.
+
+-   Data sources - It should be clear which data you ingest and where you take it from. This could be a URL, a file directory, or elsewhere. You should also explain the frequency with which you get your data. You may choose to describe the data formats in more detail but you might also refer or link to a specification document held elsewhere if your data or its structure is sensitive in nature.
+
+-   Processing/analysis - explain how your code performs the analsysis and describe its structure because others may need to change your code. As always, we recommend you write modular, loosely coupled code, and so it may be useful to include a structure chart explaining how the code fits together (see below for a simple example). If you use complex models then provide links to the model specification so your users can understand how yours calculations are performed (this also allows you to restrict access to these specifications).
+
+-   Outputs - what are the outputs from this code, who uses them and how? If you write to files, then where is this data written to? Again, you can refer or link to a specification held elsewhere.
+
+### Basic installation instructions
+
+What does the user need to do to install your code - is it simply a case of cloning the git repository? It is hoped all package management is dealt with by the DHSC template (librarian) but are there other tools your user might need. This is where you specify them and how your users install them.
+
+### Example usage
+
+The default behavior for projects built using the DHSC template is for you to source the main.R function and for this script to then orchestrate all subsequent processing. However, you may specify that the user updates the config.yml file to locate source data and identify where to write outputs.
+
+-   log.txt - progress and errors encountered should all be logged to log.txt and so you may wish to tell users what to look for, e.g. particular warning or error messages, messages to say processing has finished successfully, etc.
+
+## Using markdown to describe your code
+
+The Readme file uses RMarkdown which is a language you can use to add formatting elements to plain text documents. It is can be very useful when you want to emphasise or illustrate important aspects of your code or model.
+
+Use one or more '\#' to create headers, e.g.
+
+::: {.panel-tabset .nav-pills}
+### Visual
+
+#### Header 3
+
+-   bullet point
+    -   indented bullet point
+
+1.  numbered list
+2.  numbered list second item
+
+#### Table 3.1
+
+| Sharepoint folder | Content category                           |
+|-------------------|:-------------------------------------------|
+| input_data        | For data that will need to be preprocessed |
+| interim_data      | For compliant data                         |
+
+#### Image 3.2
+
+![Usage](images/main_flow.jpg)
+
+### Source
+
+`#### Header 3`
+
+`-   bullet point` `-   indented bullet point`
+
+`1.  numbered list` `2.  numbered list second item`
+
+`#### Table 3.1`
+
+`| Sharepoint folder | Content category                           |` `|-------------------|:-------------------------------------------|` `| input_data        | For data that will need to be preprocessed |` `| interim_data      | For compliant data                         |`
+
+`#### Image 3.2`
+
+`![Usage](./main_flow.jpg)`
+:::
+
+
+::: callout-note
+## Exercise: set up your README
+
+1.  Start your Readme document, setting out what you plan to do.
+
+2. Keep your Readme up to date throughout subsequent steps.
+
+:::

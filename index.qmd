@@ -1,0 +1,81 @@
+---
+title: "RAP Workshop"
+author: "Data Science Team"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+---
+
+# Reproducible Analytical Pipelines (RAP)
+
+::: callout-note
+## RAP
+
+It is important for analysis to be reproducible. Different analysts using the same methods with the same data should get the same results.
+:::
+
+RAP is a way of using software engineering techniques to improve the reproducibility of your analysis. By minimising manual steps, using version control , and producing good documentation analysis can be higher quality, reproducible, reuseable and more efficient. Applying RAP principles helps you comply with the requirements in the [AQUA book](https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government) for good quality assurance, and was recommended in the [Goldacre Review](https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis) into using health data for research and analysis.
+
+The key advantages of RAP are:
+
+-   Higher quality analysis and reduced risk, with quality assurance built into all parts of the process
+
+-   More efficient and reliable processes
+
+-   Improved transparency and greater confidence in the analysis from producers, managers, and users
+
+-   Improved business continuity and knowledge management
+
+-   Analysis that is easier to adapt and reuse
+
+In DHSC we have a variety of tools to help develop and implement RAPs into your work. This book aims to familiarise yourself these tools and fundamentals of RAP.
+
+## What makes a good RAP?
+
+**Code**
+
+The best way to incorporate RAP into your work is using code, and in particular open source languages such as R or Python.
+
+-   Your code will use an appropirate coding standard to ensure readability, i.e. the [Tidy style guide](https://style.tidyverse.org/).
+
+-   Your code will require minimal manual intervention to produce it's outputs.
+
+-   Your code will be modular and repeated processes written as functions
+
+-   Your code will be well structured and organised into appropriate folders.
+
+-   Your code will have undergone the appropriate level of quality assurance (QA).
+
+-   Your code will be well documented, including a readme document and function.
+
+-   Your code will include unit testing.
+
+-   Your code will be fully packaged for easy distribution.
+
+**Data / Pipeline**
+
+Analysis can use data from a variety of sources, and in a variety of formats. For your RAP the data needs to come from a relatively stable source, so as not to need rewriting at every use.
+
+-   Your data will be handled in a tidy format.
+
+-   Your data will come from a managed source, such as a database.
+
+-   Your pipeline will use continuous integration or continuous deployment and run tests.
+
+**Documentation**
+
+To be understood and maintained by future users (including yourself!) your RAP needs to be well documented. This will help with any issues running the pipeline, both with the code and any methodology. Documentation is also an important part of keeping a clear audit trail for your analysis, this is particularity vital for anything business critical.
+
+-   Your code will produce informative and useful logging (for troubleshooting, and ensuring your RAP has run correctly.
+
+-   Your code will be version controlled using Git.
+
+-   You will produce clear documentation for future users, such as READMEs.
+
+-   Your code will be published in the open.
+
+-   Any changes to your RAP will be clearly documented and signposted, i.e. in a changelog.
+
+**Not all RAPs will include all of the above, but we should aspire to meet as much as possible and appropriate. We will cover the majority of the above in this book.**
+
+**RAP is a code agnostic approach, however this book will focus on RAP using R.** The principles are transferable to other languages, but the specifics may not be.

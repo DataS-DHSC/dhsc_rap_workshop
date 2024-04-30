@@ -1,0 +1,130 @@
+# Processing Data {#sec-process}
+
+::: callout-note
+## Key Points
+
+-   Set out your processing in clear steps
+
+-   Wrap up the processing of your data into a function
+:::
+
+# Cleaning and processing your data
+
+This page will take you through the steps for the data analysis we wish to do. It is an example of some simple data cleaning and sorting, showing how you can parameterise and modularise your analysis.
+
+## Reading in the data
+
+For this section we need two packages, `dplyr` and `readr`. We have already included these in `main.R`
+
+First, we can print the column names of the dataset and the unique industry types in the dataset.
+
+```{r, eval = F}
+#read in data from data ingest
+
+data_file_path <- paste0(config$output_dir, "/", data_id, ".csv")
+
+data <- read_csv(data_file_path)
+
+logger$info(paste0("Data read from: ", data_file_path))
+```
+
+## Filtering data
+
+We will now clean the data and filter for data on the health and social care industry in England and by type of growth rate we wish to analyse. We can parameterise the variables we are interested in and add them to our config file. This will make it straight forward to change later to perform the same analysis on a different industry. The column containing the values we are interested in is called `v4_1`
+
+```{r, eval = F}
+# remove NAs, filter by industry, geography and growth rate figure
+
+industry <- config$industry_name
+geography <- config$geography
+metric <- config$metric
+
+data_time_series <- data %>%
+  filter(!is.na(v4_1)) %>%
+  filter(UnofficialStandardIndustrialClassification == industry) %>%
+  filter(Geography == geography) %>%
+  filter(GrowthRate == metric)
+      
+# set year as a number and sort by
+data_time_series_sorted <- data_time_series %>%
+  mutate(Time = as.numeric(Time)) %>%
+  arrange(Time)
+```
+
+Once we have a cleaned dataset, we can save it as a csv for future use.
+
+```{r, eval = F}
+# save data to csv
+
+output_file_name <- paste0("output/"config$industry_name, "_", config$metric, "time_series_sorted.csv")
+
+write_csv(
+  data_time_series_sorted,
+  file = "./output/health_gdp_time_series_sorted.csv")
+      
+logger$info(paste0("data saved to ", output_file_name))
+```
+
+## Wrap in function
+
+As with the initial ingestion of the data, we should wrap our code in a function to be called from our `run_analysis.R` script.
+
+```{r, eval = F}
+#' Filters relevant data and sorts it
+#'
+#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
+#' @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry
+#' @param geography is a string of the geography we want to look at. This is stored in config.yml as config$geography
+#' @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric
+#'
+#'
+#' @import dplyr
+#' @import logger
+#' @import readr
+#'
+#'
+process_data <- function(data_id, industry, geography, metric){
+
+  #read in data from data ingest
+    
+  data_file_path <- paste0(config$output_dir, "/", data_id, ".csv")
+      
+  data <- readr::read_csv(data_file_path)
+      
+  logger$info(paste0("Data read from: ", data_file_path))
+      
+  data_time_series <- data %>%
+    dplyr::filter(!is.na(v4_1)) %>%
+    dplyr::filter(UnofficialStandardIndustrialClassification == industry) %>%
+    dplyr::filter(Geography == geography) %>%
+    dplyr::filter(GrowthRate == metric)
+        
+  # set year as a number and sort by
+  data_time_series_sorted <- data_time_series %>%
+    dplyr::mutate(Time = as.numeric(Time)) %>%
+    dplyr::arrange(Time)
+        
+  # save data to csv
+      
+  output_file_name <- paste0("output/", data_id, "_", industry, "_", metric, "_time_series_sorted.csv")
+      
+  readr::write_csv(
+    data_time_series_sorted,
+    file = output_file_name)
+        
+  logger$info(paste0("processed data saved to ", output_file_name))
+      
+  return(data_time_series_sorted)
+
+}
+```
+
+
+::: callout-note
+## Exercise: Process your data
+
+1. Alter the config file to look to process your data correctly
+
+2. Run the process data script to make sure it's working correctly. Make any necessary fixes.
+
+:::

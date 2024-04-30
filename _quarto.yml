@@ -1,0 +1,31 @@
+project:
+  type: book
+
+book:
+  title: "DHSC RAP WORKSHOP GUIDE"
+  author: "Data Science Hub"
+  date: "16/04/2024"
+  chapters:
+    - index.qmd
+    - 01 summary.qmd
+    - 02 RAP template.qmd
+    - 03 github.qmd
+    - 04 readme.qmd
+    - 05 inline.qmd
+    - 06 logging.qmd
+    - 07 ingest data.qmd
+    - 08 process data.qmd
+    - 09 plot data.qmd
+    - 10 QA.qmd
+    - 11 Example files.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+editor: visual
+
