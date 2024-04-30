@@ -1,6 +1,0 @@
-# ignore everything
-*
-/*
-
-# except this file - very meta
-!.gitignore
