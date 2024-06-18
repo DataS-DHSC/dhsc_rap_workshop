@@ -21,6 +21,8 @@ book:
 
 bibliography: references.bib
 
+output_dir: "docs"
+
 format:
   html:
     theme: cosmo
