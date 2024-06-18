@@ -1,4 +1,4 @@
-# DHSC RAP Template {#sec-template}
+# DHSC RAP Template
 
 ::: callout-note
 ## Key Points
@@ -36,15 +36,17 @@ The template contains several folders.
 
 The template provides a series of useful files to help you build your RAP. The key ones we'll cover in this book are:
 
--   `main.r` - This is the script from which you will run your code, initialise your packages, and start your logging
+-   `main.r` - This is the script from which you will run your code, initialise your packages, and start your logging. This script serves three purposes: it hels with portability by making sure all the packages needed in the code are installed; it explicitly sets up any global variables needed so new users can find them easily; allows new users to immediately know how to run your code by following an established pattern of sourcing main.R
 
--   `.Rproj` - This is an RStudio project file, which helps keep your RAP self contained, and avoids the need for absolute file paths which are not transferable between different users.
+-   `run_analysis` - This is the script in which you call your functions from other scripts, giving a high level view of the process. For example: download_data, process_data, display_data, save_data. This allows you to clearly set out the flow of your analysis, and helps pin point any errors.
 
--   `README.Rmd` - This is a document in which you will explain your project, how it works and how to run in.
+-   `README.Rmd` - This is a document in which you will explain your project, how it works and how to run in. This is important for future users to understand how to use your work, and why you have made the choices you have.
 
--   `.gitignore` - While version control is essential, not all files can be shared. The gitignore files allows you to specify which files will not be pushed into a remote repo.
+-   `.gitignore` - While version control is essential, not all files can be shared. The gitignore files allows you to specify which files will not be pushed into a remote repo. **Data should always be included in the gitignore.**
 
--   `config.yml` - A config file allows you to change parameters without needing to edit the code itself. It is written in YAML, a simple structured data language.
+-   `config.yml` - A config file allows you to change parameters without needing to edit the code itself. It is written in YAML, a simple structured data language. This makes using new data, and updating variables much quicker, and allows the code to be more general.
+
+-   `.Reviron` - This file contains environment variables. These are named values that tell some external application some information. For example API keys, usernames, and passwords. These should almost always be included in your `.gitignore`.
 
 ![](images/template_files.PNG)
 
@@ -56,29 +58,20 @@ All other scripts should be saved in the `./R` folder with code structured into 
 
 Store input parameters and settings in the `./input/config.yml` YAML file and sensitive parameters in the `.REnviron` file (this file is not version controlled by default in the template).
 
-Store input data and settings in the `./input` folder and write any output from the analysis to the `./output` folder. These folders contain `.gitignore` files which prevent their contents from being version controlled (with the exception of `./input/config.yml`).
+Store input data and settings in the `./input` folder and write any output from the analysis to the `./output` folder. These folders contain `.gitignore` files which prevent their contents from being version controlled (with the exception of `./input/config.yml`). **You should never commit data, as an input or output, to git and github. We do not own the servers where Github is hosted, and nothing sensitive should be save on them.**
+
+It's important to manage dependencies in your project. These are when your code relies on external elements to work. The most common example of this is using packages. We need to be clear which packages we have used so future users know to install them and are able to run your code.
 
 For small projects, we recommend using the `librarian` package and base R `source` function to manage dependencies; for larger projects we would recommend using the `renv` and `box` packages for dependency management as well as considering packaging the project itself on GitHub.
 
 ## Installing the DHSCtools package
 
-There are two packages required for this exercise. The first is `devtools`. If you do not have it installed, it can be installed like a typical package using the following command:
+You can install the development version of DHSCtools using:
 
-    install.packages("devtools")
+    if (!requireNamespace("librarian")) install.packages("librarian", quiet = TRUE)
+    librarian::stock(DataS-DHSC/DHSCtools)
 
-You will then need to load the library:
-
-    library(devtools)
-
-The second package required is the DHSC-developed tools package, which will need to be installed from GitHub. When installing packages from GitHub, you need to remember to include both the author and the name of the package. In this case, the author is `DataS-DHSC`, and the name of the package is `DHSCtools`, like so:
-
-    install_github("DataS-DHSC/DHSCtools")
-
-Make sure for follow any instructions in the console during installation.
-
-One the package is installed, load the library:
-
-    library(DHSCtools)
+**Note:** You will need to restart your R session (either by restarting RStudio or using *Session* \> *Restart R*) on installing to see the *DHSC Project Template* option.
 
 ## Set up your Template
 
@@ -86,8 +79,15 @@ After installing the package, to use the DHSC project template go to File \> New
 
 ![](images/create_project.PNG) ![](images/dhsc%20project%20template.PNG) ![](images/create_project_2.PNG)
 
-The optional example code contains similar examples to those in this book, but including them here may cause some confusion later.
+The optional example code contains similar examples to those in this book, but including them here may cause some confusion later. The optional features are:
 
+-   A how-to markdown giving a brief overview of the template
+
+-   Example code giving an example of a project using the template
+
+-   A news.md change log. This is useful if you decide to package your RAP. It records the changes between different versions.
+
+-   A unit testing framework, to help you set up and use unit testing.
 
 ::: callout-note
 ## Exercise: Set up your own project template

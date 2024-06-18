@@ -1,4 +1,4 @@
-# QA Documentation Toolkit {#sec-qa}
+# QA Documentation Toolkit 
 
 ::: callout-note
 ## Key Points

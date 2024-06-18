@@ -1,4 +1,4 @@
-# Logging messages with logger {#sec-logging}
+# Logging
 
 ::: callout-note
 ## Key Points
@@ -12,7 +12,7 @@
 -   Keep an up to date version of your RAP and your data on Sharepoint.
 :::
 
-If we are going to batch run scripts, or set them to run automatically, we need a way of recording what they are doing, whether they have run correctly, and any issues that have occured. To do this we use logging.
+If we are going to batch run scripts, or set them to run automatically, we need a way of recording what they are doing, whether they have run correctly, and any issues that have occurred. To do this we use logging.
 
 Logging is simply adding lines to your code that record outputs into a log file, stored in our project folders.
 
@@ -26,18 +26,15 @@ We will look at:
 To set up logger, the following code is used:
 
 ```{r, eval = F}
-library(logger)
-# Setup logging
-logger <- DHSClogger::get_dhsc_logger()
-# Set threshold of console log to information and above
-logger$set_threshold("log.console", "INFO")
+if (!requireNamespace("librarian")) install.packages("librarian")
+librarian::shelf(DataS-DHSC/DHSClogger)
 ```
 
 Here we are using DHSClogger, a package written to simplfy the logging process.
 
 R has three levels of message it can return in your console: `INFO`, `WARN` and `ERROR`. In the above code we we set our threshold to `INFO`, meaning all messages `INFO` and up are logged. If this is changed to i.e. `ERROR`, only error mesages will be logged.
 
-You can find more information about logger [here](https://cran.r-project.org/web/packages/logger/vignettes/Intro.html).
+The DHClogger is a wrapper for a package for a package called `futile.logger`. You can find more information [here](https://github.com/zatonovo/futile.logger).
 
 ## Basic structure
 
@@ -59,19 +56,15 @@ To have the save a log message to the log.txt file, we use `logger$info(log_mess
 
 ```{r, eval = F}
 rowcount <- nrow(df_data)
-log_message <- sprintf("Number of rows downloaded for %s was: %d",
+logger$info(sprintf("Number of rows downloaded for %s was: %d",
                        config$data_id,
-                       rowcount)
-                             
-logger$info(log_message)
+                       rowcount))
 ```
 
 ::: callout-note
-
 ## Exercise:
 
-1. Set up your logger
+1.  Set up your logger
 
-2. Remember to add logging in subsequent steps 
-
+2.  Remember to add logging in subsequent steps
 :::

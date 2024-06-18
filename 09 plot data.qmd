@@ -1,12 +1,16 @@
-# Plotting data {#sec-plot}
+# Plotting data 
 
 ::: callout-note
 ## Key Points
+
+-   Your outputs should be disposable, and easily recreated
 
 -   Output your charts as .svg files
 
 -   Wrap up the plotting of your data into a function
 :::
+
+The outputs of your RAP should be produced with no, or minimal, intervention. The yshould be disposable, in that if you didn't save them it would be straightforward to recreate them.
 
 Now we will plot the data using `ggplot2`.
 
@@ -19,7 +23,7 @@ We use DHSC colours, which are a part of the `DHSCtools` package. We can add thi
 ```{r, eval = F}
 # plot
 
-gglot2::ggplot(data = data_time_series_sorted,
+ggplot(data = data_time_series_sorted,
        aes(Time,
            config$metric,
            colour = config$industry)) +
@@ -74,7 +78,7 @@ Again we should wrap this all up in a function to be called from the `run_analys
 
 ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, ylab){
 
-  graph <- gglot2::ggplot(data = data_time_series_sorted,
+  graph <- ggplot(data = data_time_series_sorted,
          aes(Time,
              metric,
              industry)) +
@@ -94,7 +98,7 @@ ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, yl
   #save chart
   chart_path <- paste0("./output/", metric, "_", industry, "_chart.svg")
     
-  ggplot2::ggsave(chart_path,
+  ggsave(chart_path,
          plot = graph,
          height = 5,
          width = 10,
@@ -108,12 +112,16 @@ ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, yl
 }
 ```
 
-::: callout-note
+The last steps are:
 
+-   Add new functions to `librarian` line in `main.R`
+-   Add a `source` to your new function to `run_analysis.R`
+-   Add the function to your function in `run_analysis.R`
+
+::: callout-note
 ## Exercise: Plot your data
 
-1. Alter the config file to look to plot your chart correctly
+1.  Alter the config file to look to plot your chart correctly
 
-2. Run the plot data script to make sure it's working correctly. Make any necessary fixes.
-
+2.  Run the plot data script to make sure it's working correctly. Make any necessary fixes.
 :::

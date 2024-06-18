@@ -4,53 +4,64 @@ The aim of this book is to provide a template for using RAP for analysis.
 
 It gives the necessary steps to ensure your RAP is easily maintained, updated and understood.
 
-It has been primarliy designed to accompany a workshop going through the exercises within, but can also be used as reference material to help build your RAP independently.
+It has been primarily designed to accompany a workshop going through the exercises within, but can also be used as reference material to help build your RAP independently.
 
 # Prerequisites
 
-The prerequisites for taking part in the workshop and completing the exercises are:
+-   The prerequisites for taking part in the workshop and completing the exercises are:
 
-[RStuido installed](https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/) - This can be done via the IT service portal
+-   [RStuido installed](https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/) - This can be done via the IT service portal
 
-[Git installed](https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/) - This can be done via the IT service portal
+-   [Git installed](https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/) - This can be done via the IT service portal
 
-A [Github account](https://github.com/), and being a member of the DHSC organisation on Github - Create an account online, then email the [Data Science Hub inbox](datascience@dhsc.gov.uk) to be added to the organisation
+-   A [Github account](https://github.com/), and being a member of the DHSC organisation on Github - Create an account online using your DHSC email address, then email the [Data Science Hub inbox](datascience@dhsc.gov.uk) to be added to the organisation. Guidance is [here](https://healthsharedservice.sharepoint.com/:f:/r/sites/DataScience/Shared%20Documents/FAQs%20and%20known%20issues?csf=1&web=1&e=VabVtH).
+
+# Project Workflow
+
+To get the full advantages of the reproduciblity, auditability, and portability of your RAP, we suggest the following workflow within DHSC.
+
+-   Create your project folder on a shared folder on Sharepoint. This folder is where you will keep the documentation for your project. This should sit alongside your code, not within it.
+
+-   In a subfolder you should save your code. This should always be up to date and runnable. We'll describe this as the production version of your RAP.
+
+-   As the code is updated on Github, the lasted working version should be checked out into your production folder in Sharepoint.
+
+-   Analysts working on the RAP should use a local version, checked out from Github, making any changes on a branch. When they are happy with the changes, and they have been QA'd, these are pushed to the main branch, which is in turn copied into the production Sharepoint folder.
+
+This process may seem a little repetitive, but it is important to keep a fully runnable and up to date version of the code available on the DHSC estate. The process described above is a good compromise between making the most of version control and collaborative working offered by Github, and the limitations we have for sharing sensitive documents and data.
 
 # Contents
 
-@sec-template
+### RAP Template
 
 -   The DHSC RAP template provides structure in which to build your RAP. It helps keep projects across the department consistent, and provides you with the key files you need to get started.
 
-@sec-git
+### Git & Github
 
 -   Version control is incredibly important for your RAP. Providing an audit trail for the work, and reverse any breaking changes. We use git and github to manage version control, and help with working collaboratively.
 
-@sec-readme
+### Project Documentation
 
 -   A Readme document explains your work to new users. It should explain what is being done, how to run the code, which data is being used, and why any decisions have been made.
-
-@sec-inline
-
 -   Having documentation in the same place as your code is important as you cannot guarantee users of your code will read all the other documentation you have put together. Comments will ensure they know what your code does.
 
-@sec-logging
+### Logging
 
 -   When your code is running with no or minimal manual steps, having logging to tell you what is being done is very useful. It will make discovering the cause behind any issues much easier, and speed up any fixes needed.
 
-@sec-download
+### Download Data
 
-@sec-process
+### Process Data
 
-@sec-plot
+### Plot Data
 
 -   You should divide the code for your RAP into discrete sections, and wrap them in functions. This modularisation will improve the overall readability of your code, make future additions easier, and allow faster debugging.
 
-@sec-qa
+### Quality Assurance
 
 -   Quality assurance is an essential part of all analytical work. Analytical code needs additional steps, as set out in the Duck book. The steps outlined above will put you in a good position for effective quality assurance.
 
-@sec-example
+### Example
 
 -   This sections gives examples of the key scripts used to put a RAP together.
 

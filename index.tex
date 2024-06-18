@@ -113,20 +113,6 @@
 \def\fps@figure{htbp}
 \makeatother
 
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 \makeatletter
 \@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
 \@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
@@ -202,19 +188,19 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={RAP\_WORKSHOP\_BOOK},
+  pdftitle={DHSC RAP WORKSHOP GUIDE},
   pdfauthor={Data Science Hub},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{RAP\_WORKSHOP\_BOOK}
+\title{DHSC RAP WORKSHOP GUIDE}
 \author{Data Science Hub}
 \date{16/04/2024}
 
 \begin{document}
 \frontmatter
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, breakable, frame hidden, enhanced, interior hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, breakable, sharp corners, enhanced, borderline west={3pt}{0pt}{shadecolor}, interior hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -228,11 +214,11 @@
 \chapter{RAP Workshop}\label{rap-workshop}}
 
 Data Science Team\\
-2024-04-26
+2024-06-18
 
 \hfill\break
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{RAP}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{RAP}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 It is important for analysis to be reproducible. Different analysts
 using the same methods with the same data should get the same results.
 \end{tcolorbox}
@@ -240,8 +226,14 @@ using the same methods with the same data should get the same results.
 RAP is a way of using software engineering techniques to improve the
 reproducibility of your analysis. By minimising manual steps, using
 version control , and producing good documentation analysis can be
-higher quality, reproducible, reuseable and more efficient. Applying RAP
-principles helps you comply with the requirements in the
+higher quality, reproducible, reusable and more efficient.
+
+In 2022 the Government Analysis Function published it's
+\href{https://analysisfunction.civilservice.gov.uk/policy-store/reproducible-analytical-pipelines-strategy/}{RAP
+Strategy}. This set out it's vision for more efficient and high quality
+analysis, using RAP to achieve this.
+
+Applying RAP principles helps you comply with the requirements in the
 \href{https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government}{AQUA
 book} for good quality assurance, and was recommended in the
 \href{https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis}{Goldacre
@@ -264,9 +256,22 @@ The key advantages of RAP are:
   Analysis that is easier to adapt and reuse
 \end{itemize}
 
+In a RAP your code, data, and configuration are separated. This allows
+you to: apply code to updated data sets without needing to alter it;
+easily update model parameters without code changes; selectively publish
+code without exposing sensitive data or model parameters.
+
 In DHSC we have a variety of tools to help develop and implement RAPs
 into your work. This book aims to familiarise yourself these tools and
 fundamentals of RAP.
+
+\textbf{Not all RAPs will include all of the below, but we should aspire
+to meet as much as possible and appropriate. We will cover the majority
+of the above in this book.}
+
+\textbf{RAP is a code agnostic approach, however this book will focus on
+RAP using R.} The principles are transferable to other languages, but
+the specifics may not be.
 
 \hypertarget{what-makes-a-good-rap}{%
 \section{What makes a good RAP?}\label{what-makes-a-good-rap}}
@@ -278,7 +283,7 @@ particular open source languages such as R or Python.
 
 \begin{itemize}
 \item
-  Your code will use an appropirate coding standard to ensure
+  Your code will use an appropriate coding standard to ensure
   readability, i.e.~the \href{https://style.tidyverse.org/}{Tidy style
   guide}.
 \item
@@ -339,23 +344,18 @@ critical.
   Your code will be published in the open.
 \item
   Any changes to your RAP will be clearly documented and signposted,
-  i.e.~in a changelog.
+  i.e.~in a change log.
 \end{itemize}
 
-\textbf{Not all RAPs will include all of the above, but we should aspire
-to meet as much as possible and appropriate. We will cover the majority
-of the above in this book.}
-
-\textbf{RAP is a code agnostic approach, however this book will focus on
-RAP using R.} The principles are transferable to other languages, but
-the specifics may not be.
+Aspects like packaging, continuous integration, and unit testing may not
+be appropriate for smaller project. Similarly, it will not always be
+possible to publish code in the open. However all projects should be
+properly documented, version controlled, and adhere to coding standards.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{section}{%
-\chapter{}\label{section}}
-
-Summary
+\hypertarget{summary}{%
+\chapter{Summary}\label{summary}}
 
 The aim of this book is to provide a template for using RAP for
 analysis.
@@ -363,59 +363,187 @@ analysis.
 It gives the necessary steps to ensure your RAP is easily maintained,
 updated and understood.
 
-It has been primarliy designed to accompany a workshop going through the
+It has been primarily designed to accompany a workshop going through the
 exercises within, but can also be used as reference material to help
 build your RAP independently.
 
-Prerequisites
+\bookmarksetup{startatroot}
 
-The prerequisites for taking part in the workshop and completeing the
-excersises are:
+\hypertarget{prerequisites}{%
+\chapter{Prerequisites}\label{prerequisites}}
 
-RStuido installed
-
-Git installed
-
-A Github account, and being a member of the DHSC organisaion on Github
-
-DHSC RAP Template {[}link to chapter{]}
-
-Version Control {[}link to chapter{]}
-
-Project Documentation {[}link to chapter{]}
-
-Logging {[}link to chapter{]}
-
-Inline Documentation {[}link to chapter{]}
-
-Downloading Data {[}link to chapter{]}
-
-Analysis and Output {[}link to chapter{]}
-
-QA {[}link to chapter{]}
-
-Further Links
-
-NHSE RAP Community of Practice
-
-DHSCTools
-
-Analysis Function RAP strategy
-
-AQUA Book
-
-Duck Book
-
-Goldacre Review
-
-NHSE Health RAP Playbook
+\begin{itemize}
+\item
+  The prerequisites for taking part in the workshop and completing the
+  exercises are:
+\item
+  \href{https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/}{RStuido
+  installed} - This can be done via the IT service portal
+\item
+  \href{https://intranet.dhsc.gov.uk/how-to/seek-it-support/it-support-from-dxc/}{Git
+  installed} - This can be done via the IT service portal
+\item
+  A \href{https://github.com/}{Github account}, and being a member of
+  the DHSC organisation on Github - Create an account online using your
+  DHSC email address, then email the \href{datascience@dhsc.gov.uk}{Data
+  Science Hub inbox} to be added to the organisation. Guidance is
+  \href{https://healthsharedservice.sharepoint.com/:f:/r/sites/DataScience/Shared\%20Documents/FAQs\%20and\%20known\%20issues?csf=1\&web=1\&e=VabVtH}{here}.
+\end{itemize}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{dhsc-rap-template}{%
-\chapter{DHSC RAP Template}\label{dhsc-rap-template}}
+\hypertarget{project-workflow}{%
+\chapter{Project Workflow}\label{project-workflow}}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+To get the full advantages of the reproduciblity, auditability, and
+portability of your RAP, we suggest the following workflow within DHSC.
+
+\begin{itemize}
+\item
+  Create your project folder on a shared folder on Sharepoint. This
+  folder is where you will keep the documentation for your project. This
+  should sit alongside your code, not within it.
+\item
+  In a subfolder you should save your code. This should always be up to
+  date and runnable. We'll describe this as the production version of
+  your RAP.
+\item
+  As the code is updated on Github, the lasted working version should be
+  checked out into your production folder in Sharepoint.
+\item
+  Analysts working on the RAP should use a local version, checked out
+  from Github, making any changes on a branch. When they are happy with
+  the changes, and they have been QA'd, these are pushed to the main
+  branch, which is in turn copied into the production Sharepoint folder.
+\end{itemize}
+
+This process may seem a little repetitive, but it is important to keep a
+fully runnable and up to date version of the code available on the DHSC
+estate. The process described above is a good compromise between making
+the most of version control and collaborative working offered by Github,
+and the limitations we have for sharing sensitive documents and data.
+
+\bookmarksetup{startatroot}
+
+\hypertarget{contents}{%
+\chapter{Contents}\label{contents}}
+
+Chapter~\ref{sec-template}
+
+\begin{itemize}
+\tightlist
+\item
+  The DHSC RAP template provides structure in which to build your RAP.
+  It helps keep projects across the department consistent, and provides
+  you with the key files you need to get started.
+\end{itemize}
+
+Chapter~\ref{sec-git}
+
+\begin{itemize}
+\tightlist
+\item
+  Version control is incredibly important for your RAP. Providing an
+  audit trail for the work, and reverse any breaking changes. We use git
+  and github to manage version control, and help with working
+  collaboratively.
+\end{itemize}
+
+Chapter~\ref{sec-readme}
+
+\begin{itemize}
+\tightlist
+\item
+  A Readme document explains your work to new users. It should explain
+  what is being done, how to run the code, which data is being used, and
+  why any decisions have been made.
+\item
+  Having documentation in the same place as your code is important as
+  you cannot guarantee users of your code will read all the other
+  documentation you have put together. Comments will ensure they know
+  what your code does.
+\end{itemize}
+
+Chapter~\ref{sec-logging}
+
+\begin{itemize}
+\tightlist
+\item
+  When your code is running with no or minimal manual steps, having
+  logging to tell you what is being done is very useful. It will make
+  discovering the cause behind any issues much easier, and speed up any
+  fixes needed.
+\end{itemize}
+
+Chapter~\ref{sec-download}
+
+Chapter~\ref{sec-process}
+
+Chapter~\ref{sec-plot}
+
+\begin{itemize}
+\tightlist
+\item
+  You should divide the code for your RAP into discrete sections, and
+  wrap them in functions. This modularisation will improve the overall
+  readability of your code, make future additions easier, and allow
+  faster debugging.
+\end{itemize}
+
+Chapter~\ref{sec-qa}
+
+\begin{itemize}
+\tightlist
+\item
+  Quality assurance is an essential part of all analytical work.
+  Analytical code needs additional steps, as set out in the Duck book.
+  The steps outlined above will put you in a good position for effective
+  quality assurance.
+\end{itemize}
+
+\textbf{?@sec-example}
+
+\begin{itemize}
+\tightlist
+\item
+  This sections gives examples of the key scripts used to put a RAP
+  together.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\hypertarget{further-links}{%
+\chapter{Further Links}\label{further-links}}
+
+This book is a brief intro to RAP, there is more detial in the links
+below.
+
+\begin{itemize}
+\item
+  \href{https://nhsdigital.github.io/rap-community-of-practice/}{NHSE
+  RAP Community of Practice}
+\item
+  \href{https://github.com/DataS-DHSC/DHSCtools}{DHSCTools}
+\item
+  \href{https://analysisfunction.civilservice.gov.uk/policy-store/reproducible-analytical-pipelines-strategy/}{Analysis
+  Function RAP strategy}
+\item
+  \href{https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government}{AQUA
+  Book}
+\item
+  \href{https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html}{Duck
+  Book}
+\item
+  \href{https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis}{Goldacre
+  Review}
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\hypertarget{sec-template}{%
+\chapter{DHSC RAP Template}\label{sec-template}}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \begin{itemize}
 \item
@@ -456,12 +584,11 @@ and acts a reminder to include elements of best practice.
 
 The next section will give a more in depth look at what is contained in
 the template. If you just want to know how to install it,
-\protect\hyperlink{download}{click here}.
-
-\bookmarksetup{startatroot}
+\protect\hyperlink{ux5cux23ux5cux2520Installingux5cux2520theux5cux2520DHSCtoolsux5cux2520package}{click
+here}.
 
 \hypertarget{template-structure}{%
-\chapter{Template Structure}\label{template-structure}}
+\section{Template Structure}\label{template-structure}}
 
 The aim is to write your code in a way to make it reproducible and easy
 to follow, with a consistent folder structure across different projects.
@@ -486,22 +613,39 @@ RAP. The key ones we'll cover in this book are:
 \begin{itemize}
 \item
   \texttt{main.r} - This is the script from which you will run your
-  code, initialise your packages, and start your logging
+  code, initialise your packages, and start your logging. This script
+  serves three purposes: it hels with portability by making sure all the
+  packages needed in the code are installed; it explicitly sets up any
+  global variables needed so new users can find them easily; allows new
+  users to immediately know how to run your code by following an
+  established pattern of sourcing main.R
 \item
-  \texttt{.Rproj} - This is an RStudio project file, which helps keep
-  your RAP self contained, and avoids the need for absolute file paths
-  which are not transferable between different users.
+  \texttt{run\_analysis} - This is the script in which you call your
+  functions from other scripts, giving a high level view of the process.
+  For example: download\_data, process\_data, display\_data, save\_data.
+  This allows you to clearly set out the flow of your analysis, and
+  helps pin point any errors.
 \item
   \texttt{README.Rmd} - This is a document in which you will explain
-  your project, how it works and how to run in.
+  your project, how it works and how to run in. This is important for
+  future users to understand how to use your work, and why you have made
+  the choices you have.
 \item
   \texttt{.gitignore} - While version control is essential, not all
   files can be shared. The gitignore files allows you to specify which
-  files will not be pushed into a remote repo.
+  files will not be pushed into a remote repo. \textbf{Data should
+  always be included in the gitignore.}
 \item
   \texttt{config.yml} - A config file allows you to change parameters
   without needing to edit the code itself. It is written in YAML, a
-  simple structured data language.
+  simple structured data language. This makes using new data, and
+  updating variables much quicker, and allows the code to be more
+  general.
+\item
+  \texttt{.Reviron} - This file contains environment variables. These
+  are named values that tell some external application some information.
+  For example API keys, usernames, and passwords. These should almost
+  always be included in your \texttt{.gitignore}.
 \end{itemize}
 
 \includegraphics{./images/template_files.PNG}
@@ -531,7 +675,14 @@ Store input data and settings in the \texttt{./input} folder and write
 any output from the analysis to the \texttt{./output} folder. These
 folders contain \texttt{.gitignore} files which prevent their contents
 from being version controlled (with the exception of
-\texttt{./input/config.yml}).
+\texttt{./input/config.yml}). \textbf{You should never commit data, as
+an input or output, to git and github. We do not own the servers where
+Github is hosted, and nothing sensitive should be save on them.}
+
+It's important to manage dependencies in your project. These are when
+your code relies on external elements to work. The most common example
+of this is using packages. We need to be clear which packages we have
+used so future users know to install them and are able to run your code.
 
 For small projects, we recommend using the \texttt{librarian} package
 and base R \texttt{source} function to manage dependencies; for larger
@@ -539,49 +690,23 @@ projects we would recommend using the \texttt{renv} and \texttt{box}
 packages for dependency management as well as considering packaging the
 project itself on GitHub.
 
-\bookmarksetup{startatroot}
-
 \hypertarget{installing-the-dhsctools-package}{%
-\chapter{Installing the DHSCtools
+\section{Installing the DHSCtools
 package}\label{installing-the-dhsctools-package}}
 
-There are two packages required for this exercise. The first is
-\texttt{devtools}. If you do not have it installed, it can be installed
-like a typical package using the following command:
+You can install the development version of DHSCtools using:
 
 \begin{verbatim}
-install.packages("devtools")
+if (!requireNamespace("librarian")) install.packages("librarian", quiet = TRUE)
+librarian::stock(DataS-DHSC/DHSCtools)
 \end{verbatim}
 
-You will then need to load the library:
-
-\begin{verbatim}
-library(devtools)
-\end{verbatim}
-
-The second package required is the DHSC-developed tools package, which
-will need to be installed from GitHub. When installing packages from
-GitHub, you need to remember to include both the author and the name of
-the package. In this case, the author is \texttt{DataS-DHSC}, and the
-name of the package is \texttt{DHSCtools}, like so:
-
-\begin{verbatim}
-install_github("DataS-DHSC/DHSCtools")
-\end{verbatim}
-
-Make sure for follow any instructions in the console during
-installation.
-
-One the package is installed, load the library:
-
-\begin{verbatim}
-library(DHSCtools)
-\end{verbatim}
-
-\bookmarksetup{startatroot}
+\textbf{Note:} You will need to restart your R session (either by
+restarting RStudio or using \emph{Session} \textgreater{} \emph{Restart
+R}) on installing to see the \emph{DHSC Project Template} option.
 
 \hypertarget{set-up-your-template}{%
-\chapter{Set up your Template}\label{set-up-your-template}}
+\section{Set up your Template}\label{set-up-your-template}}
 
 After installing the package, to use the DHSC project template go to
 File \textgreater{} New Project\ldots{} then select New Directory
@@ -593,11 +718,22 @@ example code?'' checkbox.
 \includegraphics{./images/create_project_2.PNG}
 
 The optional example code contains similar examples to those in this
-book, but including them here may cause some confusion later.
+book, but including them here may cause some confusion later. The
+optional features are:
 
-\hypertarget{exercise-set-up-your-own-project-template}{%
-\section{Exercise: set up your own project
-template}\label{exercise-set-up-your-own-project-template}}
+\begin{itemize}
+\item
+  A how-to markdown giving a brief overview of the template
+\item
+  Example code giving an example of a project using the template
+\item
+  A news.md change log. This is useful if you decide to package your
+  RAP. It records the changes between different versions.
+\item
+  A unit testing framework, to help you set up and use unit testing.
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Exercise: Set up your own project template}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 In this section, you'll set up a project template of your own. Using any
 required steps above, you should:
@@ -610,12 +746,14 @@ required steps above, you should:
   Download the RAP template and create a project.
 \end{enumerate}
 
+\end{tcolorbox}
+
 \bookmarksetup{startatroot}
 
-\hypertarget{version-control-git}{%
-\chapter{Version Control \& Git}\label{version-control-git}}
+\hypertarget{sec-git}{%
+\chapter{Version Control \& Git}\label{sec-git}}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \begin{itemize}
 \item
@@ -636,7 +774,8 @@ required steps above, you should:
 Version control is important to provide an audit trail for your work.
 You can see what changes have been made, when, and by who. It also means
 that any changes made that end up breaking your RAP can be easily
-reversed, and you can revert to a working version.
+reversed, and you can revert to a working version. The RAP template
+automatically enables git support.
 
 Git is open source software that handles version control, and is the
 most widely used system. It is most commonly used through the command
@@ -649,6 +788,8 @@ A thorough explanation of Git commands is beyond the scope of this book
 but there is a lot of separate training available.
 \href{https://education.github.com/git-cheat-sheet-education.pdf}{Here}
 is a cheat sheet to give a quick overview of Git commands.
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Install Git and Configure Github}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \hypertarget{install-git}{%
 \subsection{Install Git}\label{install-git}}
@@ -691,6 +832,10 @@ Once you have done this, you will need to:
 \item
   Check \emph{use Git bash as shell for Git projects}.
 \end{itemize}
+
+RStudio has a git pane in the top right corner. This lets you see the
+changes you have yet to commit, which branch you are working in, and
+provides a GUI interface for comitting and pushing changes.
 
 \hypertarget{github}{%
 \section{Github}\label{github}}
@@ -777,24 +922,35 @@ lines of code you copied from GitHub. Press enter or return to finish.
 Your repository, and all its template files, should now be available
 within the online repository.
 
+\end{tcolorbox}
+
 \hypertarget{using-git-and-github-in-dhsc}{%
 \section{Using Git and Github in
 DHSC}\label{using-git-and-github-in-dhsc}}
 
+Github is an important tool for version control and collaborative
+working, but it is important to keep the most up to date working version
+of your code - the production version - on Sharepoint. The recommended
+workflow is to checkout the main branch from Github into a shared folder
+project folder alongside other project documentation, data, etc.
+Analysts will clone the main branch from Github on to their local
+machine, and make any changes on a branch. When these changes have been
+QA'd, they will be merged into the main branch. The production version
+of the code in the shared folver will then be updated with these new
+changes.
+
+You should save your repos in the DHSC organisation on Github, rather
+than your personal area. This will help with knowledge management, and
+prevent any issues if you ever leave the organisation.
+
 It is best practice to do as much of your coding in the open as
 possible. However in DHSC we often use sensitive data that cannot be in
-the public domain, and some that should not be shared to servers outside
-of the DHSC estate. This means that is important to keep data and
-sensitive parameters off of Github. This does make sharing your projects
-more difficult as these must be stored elsewhere.
-
-The solution to this that we recommend is keeping an up to date version
-of your main branch saved on in a shared drive on Sharepoint, along with
-your data and parameters. As you make changes, and push them to your
-main branch, you should pull these changes into this shared drive. The
-team members working on the project can clone the repo from Github, copy
-the data from the Sharepoint version into their local repo and do their
-work, pushing changes back up to Github.
+the public domain, and should not be shared to servers outside of the
+DHSC estate. This means that is important to keep data and sensitive
+parameters off of Github. The most up to date versions of the data and
+parameters can be saved alongside the production code in a shared
+folder. These can then be copied into your local branch to work on the
+code.
 
 Files can be prevented from being pushed into a Git rep using a file
 called \texttt{.gitingore}. This is a list of files that will not be
@@ -804,58 +960,84 @@ with a particular extension.
 The template gives you the below \texttt{.gitignore} file.
 
 \begin{verbatim}
-# History files.Rhistory`.Rapp.history
+    # History files.Rhistory`.Rapp.history
 
-# Session Data files
-.RData
+    # Session Data files
+    .RData
 
-# User-specific files
-.Ruserdata
+    # User-specific files
+    .Ruserdata
 
-# Example code in package build process
-*-Ex.R
+    # Example code in package build process
+    *-Ex.R
 
-# Output files from R CMD build
-*.tar.gz
+    # Output files from R CMD build
+    *.tar.gz
 
-# Output files from R CMD check
-*.Rcheck
+    # Output files from R CMD check
+    *.Rcheck
 
-# RStudio files
-.Rproj.user
+    # RStudio files
+    .Rproj.user
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+    # produced vignettes
+    vignettes/*.html
+    vignettes/*.pdf
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
+    # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+    .httr-oauth
 
-# knitr and R markdown default cache directories
-*_cache/
-cache/
+    # knitr and R markdown default cache directories
+    *_cache/
+    cache/
 
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
+    # Temporary files created by R markdown
+    *.utf8.md
+    *.knit.md
 
-# R Environment Variables
-.Renviron
-.Rproj.user
-.Rdata
-.DS_Store
+    # R Environment Variables
+    .Renviron
+    .Rproj.user
+    .Rdata
+    .DS_Store
 
-# Files added by usethis
-docs
+    # Files added by usethis
+    docs
+    
+    
 \end{verbatim}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Exercise: Upload your project to Github}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+In this section, you'll set up a project template of your own. Using any
+required steps above, you should:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Configure Git for Rstudio
+\item
+  Upload your project to Github
+\end{enumerate}
+
+\end{tcolorbox}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{project-documentation---readme-files}{%
-\chapter{Project documentation - Readme
-files}\label{project-documentation---readme-files}}
+\hypertarget{sec-readme}{%
+\chapter{Project documentation}\label{sec-readme}}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+It is important document your work. This can exist in two places, as
+part of you code and alongside it. With RAP you should document your
+project as you normally would, explaining methodology and data sources.
+You also need some extra documentation to explain your code.
+
+\bookmarksetup{startatroot}
+
+\hypertarget{readme-files}{%
+\chapter{Readme files}\label{readme-files}}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \begin{itemize}
 \item
@@ -874,7 +1056,7 @@ recourse to the project's original author. The Readme file is displayed
 on the front page of your github repository.
 
 The
-\href{https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government}{Aqua
+\href{https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html\#}{Duck
 book} gives guidance on what Readme files should include, which can be
 summarised as:
 
@@ -910,24 +1092,24 @@ the choices you have.
 \begin{itemize}
 \item
   Data sources - It should be clear which data you ingest and where you
-  take it from. This could be a URL, a file directory, or elsewhere. You
-  should also explain the frequency with which you get your data. You
-  may choose to describe the data formats in more detail but you might
-  also refer or link to a specification document held elsewhere if your
-  data or its structure is sensitive in nature.
+  take it from. The detail of this should be kept separately in your
+  documentation, but there should be enough information here for users
+  to understand what input data is need. You should keep in mind the
+  sensitivity of you data.
 \item
-  Processing/analysis - explain how your code performs the analsysis and
+  Processing/analysis - explain how your code performs the analysis and
   describe its structure because others may need to change your code. As
   always, we recommend you write modular, loosely coupled code, and so
   it may be useful to include a structure chart explaining how the code
   fits together (see below for a simple example). If you use complex
   models then provide links to the model specification so your users can
   understand how yours calculations are performed (this also allows you
-  to restrict access to these specifications).
+  to restrict access to these specifications). The amount of detail you
+  include should be proportionate to the complexity of your analysis
 \item
-  Outputs - what are the outputs from this code, who uses them and how?
-  If you write to files, then where is this data written to? Again, you
-  can refer or link to a specification held elsewhere.
+  Outputs - what are the outputs from this code? If you write to files,
+  then where is this data written to? Again, you can refer or link to a
+  specification held elsewhere.
 \end{itemize}
 
 \hypertarget{basic-installation-instructions}{%
@@ -938,25 +1120,8 @@ What does the user need to do to install your code - is it simply a case
 of cloning the git repository? It is hoped all package management is
 dealt with by the DHSC template (librarian) but are there other tools
 your user might need. This is where you specify them and how your users
-install them.
-
-\hypertarget{example-usage}{%
-\subsection{Example usage}\label{example-usage}}
-
-The default behavior for projects built using the DHSC template is for
-you to source the main.R function and for this script to then
-orchestrate all subsequent processing. However, you may specify that the
-user updates the config.yml file to locate source data and identify
-where to write outputs.
-
-\begin{itemize}
-\tightlist
-\item
-  log.txt - progress and errors encountered should all be logged to
-  log.txt and so you may wish to tell users what to look for,
-  e.g.~particular warning or error messages, messages to say processing
-  has finished successfully, etc.
-\end{itemize}
+install them. This is also the place to explain where inputs should be
+saved, as they should not be part of the repo on Github.
 
 \hypertarget{using-markdown-to-describe-your-code}{%
 \section{Using markdown to describe your
@@ -972,8 +1137,8 @@ Use one or more `\#' to create headers, e.g.
 \hypertarget{visual}{%
 \subsubsection{Visual}\label{visual}}
 
-\hypertarget{header-3}{%
-\subsubsection{Header 3}\label{header-3}}
+\hypertarget{header}{%
+\subsubsection{Header}\label{header}}
 
 \begin{itemize}
 \tightlist
@@ -996,19 +1161,6 @@ Use one or more `\#' to create headers, e.g.
   numbered list second item
 \end{enumerate}
 
-\hypertarget{table-3.1}{%
-\subsubsection{Table 3.1}\label{table-3.1}}
-
-\begin{longtable}[]{@{}ll@{}}
-\toprule()
-Sharepoint folder & Content category \\
-\midrule()
-\endhead
-input\_data & For data that will need to be preprocessed \\
-interim\_data & For compliant data \\
-\bottomrule()
-\end{longtable}
-
 \hypertarget{image-3.2}{%
 \subsubsection{Image 3.2}\label{image-3.2}}
 
@@ -1025,30 +1177,35 @@ interim\_data & For compliant data \\
 \hypertarget{source}{%
 \subsubsection{Source}\label{source}}
 
-\texttt{\#\#\#\#\ Header\ 3}
+\texttt{\#\#\#\#\ Header}
 
 \texttt{-\ \ \ bullet\ point} \texttt{-\ \ \ indented\ bullet\ point}
 
 \texttt{1.\ \ numbered\ list}
 \texttt{2.\ \ numbered\ list\ second\ item}
 
-\texttt{\#\#\#\#\ Table\ 3.1}
-
-\texttt{\textbar{}\ Sharepoint\ folder\ \textbar{}\ Content\ category\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbar{}}
-\texttt{\textbar{}-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\textbar{}:-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\textbar{}}
-\texttt{\textbar{}\ input\_data\ \ \ \ \ \ \ \ \textbar{}\ For\ data\ that\ will\ need\ to\ be\ preprocessed\ \textbar{}}
-\texttt{\textbar{}\ interim\_data\ \ \ \ \ \ \textbar{}\ For\ compliant\ data\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbar{}}
-
 \texttt{\#\#\#\#\ Image\ 3.2}
 
 \texttt{!{[}Usage{]}(./main\_flow.jpg)}
 
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Exercise: set up your README}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Start your Readme document, setting out what you plan to do.
+\item
+  Keep your Readme up to date throughout subsequent steps.
+\end{enumerate}
+
+\end{tcolorbox}
+
 \bookmarksetup{startatroot}
 
-\hypertarget{in-line-documentation}{%
-\chapter{In line documentation}\label{in-line-documentation}}
+\hypertarget{sec-inline}{%
+\chapter{In line documentation}\label{sec-inline}}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \begin{itemize}
 \item
@@ -1084,16 +1241,14 @@ As discussed in earlier chapters, it is best practice to divide your
 code up into discrete functions, taking care of specific bits of your
 analysis.
 
-These functions should be documented, making sure all the
+These functions should be documented, explaining what they do, the
+arguments the function takes, what is returned, and potentially an
+example usage.
 
 Roxygen2 helps you write consistent in line documentation for your
 functions, making sure all the information needed is recorded. It can
 also automatically transform your comments into a useful document, which
 is particularly useful if you plan on turning your RAP into a package.
-
-install.packages(``roxygen2'')
-
-library(roxygen2)
 
 \hypertarget{basic-structure}{%
 \section{Basic Structure}\label{basic-structure}}
@@ -1108,17 +1263,16 @@ comments.
 \begin{Shaded}
 \begin{Highlighting}[]
 \StringTok{\textquotesingle{} Add together two numbers}
+\StringTok{\# This fuction adds two numbers together and returns the result}
 
-\StringTok{\#\textquotesingle{}}
-
-\CommentTok{\#\textquotesingle{} \textbackslash{}@param x A number.}
+\StringTok{\#\textquotesingle{}}\NormalTok{ \textbackslash{}}\SpecialCharTok{@}\NormalTok{param x A number.}
 \CommentTok{\#\textquotesingle{} \textbackslash{}@param y A number.}
 \CommentTok{\#\textquotesingle{} \textbackslash{}@return A number.}
 \CommentTok{\#\textquotesingle{} \textbackslash{}@examples}
 \CommentTok{\#\textquotesingle{} add(1, 1)}
 \CommentTok{\#\textquotesingle{} add(10, 1)}
 
-\NormalTok{add }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, y) \{}
+\NormalTok{add\_together\_two\_numbers }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, y) \{}
 
 \NormalTok{z }\OtherTok{=}\NormalTok{ x }\SpecialCharTok{+}\NormalTok{ y}
 
@@ -1128,18 +1282,20 @@ comments.
 \end{Highlighting}
 \end{Shaded}
 
-Once you have added roxygen2 comments to your code you can use
-`roxygen2::roxygenise()` or `devtools::document()` to run roxygen. This
-will create a new folder called `man` and a file called `add.Rd` that
-will contain a formatted version of your comments.
+Once you have added roxygen2 comments to your code there are several
+ways to produce your documentation. You can use
+\texttt{roxygen2::roxygenise()} or \texttt{devtools::document()} to run
+roxygen. Alternatively, as the template looks like a package to RStudio,
+you can go to Build \textgreater{} Document. This will create a new
+folder called `man` and a file called `add.Rd` that will contain a
+formatted version of your comments.
 
 \bookmarksetup{startatroot}
 
-\hypertarget{logging-messages-with-logger}{%
-\chapter{Logging messages with
-logger}\label{logging-messages-with-logger}}
+\hypertarget{sec-logging}{%
+\chapter{Logging}\label{sec-logging}}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \begin{itemize}
 \item
@@ -1156,7 +1312,7 @@ logger}\label{logging-messages-with-logger}}
 
 If we are going to batch run scripts, or set them to run automatically,
 we need a way of recording what they are doing, whether they have run
-correctly, and any issues that have occured. To do this we use logging.
+correctly, and any issues that have occurred. To do this we use logging.
 
 Logging is simply adding lines to your code that record outputs into a
 log file, stored in our project folders.
@@ -1176,13 +1332,12 @@ We will look at:
 
 To set up logger, the following code is used:
 
-\begin{verbatim}
-library(logger)
-# Setup logging
-logger <- DHSClogger::get_dhsc_logger()
-# Set threshold of console log to information and above
-logger$set_threshold("log.console", "INFO")
-\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"librarian"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"librarian"}\NormalTok{)}
+\NormalTok{librarian}\SpecialCharTok{::}\FunctionTok{shelf}\NormalTok{(DataS}\SpecialCharTok{{-}}\NormalTok{DHSC}\SpecialCharTok{/}\NormalTok{DHSClogger)}
+\end{Highlighting}
+\end{Shaded}
 
 Here we are using DHSClogger, a package written to simplfy the logging
 process.
@@ -1193,8 +1348,9 @@ set our threshold to \texttt{INFO}, meaning all messages \texttt{INFO}
 and up are logged. If this is changed to i.e.~\texttt{ERROR}, only error
 mesages will be logged.
 
-You can find more information about logger
-\href{https://cran.r-project.org/web/packages/logger/vignettes/Intro.html}{here}.
+The DHClogger is a wrapper for a package for a package called
+\texttt{futile.logger}. You can find more information
+\href{https://github.com/zatonovo/futile.logger}{here}.
 
 \hypertarget{basic-structure-1}{%
 \section{Basic structure}\label{basic-structure-1}}
@@ -1202,39 +1358,52 @@ You can find more information about logger
 To add something to the log, we use \texttt{logger\$info()}. Here is the
 general structure:
 
-\begin{verbatim}
-#Start the logger
-logger$info("[Begin]")
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Start the logger}
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\StringTok{"[Begin]"}\NormalTok{)}
 
-# add source of run script and entry point to code below
-source("./R/main.R", local = TRUE)
-run_analysis()
+\CommentTok{\# add source of run script and entry point to code below}
+\FunctionTok{source}\NormalTok{(}\StringTok{"./R/main.R"}\NormalTok{, }\AttributeTok{local =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{run\_analysis}\NormalTok{()}
 
-#Stop the logger
-logger$info("[End]")
-\end{verbatim}
+\CommentTok{\#Stop the logger}
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\StringTok{"[End]"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 To have the save a log message to the log.txt file, we use
 \texttt{logger\$info(log\_message)}. This will add the log\_message
 variable to the logfile with a time stamp so you can see what result was
 produced and when.
 
-\begin{verbatim}
- rowcount <- nrow(df_data)
-  log_message <- sprintf("Number of rows downloaded for %s was: %d",
-                         config$data_id,
-                         rowcount)
-                         
-  logger$info(log_message)
-  # return(df_data) 
-\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rowcount }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df\_data)}
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"Number of rows downloaded for \%s was: \%d"}\NormalTok{,}
+\NormalTok{                       config}\SpecialCharTok{$}\NormalTok{data\_id,}
+\NormalTok{                       rowcount))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Exercise:}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Set up your logger
+\item
+  Remember to add logging in subsequent steps
+\end{enumerate}
+
+\end{tcolorbox}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{downloading-data}{%
-\chapter{Downloading data}\label{downloading-data}}
+\hypertarget{sec-download}{%
+\chapter{Downloading data}\label{sec-download}}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \begin{itemize}
 \item
@@ -1275,11 +1444,16 @@ The below code adds the packages we will need for the data ingest
 process. It loads \texttt{httr} and \texttt{jsonlite} for interacting
 with the api and it's response, \texttt{dplyr} for manipulating data,
 and \texttt{DHSClogger} from the DHSC Data Science Github for logging.
+We use the \texttt{stock} function here which makes sure they're
+installed, but doesn't load them. We load the packages at the top of the
+scripts in which they are used.
 
-\begin{verbatim}
-if (!requireNamespace("librarian")) install.packages("librarian")
-  librarian::shelf(readr, httr, jsonlite, dplyr, DataS-DHSC/DHSClogger)
-\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"librarian"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"librarian"}\NormalTok{)}
+\NormalTok{librarian}\SpecialCharTok{::}\FunctionTok{stock}\NormalTok{(readr, httr2, jsonlite, dplyr, DataS}\SpecialCharTok{{-}}\NormalTok{DHSC}\SpecialCharTok{/}\NormalTok{DHSClogger)}
+\end{Highlighting}
+\end{Shaded}
 
 It is best practice to define parameters needed in your code in
 configuration files outside of the scripts themselves. This means you
@@ -1302,16 +1476,20 @@ output_dir: ./output
 \end{verbatim}
 
 For our script to use the values stored in \texttt{config.yml} we need
-to read it in. This is done in the \texttt{main.R} script.
+to read it in. We add this to a script called \texttt{run\_analysis.R},
+which is the script from which we run our analysis. We will source the
+scripts we srite to do the work here, and run the functions we create.
 
-\begin{verbatim}
-# read in configuration
-config_path <- file.path("input", "config.yml")
-config <- yaml::read_yaml(config_path)
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# read in configuration}
+\NormalTok{config\_path }\OtherTok{\textless{}{-}} \FunctionTok{file.path}\NormalTok{(}\StringTok{"input"}\NormalTok{, }\StringTok{"config.yml"}\NormalTok{)}
+\NormalTok{config }\OtherTok{\textless{}{-}}\NormalTok{ yaml}\SpecialCharTok{::}\FunctionTok{read\_yaml}\NormalTok{(config\_path)}
 
-# print the config file details
-print(config)
-\end{verbatim}
+\CommentTok{\# print the config file details}
+\FunctionTok{print}\NormalTok{(config)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{get-a-list-of-data-that-can-be-extracted-using-this-ons-api-endpoint}{%
 \section{Get a list of data that can be extracted using this ONS API
@@ -1320,29 +1498,34 @@ endpoint}\label{get-a-list-of-data-that-can-be-extracted-using-this-ons-api-endp
 We pass the data\_dictionary\_url to a GET function to download a list
 of available data.
 
-\begin{verbatim}
-  # request the data dictionary from the ONS api endpoint
-  path <- config$data_dictionary_url
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#load packages}
+\FunctionTok{library}\NormalTok{(httr2)}
+\FunctionTok{library}\NormalTok{(jsonlite)}
 
-  request <- httr::GET(url = path)
-  
-  content <- rawToChar(request$content)
-  
-  content_flat <- json.lite::fromJSON(content, flatten = TRUE) 
-  
-  logger$info(paste0("Response recieved from: ", path))
-  
-  # create a dataframe with the downloaded data dictionary to what data is available
-  df <- data.frame(id = content_flat$items$id,
-                   title = content_flat$items$title,
-                   release_frequency = content_flat$items$release_frequency,
-                   next_release = content_flat$items$next_release,
-                   description = content_flat$items$description,
-                   links_latest_versions = content_flat$items$links.latest_version.href,
-                   links_self_href= content_flat$items$links.self.href,
-                   qmi_href= content_flat$items$qmi.href)
-                   
-\end{verbatim}
+\CommentTok{\# request the data dictionary from the ONS api endpoint}
+\NormalTok{path }\OtherTok{\textless{}{-}}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_dictionary\_url}
+
+\NormalTok{request }\OtherTok{\textless{}{-}} \FunctionTok{GET}\NormalTok{(}\AttributeTok{url =}\NormalTok{ path)}
+      
+\NormalTok{content }\OtherTok{\textless{}{-}} \FunctionTok{rawToChar}\NormalTok{(request}\SpecialCharTok{$}\NormalTok{content)}
+      
+\NormalTok{content\_flat }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(content, }\AttributeTok{flatten =} \ConstantTok{TRUE}\NormalTok{) }
+      
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Response recieved from: "}\NormalTok{, path))}
+      
+\CommentTok{\# create a dataframe with the downloaded data dictionary to what data is available}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{id =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{id,}
+                 \AttributeTok{title =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{title,}
+                 \AttributeTok{release\_frequency =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{release\_frequency,}
+                 \AttributeTok{next\_release =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{next\_release,}
+                 \AttributeTok{description =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{description,}
+                 \AttributeTok{links\_latest\_versions =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{links.latest\_version.href,}
+                 \AttributeTok{links\_self\_href=}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{links.self.href,}
+                 \AttributeTok{qmi\_href=}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{qmi.href)}
+\end{Highlighting}
+\end{Shaded}
 
 The data dictionary contents are shown below
 
@@ -1358,62 +1541,188 @@ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 * `` -> `...1`
 \end{verbatim}
 
-\begin{tabular}{r|l|l|l|l|l|l|l|l}
-\hline
-...1 & id & title & release\_frequency & next\_release & description & links\_latest\_versions & links\_self\_href & qmi\_href\\
-\hline
-1 & wellbeing-quarterly & Quarterly personal well-being estimates & Quarterly & TBC & Seasonally and non seasonally-adjusted quarterly estimates of life satisfaction, feeling that the things done in life are worthwhile, happiness and anxiety in the UK. & https://api.beta.ons.gov.uk/v1/datasets/wellbeing-quarterly/editions/time-series/versions/9 & https://api.beta.ons.gov.uk/v1/datasets/wellbeing-quarterly & https://www.ons.gov.uk/peoplepopulationandcommunity/wellbeing/methodologies/personalwellbeingintheukqmi\\
-\hline
-2 & wellbeing-local-authority & Personal well-being estimates by local authority & Annual & TBC & Estimates of life satisfaction, feeling that the things done in life are worthwhile, happiness and anxiety at the UK, country, regional, county, local and unitary authority level. & https://api.beta.ons.gov.uk/v1/datasets/wellbeing-local-authority/editions/time-series/versions/4 & https://api.beta.ons.gov.uk/v1/datasets/wellbeing-local-authority & https://www.ons.gov.uk/peoplepopulationandcommunity/wellbeing/methodologies/personalwellbeingintheukqmi\\
-\hline
-3 & weekly-deaths-region & Deaths registered weekly in England and Wales by region & Weekly & 24 April 2024 & Provisional counts of the number of deaths registered in England and Wales, by region, in the latest weeks for which data are available. & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-region/editions/time-series/versions/14 & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-region & https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi\\
-\hline
-4 & weekly-deaths-local-authority & Death registrations and occurrences by local authority and place of death & Weekly & 17 January 2024 & Provisional counts of the number of deaths registered in England and Wales, including deaths involving the coronavirus (COVID-19), by local authority, health board and place of death in the latest weeks for which data are available. & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-local-authority/editions/2023/versions/50 & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-local-authority & https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi\\
-\hline
-5 & weekly-deaths-health-board & Death registrations and occurrences by health board and place of death & Weekly & 17 January 2024 & Provisional counts of the number of deaths registered in Wales, by health board and place of death, in the latest weeks for which data are available. & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-health-board/editions/2023/versions/50 & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-health-board & https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi\\
-\hline
-6 & weekly-deaths-age-sex & Deaths registered weekly in England and Wales by age and sex & Weekly & 24 April 2024 & Provisional counts of the number of deaths registered in England and Wales, by age and sex, in the latest weeks for which data are available. & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-age-sex/editions/time-series/versions/14 & https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-age-sex & https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi\\
-\hline
-7 & uk-spending-on-cards & UK spending on credit and debit cards & Weekly & To be announced & These data series are experimental faster indicators for monitoring UK spending using debit and credit cards. & https://api.beta.ons.gov.uk/v1/datasets/uk-spending-on-cards/editions/time-series/versions/125 & https://api.beta.ons.gov.uk/v1/datasets/uk-spending-on-cards & https://www.bankofengland.co.uk/payment-and-settlement/chaps-faster-indicator\\
-\hline
-8 & uk-business-by-enterprises-and-local-units & UK Business: Activity, Size and Location & Annual & To be announced & The data contained in these tables are numbers of enterprises and local units produced from a snapshot of the Inter-Departmental Business Register (IDBR) taken on 12 March 2021. This dataset contains details of the number of VAT and/or PAYE based enterprises and local units in districts, counties and unitary authorities within region and country by broad industry group. & https://api.beta.ons.gov.uk/v1/datasets/uk-business-by-enterprises-and-local-units/editions/2022/versions/1 & https://api.beta.ons.gov.uk/v1/datasets/uk-business-by-enterprises-and-local-units & https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi\\
-\hline
-9 & traffic-camera-activity & Traffic Camera Activity & Weekly & To be announced & Experimental dataset for business indices covering the UK as part of the real-time indicators release to help better understand economic activity and social change in the UK. & https://api.beta.ons.gov.uk/v1/datasets/traffic-camera-activity/editions/time-series/versions/100 & https://api.beta.ons.gov.uk/v1/datasets/traffic-camera-activity & https://datasciencecampus.ons.gov.uk/projects/estimating-vehicle-and-pedestrian-activity-from-town-and-city-traffic-cameras/\\
-\hline
-10 & trade & Trade in goods: country by commodity & Monthly & 12 April 2024 & Country by commodity data on the UK's trade in goods, including trade by all countries and selected commodities, exports and imports, non seasonally adjusted. & https://api.beta.ons.gov.uk/v1/datasets/trade/editions/time-series/versions/42 & https://api.beta.ons.gov.uk/v1/datasets/trade & https://www.ons.gov.uk/economy/nationalaccounts/balanceofpayments/methodologies/uktradeqmi\\
-\hline
-11 & tax-benefits-statistics & Effects of Taxes and Benefits on Household Income & Annual & TBA & Estimates of mean and median annual incomes in the UK, by quintile groups.
-The redistribution effects on individuals of direct and indirect taxation and benefits received in cash or kind. & https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics/editions/time-series/versions/3 & https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics & https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/methodologies/theeffectsoftaxesandbenefitsonukhouseholdincome\\
-\hline
-12 & suicides-in-the-uk & Suicide registrations in England and Wales by local authority & Annually & To be announced & Number of suicides by local authority in England and Wales, registered from 2001.
-
-If you are struggling to cope, please call Samaritans for free on 116 123 (UK and ROI) or contact other sources of support, such as those listed on the NHS’s help for suicidal thoughts webpage. Support is available round the clock, every single day of the year, providing a safe place for anyone struggling to cope, whoever they are, however they feel, whatever life has done to them. & https://api.beta.ons.gov.uk/v1/datasets/suicides-in-the-uk/editions/2022/versions/1 & https://api.beta.ons.gov.uk/v1/datasets/suicides-in-the-uk & https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/suicideratesintheukqmi\\
-\hline
-13 & sexual-orientation-by-region & Sexual orientation by English regions and UK countries & Annual & To be announced & Sexual orientation in the UK from 2012 to 2020 by region.
-
-Data source: Annual Population Survey, ONS & https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-region/editions/time-series/versions/3 & https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-region & https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/methodologies/sexualidentityukqmi\\
-\hline
-14 & sexual-orientation-by-age-and-sex & Sexual orientation by age and sex & Annual & To be announced & Sexual orientation in the UK by sex and age, 2014 to 2020.
-
-Source: Annual Population Survey, ONS & https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-age-and-sex/editions/time-series/versions/3 & https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-age-and-sex & https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/methodologies/sexualidentityukqmi\\
-\hline
-15 & retail-sales-index-large-and-small-businesses & Retail sales index - large and small businesses & Monthly & 19 April 2024 & Value and volume of retail sales broken down by size of business & https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-large-and-small-businesses/editions/time-series/versions/24 & https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-large-and-small-businesses & https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi\\
-\hline
-16 & retail-sales-index-all-businesses & Retail sales index - all businesses & Monthly & 19 April 2024 & Value and volume of retail sales for all businesses. & https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-all-businesses/editions/time-series/versions/24 & https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-all-businesses & https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi\\
-\hline
-17 & retail-sales-index & Retail sales index & Monthly & 19 April 2024 & Retail sales data for Great Britain in value and volume terms, seasonally and non-seasonally adjusted. & https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index/editions/time-series/versions/24 & https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index & https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi\\
-\hline
-18 & regional-gdp-by-year & Annual GDP for England, Wales and the English regions & Annual & TBA & Annual economic activity within England, Wales and the nine English regions (North East, North West, Yorkshire and the Humber, East Midlands, West Midlands, East of England, Greater London, South East, South West). & https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year/editions/time-series/versions/6 & https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year & https://www.ons.gov.uk/economy/grossdomesticproductgdp/methodologies/grossdomesticproductgdpukregionsandcountriesqmi\\
-\hline
-19 & regional-gdp-by-quarter & Quarterly GDP for England, Wales and the English regions & To be announced & To be announced & Quarterly economic activity within England, Wales and the nine English regions (North East, North West, Yorkshire and The Humber, East Midlands, West Midlands, East of England, London, South East, South West). & https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-quarter/editions/time-series/versions/6 & https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-quarter & https://www.ons.gov.uk/economy/grossdomesticproductgdp/methodologies/grossdomesticproductgdpukregionsandcountriesqmi\\
-\hline
-20 & projections-older-people-sex-ratios & Local authority ageing statistics, projected sex ratios for older people & Biennial & To be announced & Projected indicators included are derived from the published 2018-based subnational population projections for England, Wales, Scotland and Northern Ireland up to the year 2043. The indicators are the projected sex ratio for those aged 65 years and over and the projected sex ratio for those aged 85 years and over. A sex ratio shows the number of males in the population for every 100 females.
-
-This dataset has been produced by the Ageing Analysis Team for inclusion in the subnational ageing tool, which was published on July 20, 2020 (see link in Related datasets). The tool is interactive, and users can compare latest and projected measures of ageing for up to four different areas through selection on a map or from a drop-down menu. 
-
-Note on data sources: England, Wales, Scotland and Northern Ireland independently publish subnational population projections and the data available here are a compilation of these datasets. The ONS publish national level data for the UK, England, Wales and England \& Wales, which has been included. National level data for Scotland and Northern Ireland have been taken from their subnational population projections datasets. & https://api.beta.ons.gov.uk/v1/datasets/projections-older-people-sex-ratios/editions/time-series/versions/1 & https://api.beta.ons.gov.uk/v1/datasets/projections-older-people-sex-ratios & https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/methodologies/subnationalpopulationprojectionsqmi\\
-\hline
-\end{tabular}
+\begin{longtable}[]{@{}ccccccccc@{}}
+\toprule()
+...1 & id & title & release\_frequency & next\_release & description &
+links\_latest\_versions & links\_self\_href & qmi\_href \\
+\midrule()
+\endhead
+1 & wellbeing-quarterly & Quarterly personal well-being estimates &
+Quarterly & TBC & Seasonally and non seasonally-adjusted quarterly
+estimates of life satisfaction, feeling that the things done in life are
+worthwhile, happiness and anxiety in the UK. &
+https://api.beta.ons.gov.uk/v1/datasets/wellbeing-quarterly/editions/time-series/versions/9
+& https://api.beta.ons.gov.uk/v1/datasets/wellbeing-quarterly &
+https://www.ons.gov.uk/peoplepopulationandcommunity/wellbeing/methodologies/personalwellbeingintheukqmi \\
+2 & wellbeing-local-authority & Personal well-being estimates by local
+authority & Annual & TBC & Estimates of life satisfaction, feeling that
+the things done in life are worthwhile, happiness and anxiety at the UK,
+country, regional, county, local and unitary authority level. &
+https://api.beta.ons.gov.uk/v1/datasets/wellbeing-local-authority/editions/time-series/versions/4
+& https://api.beta.ons.gov.uk/v1/datasets/wellbeing-local-authority &
+https://www.ons.gov.uk/peoplepopulationandcommunity/wellbeing/methodologies/personalwellbeingintheukqmi \\
+3 & weekly-deaths-region & Deaths registered weekly in England and Wales
+by region & Weekly & 24 April 2024 & Provisional counts of the number of
+deaths registered in England and Wales, by region, in the latest weeks
+for which data are available. &
+https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-region/editions/time-series/versions/14
+& https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-region &
+https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi \\
+4 & weekly-deaths-local-authority & Death registrations and occurrences
+by local authority and place of death & Weekly & 17 January 2024 &
+Provisional counts of the number of deaths registered in England and
+Wales, including deaths involving the coronavirus (COVID-19), by local
+authority, health board and place of death in the latest weeks for which
+data are available. &
+https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-local-authority/editions/2023/versions/50
+& https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-local-authority
+&
+https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi \\
+5 & weekly-deaths-health-board & Death registrations and occurrences by
+health board and place of death & Weekly & 17 January 2024 & Provisional
+counts of the number of deaths registered in Wales, by health board and
+place of death, in the latest weeks for which data are available. &
+https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-health-board/editions/2023/versions/50
+& https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-health-board &
+https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi \\
+6 & weekly-deaths-age-sex & Deaths registered weekly in England and
+Wales by age and sex & Weekly & 24 April 2024 & Provisional counts of
+the number of deaths registered in England and Wales, by age and sex, in
+the latest weeks for which data are available. &
+https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-age-sex/editions/time-series/versions/14
+& https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-age-sex &
+https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi \\
+7 & uk-spending-on-cards & UK spending on credit and debit cards &
+Weekly & To be announced & These data series are experimental faster
+indicators for monitoring UK spending using debit and credit cards. &
+https://api.beta.ons.gov.uk/v1/datasets/uk-spending-on-cards/editions/time-series/versions/125
+& https://api.beta.ons.gov.uk/v1/datasets/uk-spending-on-cards &
+https://www.bankofengland.co.uk/payment-and-settlement/chaps-faster-indicator \\
+8 & uk-business-by-enterprises-and-local-units & UK Business: Activity,
+Size and Location & Annual & To be announced & The data contained in
+these tables are numbers of enterprises and local units produced from a
+snapshot of the Inter-Departmental Business Register (IDBR) taken on 12
+March 2021. This dataset contains details of the number of VAT and/or
+PAYE based enterprises and local units in districts, counties and
+unitary authorities within region and country by broad industry group. &
+https://api.beta.ons.gov.uk/v1/datasets/uk-business-by-enterprises-and-local-units/editions/2022/versions/1
+&
+https://api.beta.ons.gov.uk/v1/datasets/uk-business-by-enterprises-and-local-units
+&
+https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi \\
+9 & traffic-camera-activity & Traffic Camera Activity & Weekly & To be
+announced & Experimental dataset for business indices covering the UK as
+part of the real-time indicators release to help better understand
+economic activity and social change in the UK. &
+https://api.beta.ons.gov.uk/v1/datasets/traffic-camera-activity/editions/time-series/versions/100
+& https://api.beta.ons.gov.uk/v1/datasets/traffic-camera-activity &
+https://datasciencecampus.ons.gov.uk/projects/estimating-vehicle-and-pedestrian-activity-from-town-and-city-traffic-cameras/ \\
+10 & trade & Trade in goods: country by commodity & Monthly & 12 April
+2024 & Country by commodity data on the UK\textquotesingle s trade in
+goods, including trade by all countries and selected commodities,
+exports and imports, non seasonally adjusted. &
+https://api.beta.ons.gov.uk/v1/datasets/trade/editions/time-series/versions/42
+& https://api.beta.ons.gov.uk/v1/datasets/trade &
+https://www.ons.gov.uk/economy/nationalaccounts/balanceofpayments/methodologies/uktradeqmi \\
+11 & tax-benefits-statistics & Effects of Taxes and Benefits on
+Household Income & Annual & TBA & Estimates of mean and median annual
+incomes in the UK, by quintile groups. The redistribution effects on
+individuals of direct and indirect taxation and benefits received in
+cash or kind. &
+https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics/editions/time-series/versions/3
+& https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics &
+https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/methodologies/theeffectsoftaxesandbenefitsonukhouseholdincome \\
+12 & suicides-in-the-uk & Suicide registrations in England and Wales by
+local authority & Annually & To be announced & Number of suicides by
+local authority in England and Wales, registered from 2001. If you are
+struggling to cope, please call Samaritans for free on 116 123 (UK and
+ROI) or contact other sources of support, such as those listed on the
+NHS's help for suicidal thoughts webpage. Support is available round the
+clock, every single day of the year, providing a safe place for anyone
+struggling to cope, whoever they are, however they feel, whatever life
+has done to them. &
+https://api.beta.ons.gov.uk/v1/datasets/suicides-in-the-uk/editions/2022/versions/1
+& https://api.beta.ons.gov.uk/v1/datasets/suicides-in-the-uk &
+https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/suicideratesintheukqmi \\
+13 & sexual-orientation-by-region & Sexual orientation by English
+regions and UK countries & Annual & To be announced & Sexual orientation
+in the UK from 2012 to 2020 by region. Data source: Annual Population
+Survey, ONS &
+https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-region/editions/time-series/versions/3
+& https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-region &
+https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/methodologies/sexualidentityukqmi \\
+14 & sexual-orientation-by-age-and-sex & Sexual orientation by age and
+sex & Annual & To be announced & Sexual orientation in the UK by sex and
+age, 2014 to 2020. Source: Annual Population Survey, ONS &
+https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-age-and-sex/editions/time-series/versions/3
+&
+https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-age-and-sex
+&
+https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/methodologies/sexualidentityukqmi \\
+15 & retail-sales-index-large-and-small-businesses & Retail sales index
+- large and small businesses & Monthly & 19 April 2024 & Value and
+volume of retail sales broken down by size of business &
+https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-large-and-small-businesses/editions/time-series/versions/24
+&
+https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-large-and-small-businesses
+&
+https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi \\
+16 & retail-sales-index-all-businesses & Retail sales index - all
+businesses & Monthly & 19 April 2024 & Value and volume of retail sales
+for all businesses. &
+https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-all-businesses/editions/time-series/versions/24
+&
+https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-all-businesses
+&
+https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi \\
+17 & retail-sales-index & Retail sales index & Monthly & 19 April 2024 &
+Retail sales data for Great Britain in value and volume terms,
+seasonally and non-seasonally adjusted. &
+https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index/editions/time-series/versions/24
+& https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index &
+https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi \\
+18 & regional-gdp-by-year & Annual GDP for England, Wales and the
+English regions & Annual & TBA & Annual economic activity within
+England, Wales and the nine English regions (North East, North West,
+Yorkshire and the Humber, East Midlands, West Midlands, East of England,
+Greater London, South East, South West). &
+https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year/editions/time-series/versions/6
+& https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year &
+https://www.ons.gov.uk/economy/grossdomesticproductgdp/methodologies/grossdomesticproductgdpukregionsandcountriesqmi \\
+19 & regional-gdp-by-quarter & Quarterly GDP for England, Wales and the
+English regions & To be announced & To be announced & Quarterly economic
+activity within England, Wales and the nine English regions (North East,
+North West, Yorkshire and The Humber, East Midlands, West Midlands, East
+of England, London, South East, South West). &
+https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-quarter/editions/time-series/versions/6
+& https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-quarter &
+https://www.ons.gov.uk/economy/grossdomesticproductgdp/methodologies/grossdomesticproductgdpukregionsandcountriesqmi \\
+20 & projections-older-people-sex-ratios & Local authority ageing
+statistics, projected sex ratios for older people & Biennial & To be
+announced & Projected indicators included are derived from the published
+2018-based subnational population projections for England, Wales,
+Scotland and Northern Ireland up to the year 2043. The indicators are
+the projected sex ratio for those aged 65 years and over and the
+projected sex ratio for those aged 85 years and over. A sex ratio shows
+the number of males in the population for every 100 females. This
+dataset has been produced by the Ageing Analysis Team for inclusion in
+the subnational ageing tool, which was published on July 20, 2020 (see
+link in Related datasets). The tool is interactive, and users can
+compare latest and projected measures of ageing for up to four different
+areas through selection on a map or from a drop-down menu. Note on data
+sources: England, Wales, Scotland and Northern Ireland independently
+publish subnational population projections and the data available here
+are a compilation of these datasets. The ONS publish national level data
+for the UK, England, Wales and England \& Wales, which has been
+included. National level data for Scotland and Northern Ireland have
+been taken from their subnational population projections datasets. &
+https://api.beta.ons.gov.uk/v1/datasets/projections-older-people-sex-ratios/editions/time-series/versions/1
+&
+https://api.beta.ons.gov.uk/v1/datasets/projections-older-people-sex-ratios
+&
+https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/methodologies/subnationalpopulationprojectionsqmi \\
+\bottomrule()
+\end{longtable}
 
 \hypertarget{get-the-url-for-the-latest-release-of-a-specified-ons-file}{%
 \section{Get the URL for the latest release of a specified ONS
@@ -1426,39 +1735,50 @@ want to extract the latest version, the url for which can be extracted
 from the data dictionary in the links\_latest\_versions field we have
 just created.
 
-\begin{verbatim}
-file_latest_version <- df %>%
-    dplyr::filter(id == config$data_id) %>%
-    dplyr::select(links_latest_versions) %>%
-    dplyr::pull()
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#load packages}
+\FunctionTok{library}\NormalTok{(dplyr)}
 
-  # Using the links_latest_versions we can get the meta data for the latest file
-  # and this meta data includes the url for the latest file in either csv or xlsx
-  # format. We choose .csv here. Extract it from downloads$csv$href
 
-  request <- httr::GET(url = file_latest_version)
-  
-  logger$info(paste0("Response recieved from: ", file_latest_version))
-  
-  content <- rawToChar(request$content)
-  content_flat <- jsonlite::fromJSON(content, flatten=TRUE)
-  file_url <- content_flat$downloads$csv$href
-\end{verbatim}
+\NormalTok{file\_latest\_version }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(id }\SpecialCharTok{==}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_id) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(links\_latest\_versions) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pull}\NormalTok{()}
+
+\CommentTok{\# Using the links\_latest\_versions we can get the meta data for the latest file}
+\CommentTok{\# and this meta data includes the url for the latest file in either csv or xlsx}
+\CommentTok{\# format. We choose .csv here. Extract it from downloads$csv$href}
+
+\NormalTok{request }\OtherTok{\textless{}{-}} \FunctionTok{GET}\NormalTok{(}\AttributeTok{url =}\NormalTok{ file\_latest\_version)}
+      
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Response recieved from: "}\NormalTok{, file\_latest\_version))}
+      
+\NormalTok{content }\OtherTok{\textless{}{-}} \FunctionTok{rawToChar}\NormalTok{(request}\SpecialCharTok{$}\NormalTok{content)}
+\NormalTok{content\_flat }\OtherTok{\textless{}{-}}\NormalTok{ jsonlite}\SpecialCharTok{::}\FunctionTok{fromJSON}\NormalTok{(content, }\AttributeTok{flatten=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{file\_url }\OtherTok{\textless{}{-}}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{downloads}\SpecialCharTok{$}\NormalTok{csv}\SpecialCharTok{$}\NormalTok{href}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{now-we-have-the-file-url-we-can-read-it-like-any-other-file}{%
 \section{Now we have the file url we can read it like any other
 file}\label{now-we-have-the-file-url-we-can-read-it-like-any-other-file}}
 
-\begin{verbatim}
-#Read data from latest file endpoint
-df_data <- readr::read_csv(file_url)
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#load packages}
+\FunctionTok{library}\NormalTok{(readr)}
 
-data_filepath <- paste0(config$output_dir, "/", config$data_id, ".csv")
+\CommentTok{\#Read data from latest file endpoint}
+\NormalTok{df\_data }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(file\_url)}
 
-readr::write_csv(df_data, data_filepath)
+\NormalTok{data\_filepath }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(config}\SpecialCharTok{$}\NormalTok{output\_dir, }\StringTok{"/"}\NormalTok{, config}\SpecialCharTok{$}\NormalTok{data\_id, }\StringTok{".csv"}\NormalTok{)}
 
-logger$info(paste0("data output to: ", data_filepath))
-\end{verbatim}
+\FunctionTok{write\_csv}\NormalTok{(df\_data, data\_filepath)}
+
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"data output to: "}\NormalTok{, data\_filepath))}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{wrap-in-function}{%
 \section{Wrap in function}\label{wrap-in-function}}
@@ -1467,88 +1787,111 @@ Now we have all the code we need we can wrap it up in a function to be
 sourced and called in our \texttt{run\_analysis.R} script, making sure
 to add our Roxygen documentation.
 
-\begin{verbatim}
-#' Downloads a csv from the ONS API, and saves to input folder
-#'
-#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
-#'
-#' @import dplyr
-#' @import httr
-#' @import jsonlite
-#' @import logger
-#' @import readr
-#'
-#'
-download_data_from_ons <- function(data_id){
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\textquotesingle{} Downloads a csv from the ONS API, and saves to input folder}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @param data\_id a string of the name of the data set to download. This is stored in config.yml as config$data\_id}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @import dplyr}
+\CommentTok{\#\textquotesingle{} @import httr2}
+\CommentTok{\#\textquotesingle{} @import jsonlite}
+\CommentTok{\#\textquotesingle{} @import logger}
+\CommentTok{\#\textquotesingle{} @import readr}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{}}
+\NormalTok{download\_data\_from\_ons }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data\_id)\{}
 
-  # request the data dictionary from the ONS api endpoint
-        path <- config$data_dictionary_url
-  
-        request <- httr::GET(url = path)
-        
-        content <- rawToChar(request$content)
-        
-        content_flat <- jsonlite::fromJSON(content, flatten = TRUE) 
-        
-        logger$info(paste0("Response recieved from: ", path))
-        
-        # create a dataframe with the downloaded data dictionary to what data is available
-        df <- data.frame(id = content_flat$items$id,
-                         title = content_flat$items$title,
-                         release_frequency = content_flat$items$release_frequency,
-                         next_release = content_flat$items$next_release,
-                         description = content_flat$items$description,
-                         links_latest_versions = content_flat$items$links.latest_version.href,
-                         links_self_href= content_flat$items$links.self.href,
-                         qmi_href= content_flat$items$qmi.href)
-  
-  
-  file_latest_version <- df %>%
-      dplyr::filter(id == data_id) %>%
-      dplyr::select(links_latest_versions) %>%
-      dplyr::pull()
-  
-    # Using the links_latest_versions we can get the meta data for the latest file
-    # and this meta data includes the url for the latest file in either csv or xlsx
-    # format. We choose .csv here. Extract it from downloads$csv$href
-  
-    request <- httr::GET(url = file_latest_version)
+    \CommentTok{\# request the data dictionary from the ONS api endpoint}
+\NormalTok{      path }\OtherTok{\textless{}{-}}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_dictionary\_url}
     
-    logger$info(paste0("Response recieved from: ", file_latest_version))
-    
-    content <- rawToChar(request$content)
-    content_flat <- jsonlite::fromJSON(content, flatten=TRUE)
-    file_url <- content_flat$downloads$csv$href
+\NormalTok{      request }\OtherTok{\textless{}{-}} \FunctionTok{GET}\NormalTok{(}\AttributeTok{url =}\NormalTok{ path)}
+            
+\NormalTok{      content }\OtherTok{\textless{}{-}} \FunctionTok{rawToChar}\NormalTok{(request}\SpecialCharTok{$}\NormalTok{content)}
+          
+\NormalTok{      content\_flat }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(content, }\AttributeTok{flatten =} \ConstantTok{TRUE}\NormalTok{) }
+            
+\NormalTok{      logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Response recieved from: "}\NormalTok{, path))}
+            
+        \CommentTok{\# create a dataframe with the downloaded data dictionary to what data is available}
+\NormalTok{      df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{id =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{id,}
+                       \AttributeTok{title =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{title,}
+                       \AttributeTok{release\_frequency =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{release\_frequency,}
+                       \AttributeTok{next\_release =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{next\_release,}
+                       \AttributeTok{description =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{description,}
+                       \AttributeTok{links\_latest\_versions =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{links.latest\_version.href,}
+                       \AttributeTok{links\_self\_href=}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{links.self.href,}
+                       \AttributeTok{qmi\_href=}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{qmi.href)}
+      
+      
+\NormalTok{ file\_latest\_version }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+ \FunctionTok{filter}\NormalTok{(id }\SpecialCharTok{==}\NormalTok{ data\_id) }\SpecialCharTok{\%\textgreater{}\%}
+ \FunctionTok{select}\NormalTok{(links\_latest\_versions) }\SpecialCharTok{\%\textgreater{}\%}
+ \FunctionTok{pull}\NormalTok{()}
+      
+  \CommentTok{\# Using the links\_latest\_versions we can get the meta data for the latest file}
+  \CommentTok{\# and this meta data includes the url for the latest file in either csv or xlsx}
+  \CommentTok{\# format. We choose .csv here. Extract it from downloads$csv$href}
+      
+\NormalTok{  request }\OtherTok{\textless{}{-}} \FunctionTok{GET}\NormalTok{(}\AttributeTok{url =}\NormalTok{ file\_latest\_version)}
+      
+\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Response recieved from: "}\NormalTok{, file\_latest\_version))}
+        
+\NormalTok{  content }\OtherTok{\textless{}{-}} \FunctionTok{rawToChar}\NormalTok{(request}\SpecialCharTok{$}\NormalTok{content)}
+\NormalTok{  content\_flat }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(content, }\AttributeTok{flatten=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  file\_url }\OtherTok{\textless{}{-}}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{downloads}\SpecialCharTok{$}\NormalTok{csv}\SpecialCharTok{$}\NormalTok{href}
+      
+      
+  \CommentTok{\#Read data from latest file endpoint}
+\NormalTok{  df\_data }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(file\_url)}
+      
+\NormalTok{  data\_filepath }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(config}\SpecialCharTok{$}\NormalTok{output\_dir, }\StringTok{"/"}\NormalTok{, data\_id, }\StringTok{".csv"}\NormalTok{)}
+      
+  \FunctionTok{write\_csv}\NormalTok{(df\_data, data\_filepath)}
+      
+\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"data output to: "}\NormalTok{, data\_filepath))}
   
-  
-  #Read data from latest file endpoint
-  df_data <- readr::read_csv(file_url)
-  
-  data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
-  
-  readr::write_csv(df_data, data_filepath)
-  
-  logger$info(paste0("data output to: ", data_filepath))
-  
-}
-\end{verbatim}
+  \FunctionTok{return}\NormalTok{(data\_filepath)}
+      
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
-\hypertarget{exercise}{%
-\section{Exercise}\label{exercise}}
-
-Create your own read data script, downloading a different data set from
-the ONS by updating the config file.
-
-\bookmarksetup{startatroot}
-
-\hypertarget{processing-data}{%
-\chapter{Processing Data}\label{processing-data}}
-
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+The last steps are:
 
 \begin{itemize}
 \tightlist
 \item
+  Add new functions to \texttt{librarian} line in \texttt{main.R}
+\item
+  Add a \texttt{source} to your new function to \texttt{run\_analysis.R}
+\item
+  Add the function to your function in \texttt{run\_analysis.R}
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Exercise: Ingest your data}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Alter the config file to look at a different data set
+\item
+  Run the ingest script to make sure you are reading in your data
+  correctly
+\end{enumerate}
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\hypertarget{sec-process}{%
+\chapter{Processing Data}\label{sec-process}}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+\begin{itemize}
+\item
+  Set out your processing in clear steps
 \item
   Wrap up the processing of your data into a function
 \end{itemize}
@@ -1574,15 +1917,17 @@ For this section we need two packages, \texttt{dplyr} and
 First, we can print the column names of the dataset and the unique
 industry types in the dataset.
 
-\begin{verbatim}
-#read in data from data ingest
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#read in data from data ingest}
 
-data_file_path <- paste0(config$output_dir, "/", data_id, ".csv")
+\NormalTok{data\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(config}\SpecialCharTok{$}\NormalTok{output\_dir, }\StringTok{"/"}\NormalTok{, data\_id, }\StringTok{".csv"}\NormalTok{)}
 
-data <- read_csv(data_file_path)
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(data\_file\_path)}
 
-logger$info(paste0("Data read from: ", data_file_path))
-\end{verbatim}
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Data read from: "}\NormalTok{, data\_file\_path))}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{filtering-data}{%
 \section{Filtering data}\label{filtering-data}}
@@ -1594,39 +1939,42 @@ our config file. This will make it straight forward to change later to
 perform the same analysis on a different industry. The column containing
 the values we are interested in is called \texttt{v4\_1}
 
-\begin{verbatim}
-# remove NAs, filter by industry, geography and growth rate figure
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# remove NAs, filter by industry, geography and growth rate figure}
 
-industry <- config$industry_name
-geography <- config$geography
-metric <- config$metric
+\NormalTok{industry }\OtherTok{\textless{}{-}}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{industry\_name}
+\NormalTok{geography }\OtherTok{\textless{}{-}}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{geography}
+\NormalTok{metric }\OtherTok{\textless{}{-}}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{metric}
 
-data_time_series <- data %>%
-  filter(!is.na(v4_1)) %>%
-  filter(UnofficialStandardIndustrialClassification == industry) %>%
-  filter(Geography == geography) %>%
-  filter(GrowthRate == metric)
-  
-# set year as a number and sort by
-data_time_series_sorted <- data_time_series %>%
-  mutate(Time = as.numeric(Time)) %>%
-  arrange(Time)
-  
-\end{verbatim}
+\NormalTok{data\_time\_series }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(v4\_1)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(UnofficialStandardIndustrialClassification }\SpecialCharTok{==}\NormalTok{ industry) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Geography }\SpecialCharTok{==}\NormalTok{ geography) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(GrowthRate }\SpecialCharTok{==}\NormalTok{ metric)}
+      
+\CommentTok{\# set year as a number and sort by}
+\NormalTok{data\_time\_series\_sorted }\OtherTok{\textless{}{-}}\NormalTok{ data\_time\_series }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Time =} \FunctionTok{as.numeric}\NormalTok{(Time)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(Time)}
+\end{Highlighting}
+\end{Shaded}
 
 Once we have a cleaned dataset, we can save it as a csv for future use.
 
-\begin{verbatim}
-# save data to csv
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# save data to csv}
 
-output_file_name <- paste0("output/"config$industry_name, "_", config$metric, "time_series_sorted.csv")
+\NormalTok{output\_file\_name }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"output/"}\NormalTok{config}\SpecialCharTok{$}\NormalTok{industry\_name, }\StringTok{"\_"}\NormalTok{, config}\SpecialCharTok{$}\NormalTok{metric, }\StringTok{"time\_series\_sorted.csv"}\NormalTok{)}
 
-write_csv(
-  data_time_series_sorted,
-  file = "./output/health_gdp_time_series_sorted.csv")
-  
-logger$info(paste0("data saved to ", output_file_name))
-\end{verbatim}
+\FunctionTok{write\_csv}\NormalTok{(}
+\NormalTok{  data\_time\_series\_sorted,}
+  \AttributeTok{file =} \StringTok{"./output/health\_gdp\_time\_series\_sorted.csv"}\NormalTok{)}
+      
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"data saved to "}\NormalTok{, output\_file\_name))}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{wrap-in-function-1}{%
 \section{Wrap in function}\label{wrap-in-function-1}}
@@ -1634,62 +1982,104 @@ logger$info(paste0("data saved to ", output_file_name))
 As with the initial ingestion of the data, we should wrap our code in a
 function to be called from our \texttt{run\_analysis.R} script.
 
-\# remove NAs, filter by industry, geography and growth rate figure
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\textquotesingle{} Filters relevant data and sorts it}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @param data\_id a string of the name of the data set to download. This is stored in config.yml as config$data\_id}
+\CommentTok{\#\textquotesingle{} @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry}
+\CommentTok{\#\textquotesingle{} @param geography is a string of the geography we want to look at. This is stored in config.yml as config$geography}
+\CommentTok{\#\textquotesingle{} @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @import dplyr}
+\CommentTok{\#\textquotesingle{} @import logger}
+\CommentTok{\#\textquotesingle{} @import readr}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{}}
+\NormalTok{process\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data\_id, industry, geography, metric)\{}
 
-\begin{verbatim}
-#' Filters relevant data and sorts it
-#'
-#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
-#' @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry
-#' @param geography is a string of the geography we want to look at. This is stored in config.yml as config$geography
-#' @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric
-#'
-#'
-#' @import dplyr
-#' @import logger
-#' @import readr
-#'
-#'
-process_data <- function(data_id, industry, geography, metric){
+  \CommentTok{\#read in data from data ingest}
+    
+\NormalTok{  data\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(config}\SpecialCharTok{$}\NormalTok{output\_dir, }\StringTok{"/"}\NormalTok{, data\_id, }\StringTok{".csv"}\NormalTok{)}
+      
+\NormalTok{  data }\OtherTok{\textless{}{-}}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_csv}\NormalTok{(data\_file\_path)}
+      
+\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Data read from: "}\NormalTok{, data\_file\_path))}
+      
+\NormalTok{  data\_time\_series }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(v4\_1)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(UnofficialStandardIndustrialClassification }\SpecialCharTok{==}\NormalTok{ industry) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Geography }\SpecialCharTok{==}\NormalTok{ geography) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(GrowthRate }\SpecialCharTok{==}\NormalTok{ metric)}
+        
+  \CommentTok{\# set year as a number and sort by}
+\NormalTok{  data\_time\_series\_sorted }\OtherTok{\textless{}{-}}\NormalTok{ data\_time\_series }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Time =} \FunctionTok{as.numeric}\NormalTok{(Time)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{arrange}\NormalTok{(Time)}
+        
+  \CommentTok{\# save data to csv}
+      
+\NormalTok{  output\_file\_name }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"output/"}\NormalTok{, data\_id, }\StringTok{"\_"}\NormalTok{, industry, }\StringTok{"\_"}\NormalTok{, metric, }\StringTok{"\_"}\NormalTok{, geography, }\StringTok{"\_time\_series\_sorted.csv"}\NormalTok{)}
+      
+  \FunctionTok{write\_csv}\NormalTok{(}
+\NormalTok{    data\_time\_series\_sorted,}
+    \AttributeTok{file =}\NormalTok{ output\_file\_name)}
+        
+\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"processed data saved to "}\NormalTok{, output\_file\_name))}
+      
+  \FunctionTok{return}\NormalTok{(data\_time\_series\_sorted)}
 
-  #read in data from data ingest
-  
-  data_file_path <- paste0(config$output_dir, "/", data_id, ".csv")
-  
-  data <- readr::read_csv(data_file_path)
-  
-  logger$info(paste0("Data read from: ", data_file_path))
-  
-  data_time_series <- data %>%
-    dplyr::filter(!is.na(v4_1)) %>%
-    dplyr::filter(UnofficialStandardIndustrialClassification == industry) %>%
-    dplyr::filter(Geography == geography) %>%
-    dplyr::filter(GrowthRate == metric)
-    
-  # set year as a number and sort by
-  data_time_series_sorted <- data_time_series %>%
-    dplyr::mutate(Time = as.numeric(Time)) %>%
-    dplyr::arrange(Time)
-    
-  # save data to csv
-  
-  output_file_name <- paste0("output/", data_id, "_", industry, "_", metric, "_time_series_sorted.csv")
-  
-  readr::write_csv(
-    data_time_series_sorted,
-    file = output_file_name)
-    
-  logger$info(paste0("processed data saved to ", output_file_name))
-  
-  return(data_time_series_sorted)
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
-}
-\end{verbatim}
+The last steps are:
+
+\begin{itemize}
+\tightlist
+\item
+  Add new functions to \texttt{librarian} line in \texttt{main.R}
+\item
+  Add a \texttt{source} to your new function to \texttt{run\_analysis.R}
+\item
+  Add the function to your function in \texttt{run\_analysis.R}
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Exercise: Process your data}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Alter the config file to look to process your data correctly
+\item
+  Run the process data script to make sure it's working correctly. Make
+  any necessary fixes.
+\end{enumerate}
+
+\end{tcolorbox}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{plotting-data}{%
-\chapter{Plotting data}\label{plotting-data}}
+\hypertarget{sec-plot}{%
+\chapter{Plotting data}\label{sec-plot}}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+\begin{itemize}
+\item
+  Your outputs should be disposable, and easily recreated
+\item
+  Output your charts as .svg files
+\item
+  Wrap up the plotting of your data into a function
+\end{itemize}
+
+\end{tcolorbox}
+
+The outputs of your RAP should be produced with no, or minimal,
+intervention. The yshould be disposable, in that if you didn't save them
+it would be straightforward to recreate them.
 
 Now we will plot the data using \texttt{ggplot2}.
 
@@ -1702,38 +2092,42 @@ We use DHSC colours, which are a part of the \texttt{DHSCtools} package.
 We can add this to our \texttt{librarian} function in the
 \texttt{main.R} script.
 
-\begin{verbatim}
-# plot
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# plot}
 
-gglot2::ggplot(data = data_time_series_sorted,
-       aes(Time,
-           config$metric,
-           colour = config$industry)) +
-  DHSCcolours::theme_dhsc() +
-  geom_line(linewidth = 1) +
-  geom_point(size = 3) +
-  theme(legend.position="none") +
-  DHSCcolours::scale_colour_dhsc_d() +
-  labs(
-    title = "Annual growth rate of Human health and social work activities, England",
-    subtitle = "2013-2021",
-    x = "Year",
-    y = "Annual growth rate (%)") +
-  scale_x_continuous(breaks=seq(2013,2021,1))
-\end{verbatim}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data\_time\_series\_sorted,}
+       \FunctionTok{aes}\NormalTok{(Time,}
+\NormalTok{           config}\SpecialCharTok{$}\NormalTok{metric,}
+           \AttributeTok{colour =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{industry)) }\SpecialCharTok{+}
+\NormalTok{  DHSCcolours}\SpecialCharTok{::}\FunctionTok{theme\_dhsc}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"none"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{  DHSCcolours}\SpecialCharTok{::}\FunctionTok{scale\_colour\_dhsc\_d}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Annual growth rate of Human health and social work activities, England"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"2013{-}2021"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Year"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Annual growth rate (\%)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks=}\FunctionTok{seq}\NormalTok{(}\DecValTok{2013}\NormalTok{,}\DecValTok{2021}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
 
 And save the plot. We save as an SVG file, this format allows you to
 resize the image without losing resolution.
 
-\begin{verbatim}
-# save the plot
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# save the plot}
 
-ggsave("./output/health_gdp_chart.svg",
-         height = 5,
-         width = 10,
-         units="in",
-         dpi=300)
-\end{verbatim}
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"./output/health\_gdp\_chart.svg"}\NormalTok{,}
+         \AttributeTok{height =} \DecValTok{5}\NormalTok{,}
+         \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+         \AttributeTok{units=}\StringTok{"in"}\NormalTok{,}
+         \AttributeTok{dpi=}\DecValTok{300}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 It will look like this:
 
@@ -1745,64 +2139,91 @@ It will look like this:
 Again we should wrap this all up in a function to be called from the
 \texttt{run\_analysis.R} script.
 
-\begin{verbatim}
-#' Plot data as time series
-#'
-#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
-#' @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry
-#' @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric
-#' @param title is a string that will be the title of the chart
-#' @param subtitle is a string that will be the subtitle of the chart
-#' @param xlab is a string that is the x axis label
-#' @param ylab is a string that is the y axis label
-#'
-#' @import DHSCtools
-#' @import ggplot2
-#'
-#'
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\textquotesingle{} Plot data as time series}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @param data\_id a string of the name of the data set to download. This is stored in config.yml as config$data\_id}
+\CommentTok{\#\textquotesingle{} @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry}
+\CommentTok{\#\textquotesingle{} @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric}
+\CommentTok{\#\textquotesingle{} @param title is a string that will be the title of the chart}
+\CommentTok{\#\textquotesingle{} @param subtitle is a string that will be the subtitle of the chart}
+\CommentTok{\#\textquotesingle{} @param xlab is a string that is the x axis label}
+\CommentTok{\#\textquotesingle{} @param ylab is a string that is the y axis label}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{} @import DHSCtools}
+\CommentTok{\#\textquotesingle{} @import ggplot2}
+\CommentTok{\#\textquotesingle{}}
+\CommentTok{\#\textquotesingle{}}
 
-ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, ylab){
+\NormalTok{ts\_line\_chart\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data, industry, metric, title, subtitle, xlab, ylab)\{}
 
-  graph <- gglot2::ggplot(data = data_time_series_sorted,
-         aes(Time,
-             metric,
-             industry)) +
-    DHSCcolours::theme_dhsc() +
-    geom_line(linewidth = 1) +
-    geom_point(size = 3) +
-    theme(legend.position="none") +
-    DHSCcolours::scale_colour_dhsc_d() +
-    labs(
-      title = title,
-      subtitle = subtitle,
-      x = xlab,
-      y = ylab) +
-    scale_x_continuous(breaks=seq(2013,2021,1))
+\NormalTok{  graph }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data\_time\_series\_sorted,}
+         \FunctionTok{aes}\NormalTok{(Time,}
+\NormalTok{             metric,}
+\NormalTok{             industry)) }\SpecialCharTok{+}
+\NormalTok{    DHSCcolours}\SpecialCharTok{::}\FunctionTok{theme\_dhsc}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"none"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{    DHSCcolours}\SpecialCharTok{::}\FunctionTok{scale\_colour\_dhsc\_d}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}
+      \AttributeTok{title =}\NormalTok{ title,}
+      \AttributeTok{subtitle =}\NormalTok{ subtitle,}
+      \AttributeTok{x =}\NormalTok{ xlab,}
+      \AttributeTok{y =}\NormalTok{ ylab) }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks=}\FunctionTok{seq}\NormalTok{(}\DecValTok{2013}\NormalTok{,}\DecValTok{2021}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+        
+        
+  \CommentTok{\#save chart}
+\NormalTok{  chart\_path }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"./output/"}\NormalTok{, metric, }\StringTok{"\_"}\NormalTok{, industry, }\StringTok{"\_chart.svg"}\NormalTok{)}
     
-    
-  #save chart
-  chart_path <- paste0("./output/", metric, "_", industry, "_chart.svg")
-  
-  ggplot2::ggsave(chart_path,
-         plot = graph,
-         height = 5,
-         width = 10,
-         units="in",
-         dpi=300)
-  
-  logger$info(paste0("Graph saved to: ", chart_path))
-         
-  return(graph)
-  
-}
-\end{verbatim}
+  \FunctionTok{ggsave}\NormalTok{(chart\_path,}
+         \AttributeTok{plot =}\NormalTok{ graph,}
+         \AttributeTok{height =} \DecValTok{5}\NormalTok{,}
+         \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+         \AttributeTok{units=}\StringTok{"in"}\NormalTok{,}
+         \AttributeTok{dpi=}\DecValTok{300}\NormalTok{)}
+      
+\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Graph saved to: "}\NormalTok{, chart\_path))}
+             
+  \FunctionTok{return}\NormalTok{(graph)}
+      
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+The last steps are:
+
+\begin{itemize}
+\tightlist
+\item
+  Add new functions to \texttt{librarian} line in \texttt{main.R}
+\item
+  Add a \texttt{source} to your new function to \texttt{run\_analysis.R}
+\item
+  Add the function to your function in \texttt{run\_analysis.R}
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Exercise: Plot your data}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Alter the config file to look to plot your chart correctly
+\item
+  Run the plot data script to make sure it's working correctly. Make any
+  necessary fixes.
+\end{enumerate}
+
+\end{tcolorbox}
 
 \bookmarksetup{startatroot}
 
-\hypertarget{qa-documentation-toolkit}{%
-\chapter{QA Documentation Toolkit}\label{qa-documentation-toolkit}}
+\hypertarget{sec-qa}{%
+\chapter{QA Documentation Toolkit}\label{sec-qa}}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, titlerule=0mm, opacityback=0, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, coltitle=black, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacitybacktitle=0.6, rightrule=.15mm, left=2mm, bottomtitle=1mm, toptitle=1mm, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, colback=white, breakable, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Key Points}, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, coltitle=black, titlerule=0mm, bottomrule=.15mm, rightrule=.15mm, bottomtitle=1mm, toptitle=1mm, arc=.35mm, leftrule=.75mm, opacityback=0, colbacktitle=quarto-callout-note-color!10!white]
 
 \begin{itemize}
 \item
@@ -1861,8 +2282,8 @@ assurance of code for analysis and research}
 
 This includes a QA checklist that this guidance is based on.
 
-\hypertarget{qa-documentation-toolkit-1}{%
-\section{QA documentation toolkit}\label{qa-documentation-toolkit-1}}
+\hypertarget{qa-documentation-toolkit}{%
+\section{QA documentation toolkit}\label{qa-documentation-toolkit}}
 
 The QA documentation toolkit has been developed from the guidance in the
 Duck book to provide a template for determining the appropriate level of
@@ -1914,7 +2335,7 @@ There are three levels of QA described:
     moderate residual risk associated with its use
   \end{itemize}
 \item
-  Developed QA e.g.~for Public facing dashboards, published statisticsm
+  Developed QA e.g.~for Public facing dashboards, published statistics
   ministerial dashboards or Impact Assessments
 
   \begin{itemize}
@@ -2040,16 +2461,16 @@ information on the summary page): All (levels), Moderate \& Developed
 
 \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"librarian"}\NormalTok{)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"librarian"}\NormalTok{, }\AttributeTok{quiet =} \ConstantTok{TRUE}\NormalTok{)}
 
-  \FunctionTok{suppressWarnings}\NormalTok{(}
-\NormalTok{    librarian}\SpecialCharTok{::}\FunctionTok{shelf}\NormalTok{(}
-\NormalTok{      DataS}\SpecialCharTok{{-}}\NormalTok{DHSC}\SpecialCharTok{/}\NormalTok{DHSClogger,}
-\NormalTok{      ggplot2,}
-\NormalTok{      httr,}
-\NormalTok{      jsonlite,}
-\NormalTok{      dplyr,}
-\NormalTok{      readr,}
-\NormalTok{      DHSCcolours,}
-      \AttributeTok{quiet =} \ConstantTok{TRUE}\NormalTok{))}
+\FunctionTok{suppressWarnings}\NormalTok{(}
+\NormalTok{  librarian}\SpecialCharTok{::}\FunctionTok{shelf}\NormalTok{(}
+\NormalTok{    DataS}\SpecialCharTok{{-}}\NormalTok{DHSC}\SpecialCharTok{/}\NormalTok{DHSClogger,}
+\NormalTok{    ggplot2,}
+\NormalTok{    httr,}
+\NormalTok{    jsonlite,}
+\NormalTok{    dplyr,}
+\NormalTok{    readr,}
+\NormalTok{    DHSCcolours,}
+    \AttributeTok{quiet =} \ConstantTok{TRUE}\NormalTok{))}
 
 \CommentTok{\# Setup logging}
 \NormalTok{logger }\OtherTok{\textless{}{-}}\NormalTok{ DHSClogger}\SpecialCharTok{::}\FunctionTok{get\_dhsc\_logger}\NormalTok{()}
@@ -2059,12 +2480,15 @@ information on the summary page): All (levels), Moderate \& Developed
 
 \CommentTok{\# read in config.yml}
 \NormalTok{config }\OtherTok{\textless{}{-}}\NormalTok{ yaml}\SpecialCharTok{::}\FunctionTok{read\_yaml}\NormalTok{(}
-    \FunctionTok{file.path}\NormalTok{(}\StringTok{"input"}\NormalTok{, }\StringTok{"config.yml"}\NormalTok{)}
-\NormalTok{  )}
+  \FunctionTok{file.path}\NormalTok{(}\StringTok{"input"}\NormalTok{, }\StringTok{"config.yml"}\NormalTok{)}
+\NormalTok{)}
 
 \CommentTok{\#run analysis}
 \FunctionTok{source}\NormalTok{(}\StringTok{"r/run\_analysis.r"}\NormalTok{)}
 \FunctionTok{run\_analysis}\NormalTok{()}
+
+
+\NormalTok{logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\StringTok{"[End]"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2075,30 +2499,34 @@ information on the summary page): All (levels), Moderate \& Developed
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#read in your analysis functions}
-\FunctionTok{source}\NormalTok{(}\StringTok{"r/ingest\_data.r"}\NormalTok{)}
-\FunctionTok{source}\NormalTok{(}\StringTok{"r/process\_data.r"}\NormalTok{)}
-\FunctionTok{source}\NormalTok{(}\StringTok{"r/process\_data.r"}\NormalTok{)}
+\NormalTok{run\_analysis }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{()\{}
 
-\CommentTok{\#read in data}
-\FunctionTok{download\_data\_from\_ons}\NormalTok{(}\AttributeTok{data\_id =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_id)}
+  \CommentTok{\#read in your analysis functions}
+  \FunctionTok{source}\NormalTok{(}\StringTok{"r/ingest\_data.r"}\NormalTok{)}
+  \FunctionTok{source}\NormalTok{(}\StringTok{"r/process\_data.r"}\NormalTok{)}
+  \FunctionTok{source}\NormalTok{(}\StringTok{"r/plot\_data.r"}\NormalTok{)}
 
-\CommentTok{\#process data}
-\NormalTok{ons\_data }\OtherTok{\textless{}{-}} \FunctionTok{process\_data}\NormalTok{(}\AttributeTok{data\_id =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_id, }
-                     \AttributeTok{industry =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{industry,}
-                     \AttributeTok{geography =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{geography,}
-                     \AttributeTok{metric =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{metric)}
+  \CommentTok{\#read in data}
+  \FunctionTok{download\_data\_from\_ons}\NormalTok{(}\AttributeTok{data\_id =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_id)}
 
-\CommentTok{\#plot data}
-\NormalTok{chart }\OtherTok{\textless{}{-}} \FunctionTok{ts\_line\_chart\_data}\NormalTok{(}\AttributeTok{data =}\NormalTok{ ons\_data, }
-                            \AttributeTok{industry =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{industry,}
-                            \AttributeTok{metric =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{metric, }
-                            \AttributeTok{title =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{chart\_title, }
-                            \AttributeTok{subtitle =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{subchart\_title, }
-                            \AttributeTok{xlab =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{xlab, }
-                            \AttributeTok{ylab =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{ylab)}
+  \CommentTok{\#process data}
+\NormalTok{  ons\_data }\OtherTok{\textless{}{-}} \FunctionTok{process\_data}\NormalTok{(}\AttributeTok{data\_id =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_id,}
+                           \AttributeTok{industry =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{industry,}
+                           \AttributeTok{geography =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{geography,}
+                           \AttributeTok{metric =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{metric)}
 
-\NormalTok{chart}
+  \CommentTok{\#plot data}
+\NormalTok{  chart }\OtherTok{\textless{}{-}} \FunctionTok{ts\_line\_chart\_data}\NormalTok{(}\AttributeTok{data =}\NormalTok{ ons\_data,}
+                              \AttributeTok{industry =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{industry,}
+                              \AttributeTok{metric =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{metric,}
+                              \AttributeTok{title =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{chart\_title,}
+                              \AttributeTok{subtitle =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{subchart\_title,}
+                              \AttributeTok{xlab =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{xlab,}
+                              \AttributeTok{ylab =}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{ylab)}
+
+\NormalTok{  chart}
+
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2118,7 +2546,7 @@ output_dir: ./output
 industry : "Q: Human health and social work activities"
 geography : "England"
 metric : "Annual growth rate"
-title : "Annual growth rate of Human health and social work activities, England"
+chart_title : "Annual growth rate of Human health and social work activities, England"
 subtitle : "2013 to 2021"
 xlab : "Year"
 ylab : "Annual growth rate (%)"
@@ -2129,121 +2557,126 @@ ylab : "Annual growth rate (%)"
 \hypertarget{ingest_data.r}{%
 \chapter{ingest\_data.r}\label{ingest_data.r}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#\textquotesingle{} Downloads a csv from the ONS API, and saves to input folder}
-\CommentTok{\#\textquotesingle{}}
-\CommentTok{\#\textquotesingle{} @param data\_dictionary\_url}
-\CommentTok{\#\textquotesingle{} @param data\_id a string of the name of the data set to download. This is stored in config.yml as config$data\_id}
-\CommentTok{\#\textquotesingle{}}
-\CommentTok{\#\textquotesingle{} @import dplyr}
-\CommentTok{\#\textquotesingle{} @import httr}
-\CommentTok{\#\textquotesingle{} @import jsonlite}
-\CommentTok{\#\textquotesingle{} @import logger}
-\CommentTok{\#\textquotesingle{} @import readr}
-\CommentTok{\#\textquotesingle{}}
-\CommentTok{\#\textquotesingle{}}
-\NormalTok{download\_data\_from\_ons }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data\_dictionary\_url, data\_id)\{}
-\CommentTok{\# request the data dictionary from the ONS api endpoint}
-\NormalTok{  path }\OtherTok{\textless{}{-}}\NormalTok{ config}\SpecialCharTok{$}\NormalTok{data\_dictionary\_url}
-\NormalTok{  request }\OtherTok{\textless{}{-}}\NormalTok{ httr}\SpecialCharTok{::}\FunctionTok{GET}\NormalTok{(}\AttributeTok{url =}\NormalTok{ path)}
-\NormalTok{  content }\OtherTok{\textless{}{-}} \FunctionTok{rawToChar}\NormalTok{(request}\SpecialCharTok{$}\NormalTok{content)}
-\NormalTok{  content\_flat }\OtherTok{\textless{}{-}}\NormalTok{ jsonlite}\SpecialCharTok{::}\FunctionTok{fromJSON}\NormalTok{(content, }\AttributeTok{flatten =} \ConstantTok{TRUE}\NormalTok{) }
+```\{\#' Downloads a csv from the ONS API, and saves to input folder\}
+\#' \#' (\textbf{param?}) data\_id a string of the name of the data set
+to download. This is stored in config.yml as config\$data\_id \#' \#'
+(\textbf{import?}) dplyr \#' (\textbf{import?}) httr2 \#'
+(\textbf{import?}) jsonlite \#' (\textbf{import?}) logger \#'
+(\textbf{import?}) readr \#' \#' download\_data\_from\_ons \textless-
+function(data\_id)\{
+
+\begin{verbatim}
+# request the data dictionary from the ONS api endpoint
+  path <- config$data_dictionary_url
+
+  request <- GET(url = path)
+        
+  content <- rawToChar(request$content)
+      
+  content_flat <- fromJSON(content, flatten = TRUE) 
+        
+  logger$info(paste0("Response recieved from: ", path))
+        
+    # create a dataframe with the downloaded data dictionary to what data is available
+  df <- data.frame(id = content_flat$items$id,
+                   title = content_flat$items$title,
+                   release_frequency = content_flat$items$release_frequency,
+                   next_release = content_flat$items$next_release,
+                   description = content_flat$items$description,
+                   links_latest_versions = content_flat$items$links.latest_version.href,
+                   links_self_href= content_flat$items$links.self.href,
+                   qmi_href= content_flat$items$qmi.href)
   
-\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Response recieved from: "}\NormalTok{, path))}
-          
-\CommentTok{\# create a dataframe with the downloaded data dictionary to what data is available}
-\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{id =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{id,}
-                   \AttributeTok{title =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{title,}
-                   \AttributeTok{release\_frequency =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{release\_frequency,}
-                   \AttributeTok{next\_release =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{next\_release,}
-                   \AttributeTok{description =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{description,}
-                   \AttributeTok{links\_latest\_versions =}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{links.latest\_version.href,}
-                   \AttributeTok{links\_self\_href=}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{links.self.href,}
-                   \AttributeTok{qmi\_href=}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{items}\SpecialCharTok{$}\NormalTok{qmi.href)}
-      
-\NormalTok{  file\_latest\_version }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{   dplyr}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(id }\SpecialCharTok{==}\NormalTok{ data\_id) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{   dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(links\_latest\_versions) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{   dplyr}\SpecialCharTok{::}\FunctionTok{pull}\NormalTok{()}
-      
-\CommentTok{\# Using the links\_latest\_versions we can get the meta data for the latest file}
-\CommentTok{\# and this meta data includes the url for the latest file in either csv or xlsx}
-\CommentTok{\# format. We choose .csv here. Extract it from downloads$csv$href}
-      
-\NormalTok{ request }\OtherTok{\textless{}{-}}\NormalTok{ httr}\SpecialCharTok{::}\FunctionTok{GET}\NormalTok{(}\AttributeTok{url =}\NormalTok{ file\_latest\_version)}
-        
-\NormalTok{ logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Response recieved from: "}\NormalTok{, file\_latest\_version))}
-       
-\NormalTok{ content }\OtherTok{\textless{}{-}} \FunctionTok{rawToChar}\NormalTok{(request}\SpecialCharTok{$}\NormalTok{content)}
-\NormalTok{ content\_flat }\OtherTok{\textless{}{-}}\NormalTok{ jsonlite}\SpecialCharTok{::}\FunctionTok{fromJSON}\NormalTok{(content, }\AttributeTok{flatten=}\ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{ file\_url }\OtherTok{\textless{}{-}}\NormalTok{ content\_flat}\SpecialCharTok{$}\NormalTok{downloads}\SpecialCharTok{$}\NormalTok{csv}\SpecialCharTok{$}\NormalTok{href}
-      
-      
-\CommentTok{\#Read data from latest file endpoint}
-\NormalTok{ df\_data }\OtherTok{\textless{}{-}}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_csv}\NormalTok{(file\_url)}
-\NormalTok{ data\_filepath }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(config}\SpecialCharTok{$}\NormalTok{output\_dir, }\StringTok{"/"}\NormalTok{, data\_id, }\StringTok{".csv"}\NormalTok{)}
-\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{write\_csv}\NormalTok{(df\_data, data\_filepath)}
-\NormalTok{ logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"data output to: "}\NormalTok{, data\_filepath))}
-      
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-\bookmarksetup{startatroot}
-
-\hypertarget{process_data.r}{%
-\chapter{process\_data.r}\label{process_data.r}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#\textquotesingle{} Filters relevant data and sorts it}
-\CommentTok{\#\textquotesingle{}}
-\CommentTok{\#\textquotesingle{} @param data\_id a string of the name of the data set to download. This is stored in config.yml as config$data\_id}
-\CommentTok{\#\textquotesingle{} @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry}
-\CommentTok{\#\textquotesingle{} @param geography is a string of the geography we want to look at. This is stored in config.yml as config$geography}
-\CommentTok{\#\textquotesingle{} @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric}
-\CommentTok{\#\textquotesingle{}}
-\CommentTok{\#\textquotesingle{}}
-\CommentTok{\#\textquotesingle{} @import dplyr}
-\CommentTok{\#\textquotesingle{} @import logger}
-\CommentTok{\#\textquotesingle{} @import readr}
-\CommentTok{\#\textquotesingle{}}
-\CommentTok{\#\textquotesingle{}}
-\NormalTok{process\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data\_id, industry, geography, metric)\{}
-
-\CommentTok{\#read in data from data ingest}
-      
-\NormalTok{  data\_file\_path }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(config}\SpecialCharTok{$}\NormalTok{output\_dir, }\StringTok{"/"}\NormalTok{, data\_id, }\StringTok{".csv"}\NormalTok{)}
-\NormalTok{  data }\OtherTok{\textless{}{-}}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_csv}\NormalTok{(data\_file\_path)}
   
-\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Data read from: "}\NormalTok{, data\_file\_path))}
-      
-\NormalTok{  data\_time\_series }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(v4\_1)) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(UnofficialStandardIndustrialClassification }\SpecialCharTok{==}\NormalTok{ industry) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(Geography }\SpecialCharTok{==}\NormalTok{ geography) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(GrowthRate }\SpecialCharTok{==}\NormalTok{ metric)}
-        
-\CommentTok{\# set year as a number and sort by}
-\NormalTok{  data\_time\_series\_sorted }\OtherTok{\textless{}{-}}\NormalTok{ data\_time\_series }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{mutate}\NormalTok{(}\AttributeTok{Time =} \FunctionTok{as.numeric}\NormalTok{(Time)) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{arrange}\NormalTok{(Time)}
-        
-\CommentTok{\# save data to csv}
-\NormalTok{  output\_file\_name }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"output/"}\NormalTok{, data\_id, }\StringTok{"\_"}\NormalTok{, industry, }\StringTok{"\_"}\NormalTok{, metric, }\StringTok{"\_time\_series\_sorted.csv"}\NormalTok{)}
-      
-\NormalTok{  readr}\SpecialCharTok{::}\FunctionTok{write\_csv}\NormalTok{(}
-\NormalTok{    data\_time\_series\_sorted,}
-    \AttributeTok{file =}\NormalTok{ output\_file\_name)}
-        
-\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"processed data saved to "}\NormalTok{, output\_file\_name))}
-      
-  \FunctionTok{return}\NormalTok{(data\_time\_series\_sorted)}
+\end{verbatim}
 
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
+file\_latest\_version \textless- df \%\textgreater\% filter(id ==
+data\_id) \%\textgreater\% select(links\_latest\_versions)
+\%\textgreater\% pull()
+
+\# Using the links\_latest\_versions we can get the meta data for the
+latest file \# and this meta data includes the url for the latest file
+in either csv or xlsx \# format. We choose .csv here. Extract it from
+downloads\(csv\)href
+
+request \textless- GET(url = file\_latest\_version)
+
+logger\$info(paste0(``Response recieved from:'', file\_latest\_version))
+
+content \textless-
+rawToChar(request\(content)  content_flat <- fromJSON(content, flatten=TRUE)  file_url <- content_flat\)downloads\(csv\)href
+
+\#Read data from latest file endpoint df\_data \textless-
+read\_csv(file\_url)
+
+data\_filepath \textless- paste0(config\$output\_dir, ``/'', data\_id,
+``.csv'')
+
+write\_csv(df\_data, data\_filepath)
+
+logger\$info(paste0(``data output to:'', data\_filepath))
+
+return(data\_filepath)
+
+\}
+
+\begin{verbatim}
+
+# process_data.r
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
+#' Filters relevant data and sorts it
+#'
+#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
+#' @param industry is a string of the industy we want to look at. This is stored in config.yml as config$industry
+#' @param geography is a string of the geography we want to look at. This is stored in config.yml as config$geography
+#' @param metric is a string of the metric we want to look at. This is stored in config.yml as config$metric
+#'
+#'
+#' @import dplyr
+#' @import logger
+#' @import readr
+#'
+#'
+process_data <- function(data_id, industry, geography, metric){
+
+  #read in data from data ingest
+    
+  data_file_path <- paste0(config$output_dir, "/", data_id, ".csv")
+      
+  data <- readr::read_csv(data_file_path)
+      
+  logger$info(paste0("Data read from: ", data_file_path))
+      
+  data_time_series <- data %>%
+    filter(!is.na(v4_1)) %>%
+    filter(UnofficialStandardIndustrialClassification == industry) %>%
+    filter(Geography == geography) %>%
+    filter(GrowthRate == metric)
+        
+  # set year as a number and sort by
+  data_time_series_sorted <- data_time_series %>%
+    mutate(Time = as.numeric(Time)) %>%
+    arrange(Time)
+        
+  # save data to csv
+      
+  output_file_name <- paste0("output/", data_id, "_", industry, "_", metric, "_", geography, "_time_series_sorted.csv")
+      
+  write_csv(
+    data_time_series_sorted,
+    file = output_file_name)
+        
+  logger$info(paste0("processed data saved to ", output_file_name))
+      
+  return(data_time_series_sorted)
+
+}
+\end{verbatim}
 
 \bookmarksetup{startatroot}
 
@@ -2269,10 +2702,10 @@ ylab : "Annual growth rate (%)"
 
 \NormalTok{ts\_line\_chart\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data, industry, metric, title, subtitle, xlab, ylab)\{}
 
-\NormalTok{  graph }\OtherTok{\textless{}{-}}\NormalTok{ gglot2}\SpecialCharTok{::}\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data\_time\_series\_sorted,}
-                          \FunctionTok{aes}\NormalTok{(Time,}
-\NormalTok{                              v4\_1,}
-\NormalTok{                              industry)) }\SpecialCharTok{+}
+\NormalTok{  graph }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data\_time\_series\_sorted,}
+         \FunctionTok{aes}\NormalTok{(Time,}
+\NormalTok{             metric,}
+\NormalTok{             industry)) }\SpecialCharTok{+}
 \NormalTok{    DHSCcolours}\SpecialCharTok{::}\FunctionTok{theme\_dhsc}\NormalTok{() }\SpecialCharTok{+}
     \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
     \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
@@ -2285,24 +2718,25 @@ ylab : "Annual growth rate (%)"
       \AttributeTok{y =}\NormalTok{ ylab) }\SpecialCharTok{+}
     \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks=}\FunctionTok{seq}\NormalTok{(}\DecValTok{2013}\NormalTok{,}\DecValTok{2021}\NormalTok{,}\DecValTok{1}\NormalTok{))}
         
-\CommentTok{\#save chart}
-\NormalTok{ chart\_path }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"./output/"}\NormalTok{, metric, }\StringTok{"\_"}\NormalTok{, industry, }\StringTok{"\_chart.svg"}\NormalTok{)}
+        
+  \CommentTok{\#save chart}
+\NormalTok{  chart\_path }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{"./output/"}\NormalTok{, metric, }\StringTok{"\_"}\NormalTok{, industry, }\StringTok{"\_chart.svg"}\NormalTok{)}
+    
+  \FunctionTok{ggsave}\NormalTok{(chart\_path,}
+         \AttributeTok{plot =}\NormalTok{ graph,}
+         \AttributeTok{height =} \DecValTok{5}\NormalTok{,}
+         \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
+         \AttributeTok{units=}\StringTok{"in"}\NormalTok{,}
+         \AttributeTok{dpi=}\DecValTok{300}\NormalTok{)}
       
-\NormalTok{ ggplot2}\SpecialCharTok{::}\FunctionTok{ggsave}\NormalTok{(chart\_path,}
-                 \AttributeTok{plot =}\NormalTok{ graph,}
-                 \AttributeTok{height =} \DecValTok{5}\NormalTok{,}
-                 \AttributeTok{width =} \DecValTok{10}\NormalTok{,}
-                 \AttributeTok{units=}\StringTok{"in"}\NormalTok{,}
-                 \AttributeTok{dpi=}\DecValTok{300}\NormalTok{)}
-      
-\NormalTok{ logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Graph saved to: "}\NormalTok{, chart\_path))}
-             
- \FunctionTok{return}\NormalTok{(graph)}
+\NormalTok{  logger}\SpecialCharTok{$}\FunctionTok{info}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Graph saved to: "}\NormalTok{, chart\_path))}
+               \FunctionTok{return}\NormalTok{(graph)}
       
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
+:::
 
 
 \backmatter

@@ -1,4 +1,4 @@
-# In line documentation {#sec-inline}
+# In line documentation
 
 ::: callout-note
 ## Key Points

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.7)  26 APR 2024 11:22
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.7)  18 JUN 2024 18:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -294,7 +294,7 @@ Package graphics Info: Driver file: xetex.def on input line 107.
 \Gin@req@width=\dimen177
 )
 
-! LaTeX Error: File `multirow.sty' not found.
+! LaTeX Error: File `tcolorbox.sty' not found.
 
 Type X to quit or <RETURN> to proceed,
 or enter new name. (Default extension: sty)
@@ -303,11 +303,11 @@ Enter file name:
 ! Emergency stop.
 <read *> 
          
-l.120 \usepackage
-                 {wrapfig}^^M 
+l.118 \@ifpackageloaded
+                       {fontawesome5}{}{\usepackage{fontawesome5}}^^M 
 Here is how much of TeX's memory you used:
  9619 strings out of 476922
- 192991 string characters out of 5804481
+ 192995 string characters out of 5804481
  1916189 words of memory out of 5000000
  31449 multiletter control sequences out of 15000+600000
  558085 words of font info for 38 fonts, out of 8000000 for 9000

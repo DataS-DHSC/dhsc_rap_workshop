@@ -1,4 +1,4 @@
-# Version Control & Git {#sec-git}
+# Version Control & Git
 
 ::: callout-note
 ## Key Points
@@ -14,13 +14,16 @@
 
 ## Git
 
-Version control is important to provide an audit trail for your work. You can see what changes have been made, when, and by who. It also means that any changes made that end up breaking your RAP can be easily reversed, and you can revert to a working version.
+Version control is important to provide an audit trail for your work. You can see what changes have been made, when, and by who. It also means that any changes made that end up breaking your RAP can be easily reversed, and you can revert to a working version. The RAP template automatically enables git support.
 
 Git is open source software that handles version control, and is the most widely used system. It is most commonly used through the command line, but there a are GUI options available.
 
 Now we have the template for our RAP we should add it to a Git repository, or repo.
 
 A thorough explanation of Git commands is beyond the scope of this book but there is a lot of separate training available. [Here](https://education.github.com/git-cheat-sheet-education.pdf) is a cheat sheet to give a quick overview of Git commands.
+
+::: {.callout-note collapse="true"}
+## Install Git and Configure Github
 
 ### Install Git
 
@@ -41,6 +44,8 @@ Once you have done this, you will need to:
 -   Check *Enable version control interface for Rstudio projects*.
 -   Set the path to the path given when using the `where git` command in the terminal.
 -   Check *use Git bash as shell for Git projects*.
+
+RStudio has a git pane in the top right corner. This lets you see the changes you have yet to commit, which branch you are working in, and provides a GUI interface for comitting and pushing changes.
 
 ## Github
 
@@ -83,12 +88,15 @@ From your GitHub browser window, you will need to copy the two lines of code fro
 Back in RStudio, make sure RStudio is using your new project as the working directory, and ensure the `Git` tab is available in the top right window. (This is the window that also contains the `Environment` and `History` tabs, among others.)
 
 Open `Tools > Shell` again, and paste in the two lines of code you copied from GitHub. Press enter or return to finish. Your repository, and all its template files, should now be available within the online repository.
+:::
 
 ## Using Git and Github in DHSC
 
-It is best practice to do as much of your coding in the open as possible. However in DHSC we often use sensitive data that cannot be in the public domain, and some that should not be shared to servers outside of the DHSC estate. This means that is important to keep data and sensitive parameters off of Github. This does make sharing your projects more difficult as these must be stored elsewhere.
+Github is an important tool for version control and collaborative working, but it is important to keep the most up to date working version of your code - the production version - on Sharepoint. The recommended workflow is to checkout the main branch from Github into a shared folder project folder alongside other project documentation, data, etc. Analysts will clone the main branch from Github on to their local machine, and make any changes on a branch. When these changes have been QA'd, they will be merged into the main branch. The production version of the code in the shared folver will then be updated with these new changes.
 
-The solution to this that we recommend is keeping an up to date version of your main branch saved on in a shared drive on Sharepoint, along with your data and parameters. As you make changes, and push them to your main branch, you should pull these changes into this shared drive. The team members working on the project can clone the repo from Github, copy the data from the Sharepoint version into their local repo and do their work, pushing changes back up to Github.
+You should save your repos in the DHSC organisation on Github, rather than your personal area. This will help with knowledge management, and prevent any issues if you ever leave the organisation.
+
+It is best practice to do as much of your coding in the open as possible. However in DHSC we often use sensitive data that cannot be in the public domain, and should not be shared to servers outside of the DHSC estate. This means that is important to keep data and sensitive parameters off of Github. The most up to date versions of the data and parameters can be saved alongside the production code in a shared folder. These can then be copied into your local branch to work on the code.
 
 Files can be prevented from being pushed into a Git rep using a file called `.gitingore`. This is a list of files that will not be pushed with your code. It can refer to specific files, or to all files with a particular extension.
 
@@ -139,6 +147,7 @@ The template gives you the below `.gitignore` file.
         docs
         
         
+
 ::: callout-note
 ## Exercise: Upload your project to Github
 
@@ -148,4 +157,3 @@ In this section, you'll set up a project template of your own. Using any require
 
 2.  Upload your project to Github
 :::
-

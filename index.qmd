@@ -14,7 +14,11 @@ documentclass: book
 It is important for analysis to be reproducible. Different analysts using the same methods with the same data should get the same results.
 :::
 
-RAP is a way of using software engineering techniques to improve the reproducibility of your analysis. By minimising manual steps, using version control , and producing good documentation analysis can be higher quality, reproducible, reuseable and more efficient. Applying RAP principles helps you comply with the requirements in the [AQUA book](https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government) for good quality assurance, and was recommended in the [Goldacre Review](https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis) into using health data for research and analysis.
+RAP is a way of using software engineering techniques to improve the reproducibility of your analysis. By minimising manual steps, using version control , and producing good documentation analysis can be higher quality, reproducible, reusable and more efficient.
+
+In 2022 the Government Analysis Function published it's [RAP Strategy](https://analysisfunction.civilservice.gov.uk/policy-store/reproducible-analytical-pipelines-strategy/). This set out it's vision for more efficient and high quality analysis, using RAP to achieve this.
+
+Applying RAP principles helps you comply with the requirements in the [AQUA book](https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government) for good quality assurance, and was recommended in the [Goldacre Review](https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis) into using health data for research and analysis.
 
 The key advantages of RAP are:
 
@@ -28,7 +32,13 @@ The key advantages of RAP are:
 
 -   Analysis that is easier to adapt and reuse
 
+In a RAP your code, data, and configuration are separated. This allows you to: apply code to updated data sets without needing to alter it; easily update model parameters without code changes; selectively publish code without exposing sensitive data or model parameters.
+
 In DHSC we have a variety of tools to help develop and implement RAPs into your work. This book aims to familiarise yourself these tools and fundamentals of RAP.
+
+**Not all RAPs will include all of the below, but we should aspire to meet as much as possible and appropriate. We will cover the majority of the above in this book.**
+
+**RAP is a code agnostic approach, however this book will focus on RAP using R.** The principles are transferable to other languages, but the specifics may not be.
 
 ## What makes a good RAP?
 
@@ -36,7 +46,7 @@ In DHSC we have a variety of tools to help develop and implement RAPs into your 
 
 The best way to incorporate RAP into your work is using code, and in particular open source languages such as R or Python.
 
--   Your code will use an appropirate coding standard to ensure readability, i.e. the [Tidy style guide](https://style.tidyverse.org/).
+-   Your code will use an appropriate coding standard to ensure readability, i.e. the [Tidy style guide](https://style.tidyverse.org/).
 
 -   Your code will require minimal manual intervention to produce it's outputs.
 
@@ -74,8 +84,6 @@ To be understood and maintained by future users (including yourself!) your RAP n
 
 -   Your code will be published in the open.
 
--   Any changes to your RAP will be clearly documented and signposted, i.e. in a changelog.
+-   Any changes to your RAP will be clearly documented and signposted, i.e. in a change log.
 
-**Not all RAPs will include all of the above, but we should aspire to meet as much as possible and appropriate. We will cover the majority of the above in this book.**
-
-**RAP is a code agnostic approach, however this book will focus on RAP using R.** The principles are transferable to other languages, but the specifics may not be.
+Aspects like packaging, continuous integration, and unit testing may not be appropriate for smaller project. Similarly, it will not always be possible to publish code in the open. However all projects should be properly documented, version controlled, and adhere to coding standards.

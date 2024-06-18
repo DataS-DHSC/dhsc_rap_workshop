@@ -1,4 +1,4 @@
-# Processing Data {#sec-process}
+# Processing Data 
 
 ::: callout-note
 ## Key Points
@@ -94,21 +94,21 @@ process_data <- function(data_id, industry, geography, metric){
   logger$info(paste0("Data read from: ", data_file_path))
       
   data_time_series <- data %>%
-    dplyr::filter(!is.na(v4_1)) %>%
-    dplyr::filter(UnofficialStandardIndustrialClassification == industry) %>%
-    dplyr::filter(Geography == geography) %>%
-    dplyr::filter(GrowthRate == metric)
+    filter(!is.na(v4_1)) %>%
+    filter(UnofficialStandardIndustrialClassification == industry) %>%
+    filter(Geography == geography) %>%
+    filter(GrowthRate == metric)
         
   # set year as a number and sort by
   data_time_series_sorted <- data_time_series %>%
-    dplyr::mutate(Time = as.numeric(Time)) %>%
-    dplyr::arrange(Time)
+    mutate(Time = as.numeric(Time)) %>%
+    arrange(Time)
         
   # save data to csv
       
-  output_file_name <- paste0("output/", data_id, "_", industry, "_", metric, "_time_series_sorted.csv")
+  output_file_name <- paste0("output/", data_id, "_", industry, "_", metric, "_", geography, "_time_series_sorted.csv")
       
-  readr::write_csv(
+  write_csv(
     data_time_series_sorted,
     file = output_file_name)
         
@@ -119,12 +119,16 @@ process_data <- function(data_id, industry, geography, metric){
 }
 ```
 
+The last steps are:
+
+-   Add new functions to `librarian` line in `main.R`
+-   Add a `source` to your new function to `run_analysis.R`
+-   Add the function to your function in `run_analysis.R`
 
 ::: callout-note
 ## Exercise: Process your data
 
-1. Alter the config file to look to process your data correctly
+1.  Alter the config file to look to process your data correctly
 
-2. Run the process data script to make sure it's working correctly. Make any necessary fixes.
-
+2.  Run the process data script to make sure it's working correctly. Make any necessary fixes.
 :::

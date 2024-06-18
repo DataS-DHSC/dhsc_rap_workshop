@@ -1,7 +1,11 @@
-# Project documentation - Readme files {#sec-readme}
+# Project documentation
+
+It is important document your work. This can exist in two places, as part of you code and alongside it. With RAP you should document your project as you normally would, explaining methodology and data sources. You also need some extra documentation to explain your code.
+
+## Readme files
 
 ::: callout-note
-## Key Points
+### Key Points
 
 -   You should include a Readme file for in your RAP explaining what you have done, and how the code ca be used.
 
@@ -10,7 +14,7 @@
 
 A good Readme file is a key component of reproducible analysis and it should give users of your analysis/code sufficient information to understand what it does, and how they can install and run it without recourse to the project's original author. The Readme file is displayed on the front page of your github repository.
 
-The [Aqua book](https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government) gives guidance on what Readme files should include, which can be summarised as:
+The [Duck book](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html#) gives guidance on what Readme files should include, which can be summarised as:
 
 1.  Short statement of intent
 
@@ -30,23 +34,17 @@ Descriptions of code or data you add to your readme could potentially get into t
 
 Your Readme should describe what your RAP does, and why you have made the choices you have.
 
--   Data sources - It should be clear which data you ingest and where you take it from. This could be a URL, a file directory, or elsewhere. You should also explain the frequency with which you get your data. You may choose to describe the data formats in more detail but you might also refer or link to a specification document held elsewhere if your data or its structure is sensitive in nature.
+-   Data sources - It should be clear which data you ingest and where you take it from. The detail of this should be kept separately in your documentation, but there should be enough information here for users to understand what input data is need. You should keep in mind the sensitivity of you data.
 
--   Processing/analysis - explain how your code performs the analsysis and describe its structure because others may need to change your code. As always, we recommend you write modular, loosely coupled code, and so it may be useful to include a structure chart explaining how the code fits together (see below for a simple example). If you use complex models then provide links to the model specification so your users can understand how yours calculations are performed (this also allows you to restrict access to these specifications).
+-   Processing/analysis - explain how your code performs the analysis and describe its structure because others may need to change your code. As always, we recommend you write modular, loosely coupled code, and so it may be useful to include a structure chart explaining how the code fits together (see below for a simple example). If you use complex models then provide links to the model specification so your users can understand how yours calculations are performed (this also allows you to restrict access to these specifications). The amount of detail you include should be proportionate to the complexity of your analysis
 
--   Outputs - what are the outputs from this code, who uses them and how? If you write to files, then where is this data written to? Again, you can refer or link to a specification held elsewhere.
+-   Outputs - what are the outputs from this code? If you write to files, then where is this data written to? Again, you can refer or link to a specification held elsewhere.
 
 ### Basic installation instructions
 
-What does the user need to do to install your code - is it simply a case of cloning the git repository? It is hoped all package management is dealt with by the DHSC template (librarian) but are there other tools your user might need. This is where you specify them and how your users install them.
+What does the user need to do to install your code - is it simply a case of cloning the git repository? It is hoped all package management is dealt with by the DHSC template (librarian) but are there other tools your user might need. This is where you specify them and how your users install them. This is also the place to explain where inputs should be saved, as they should not be part of the repo on Github.
 
-### Example usage
-
-The default behavior for projects built using the DHSC template is for you to source the main.R function and for this script to then orchestrate all subsequent processing. However, you may specify that the user updates the config.yml file to locate source data and identify where to write outputs.
-
--   log.txt - progress and errors encountered should all be logged to log.txt and so you may wish to tell users what to look for, e.g. particular warning or error messages, messages to say processing has finished successfully, etc.
-
-## Using markdown to describe your code
+### Using markdown to describe your code
 
 The Readme file uses RMarkdown which is a language you can use to add formatting elements to plain text documents. It is can be very useful when you want to emphasise or illustrate important aspects of your code or model.
 
@@ -55,7 +53,7 @@ Use one or more '\#' to create headers, e.g.
 ::: {.panel-tabset .nav-pills}
 ### Visual
 
-#### Header 3
+#### Header
 
 -   bullet point
     -   indented bullet point
@@ -63,40 +61,81 @@ Use one or more '\#' to create headers, e.g.
 1.  numbered list
 2.  numbered list second item
 
-#### Table 3.1
-
-| Sharepoint folder | Content category                           |
-|-------------------|:-------------------------------------------|
-| input_data        | For data that will need to be preprocessed |
-| interim_data      | For compliant data                         |
-
 #### Image 3.2
 
 ![Usage](images/main_flow.jpg)
 
 ### Source
 
-`#### Header 3`
+`#### Header`
 
 `-   bullet point` `-   indented bullet point`
 
 `1.  numbered list` `2.  numbered list second item`
-
-`#### Table 3.1`
-
-`| Sharepoint folder | Content category                           |` `|-------------------|:-------------------------------------------|` `| input_data        | For data that will need to be preprocessed |` `| interim_data      | For compliant data                         |`
 
 `#### Image 3.2`
 
 `![Usage](./main_flow.jpg)`
 :::
 
-
 ::: callout-note
-## Exercise: set up your README
+### Exercise: set up your README
 
 1.  Start your Readme document, setting out what you plan to do.
 
-2. Keep your Readme up to date throughout subsequent steps.
-
+2.  Keep your Readme up to date throughout subsequent steps.
 :::
+
+## In line documentation {#sec-inline}
+
+::: callout-note
+### Key Points
+
+-   You should comment your code, and keep the comments updated
+
+-   Roxygen is a great way to document your functions
+:::
+
+It's important to add comments to your code to help future users (including yourself) understand how your code works, and why you have made the decisions you have.
+
+Having documentation in the same place as your code is important as you cannot guarantee users of your code will read all the other documentation you have put together, and comments ensure they will know what your code does.
+
+Your comments don't need to explain what each line does, you should be writing code in a way that is readable for other users. You should be describing why you have written things in the way you have if you don't think it will be obvious.
+
+It's important to keep comments up to date as you refactor your code. Comments that were once useful will become actively unhelpful if they do not match the code they are with.
+
+### Roxygen2
+
+As discussed in earlier chapters, it is best practice to divide your code up into discrete functions, taking care of specific bits of your analysis.
+
+These functions should be documented, explaining what they do, the arguments the function takes, what is returned, and potentially an example usage.
+
+Roxygen2 helps you write consistent in line documentation for your functions, making sure all the information needed is recorded. It can also automatically transform your comments into a useful document, which is particularly useful if you plan on turning your RAP into a package.
+
+### Basic Structure
+
+Roxygen2 is written around functions, and describing the arguments and outputs.There is a specific syntax needed for these comments which are slightly different to normal.
+
+Below is an example simple function, showing how to format roxygen2 comments.
+
+```{r eval=FALSE}
+' Add together two numbers
+# This fuction adds two numbers together and returns the result
+
+#' \@param x A number.
+#' \@param y A number.
+#' \@return A number.
+#' \@examples
+#' add(1, 1)
+#' add(10, 1)
+
+add_together_two_numbers <- function(x, y) {
+
+z = x + y
+
+return(z)
+
+}
+```
+
+Once you have added roxygen2 comments to your code there are several ways to produce your documentation. You can use `roxygen2::roxygenise()` or `devtools::document()` to run roxygen. Alternatively, as the template looks like a package to RStudio, you can go to Build \> Document. This will create a new folder called \`man\` and a file called \`add.Rd\` that will contain a formatted version of your comments.

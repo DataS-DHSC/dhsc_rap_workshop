@@ -11,13 +11,13 @@ book:
     - 02 RAP template.qmd
     - 03 github.qmd
     - 04 readme.qmd
-    - 05 inline.qmd
     - 06 logging.qmd
     - 07 ingest data.qmd
     - 08 process data.qmd
     - 09 plot data.qmd
     - 10 QA.qmd
     - 11 Example files.qmd
+  number-depth: 1
 
 bibliography: references.bib
 
