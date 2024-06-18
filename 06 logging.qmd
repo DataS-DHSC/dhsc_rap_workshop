@@ -3,13 +3,9 @@
 ::: callout-note
 ## Key Points
 
--   Version control your RAP using Git
+-   Logging allows you to keep track of how your scripts run.
 
--   Use Github to collaborate on your RAP
-
--   Do not push your data or sensitive parameters to Github
-
--   Keep an up to date version of your RAP and your data on Sharepoint.
+-   Logging helps debugging when you get errors or unexpected results.
 :::
 
 If we are going to batch run scripts, or set them to run automatically, we need a way of recording what they are doing, whether they have run correctly, and any issues that have occurred. To do this we use logging.
