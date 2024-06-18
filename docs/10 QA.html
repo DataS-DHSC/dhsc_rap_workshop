@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>DHSC RAP WORKSHOP GUIDE - 10&nbsp; QA Documentation Toolkit</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./11 Example files.html" rel="next">
+<link href="./09 plot data.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">QA Documentation Toolkit</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DHSC RAP WORKSHOP GUIDE</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">RAP Workshop</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01 summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02 RAP template.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">DHSC RAP Template</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03 github.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Version Control &amp; Git</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04 readme.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Project documentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06 logging.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Logging</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07 ingest data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Downloading data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08 process data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Processing Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09 plot data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Plotting data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10 QA.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">QA Documentation Toolkit</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11 Example files.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Example scripts</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#code-qa" id="toc-code-qa" class="nav-link active" data-scroll-target="#code-qa"><span class="toc-section-number">10.1</span>  Code QA</a></li>
+  <li><a href="#qa-documentation-toolkit" id="toc-qa-documentation-toolkit" class="nav-link" data-scroll-target="#qa-documentation-toolkit"><span class="toc-section-number">10.2</span>  QA documentation toolkit</a>
+  <ul class="collapse">
+  <li><a href="#summary-page" id="toc-summary-page" class="nav-link" data-scroll-target="#summary-page"><span class="toc-section-number">10.2.1</span>  Summary Page</a></li>
+  <li><a href="#code-summary-page" id="toc-code-summary-page" class="nav-link" data-scroll-target="#code-summary-page"><span class="toc-section-number">10.2.2</span>  Code Summary Page</a></li>
+  <li><a href="#checklist---code-qa-page" id="toc-checklist---code-qa-page" class="nav-link" data-scroll-target="#checklist---code-qa-page"><span class="toc-section-number">10.2.3</span>  Checklist - Code QA Page</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">QA Documentation Toolkit</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Quality Assurance is essential, as described in the <a href="https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government">AquA book</a></p></li>
+<li><p>The level of QA should be proportionate to the analytical work</p></li>
+<li><p>Code needs an extra layer of QA, set out in the <a href="https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html">Duck book</a></p></li>
+</ul>
+</div>
+</div>
+<p>Quality assurance is an essential part of all analytical work, as laid out in the <a href="https://www.gov.uk/government/publications/the-aqua-book-guidance-on-producing-quality-analysis-for-government">AquA book</a></p>
+<p>This lays out the need for proportionate analytical quality assurance to ensure that analysis and supporting model, data and assumptions are fit-for-purpose. The main QA principles should be applied to all projects:</p>
+<ul>
+<li>Governance and Oversight</li>
+<li>Documentation</li>
+<li>Structure and Clarity</li>
+<li>Data and Assumptions</li>
+<li>Validation - Am I building the right product?</li>
+<li>Verification - Am I building the product right?</li>
+</ul>
+<p>For more information on QA in general, please refer to the AQuA book, or departmental AQA training (e.g.&nbsp;Analyst Academy sessions).</p>
+<section id="code-qa" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="code-qa"><span class="header-section-number">10.1</span> Code QA</h2>
+<p>For projects using code and using this RAP template, you will need a different approach to the verification aspect of QA. The other QA is still required for <strong>all</strong> projects to a proportionate level.</p>
+<p>Best practice guidance for code QA can be found in the ‘Duck book’: <a href="https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html">Quality assurance of code for analysis and research</a></p>
+<p>This includes a QA checklist that this guidance is based on.</p>
+</section>
+<section id="qa-documentation-toolkit" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="qa-documentation-toolkit"><span class="header-section-number">10.2</span> QA documentation toolkit</h2>
+<p>The QA documentation toolkit has been developed from the guidance in the Duck book to provide a template for determining the appropriate level of QA for your project and checking the aspects to be completed.</p>
+<section id="summary-page" class="level3" data-number="10.2.1">
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="summary-page"><span class="header-section-number">10.2.1</span> Summary Page</h3>
+<p>The first page is a summary page that describes the different levels of the QA template to use dependent on risk.</p>
+<p>There are two risk dimensions:</p>
+<ul>
+<li>Code complexity (more complex code requires a higher level of QA)</li>
+<li>Centrality to decision making processes (if an error in the analysis will have significant impacts on patient care, or financial, legal, reputational or operational impacts, it will require a higher level of QA)</li>
+</ul>
+<p>There are three levels of QA described:</p>
+<ul>
+<li>Light-touch QA, e.g.&nbsp;for ad-hoc one off analysis or data request.
+<ul>
+<li>Code is straightforward with few modules and functions</li>
+<li>Code will not be used for key decision making or frequently relied on to provide results</li>
+</ul></li>
+<li>Moderate QA e.g.&nbsp;for submissions, internal dashboards or briefings
+<ul>
+<li>Moderately complex code involving multiple scripts and dependencies</li>
+<li>Code may be used to inform key decision making but there is low to moderate residual risk associated with its use</li>
+</ul></li>
+<li>Developed QA e.g.&nbsp;for Public facing dashboards, published statistics ministerial dashboards or Impact Assessments
+<ul>
+<li>Highly complex code with a large number of scripts and dependencies</li>
+<li>Code will be used for key decision making or frequently relied on to provide results</li>
+</ul></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%20QA%20toolkit%20summary%20page.png" class="img-fluid figure-img" alt="Screenshot of the summary page of the QA toolkit"></p>
+<p></p><figcaption class="figure-caption">Screenshot of the summary page of the QA toolkit</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="code-summary-page" class="level3" data-number="10.2.2">
+<h3 data-number="10.2.2" class="anchored" data-anchor-id="code-summary-page"><span class="header-section-number">10.2.2</span> Code Summary Page</h3>
+<p>This page of the toolkit requires you to record details of the code such as it’s location, the QA requestor and the responsible analyst.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%20QA%20toolkit%20code%20summary%20page.png" class="img-fluid figure-img" alt="Screenshot of the code summary page of the QA toolkit"></p>
+<p></p><figcaption class="figure-caption">Screenshot of the code summary page of the QA toolkit</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="checklist---code-qa-page" class="level3" data-number="10.2.3">
+<h3 data-number="10.2.3" class="anchored" data-anchor-id="checklist---code-qa-page"><span class="header-section-number">10.2.3</span> Checklist - Code QA Page</h3>
+<p>The QA checklist is found on the final page of the toolkit.<br>
+On the left hand side it has a list of QA checks to be completed. These are split into 8 sections:</p>
+<ol type="1">
+<li>Code follows best practice and includes logging</li>
+<li>Code is modularised/packaged, to aid maintainability, and has a clear structure<br>
+</li>
+<li>Code is documented and well commented (explaining the why not what) and these are maintained/accessible</li>
+<li>README and project files present and complete</li>
+<li>Code is under version control and CI leveraged if appropriate</li>
+<li>Configuration and data management are in place</li>
+<li>Code is reviews and signed-off with unit testing used where appropriate</li>
+<li>All dependencies and environment settings are documented and minimised</li>
+</ol>
+<p>If you are familiar enough with what needs to be covered under these headings, it may not be necessary to fill out every line of the checklist. The level of detail you provide as QAer should be proportionate to the level of QA required e.g.&nbsp;light touch QA of an ad hoc piece of analysis may only require a brief summary under each of the 8 headings above.</p>
+<p>The checklist asks you to complete the following information:</p>
+<ul>
+<li>Contact of person who performed the check</li>
+<li>Date QA performed</li>
+<li>Current status (e.g.&nbsp;are there any issues?)</li>
+<li>Work to be done to improve assurance or quality (actions suggested by code QA reviewer)</li>
+<li>Date improvements/minor fixes implemented and re-checked (major changes should require new QA)</li>
+</ul>
+<p>On the right hand side the checklist shows which checks must be completed dependent on the level of QA needed (identified from the information on the summary page): All (levels), Moderate &amp; Developed (levels only) or Developed (level only).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%20QA%20toolkit%20checklist%20page.png" class="img-fluid figure-img" alt="Screenshot of the QA checklist page of the QA toolkit"></p>
+<p></p><figcaption class="figure-caption">Screenshot of the QA checklist page of the QA toolkit</figcaption><p></p>
+</figure>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./09 plot data.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Plotting data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./11 Example files.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Example scripts</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
