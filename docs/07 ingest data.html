@@ -303,23 +303,19 @@ output_dir: ./output</code></pre>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># request the data dictionary from the ONS api endpoint</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>path <span class="ot">&lt;-</span> config<span class="sc">$</span>data_dictionary_url</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> path)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                 <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                 <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                 <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links.latest_version.href,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                 <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links.self.href,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                 <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi.href)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">read_json</span>(path, <span class="at">simplifyVector =</span> T)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>latest_version<span class="sc">$</span>href,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>self<span class="sc">$</span>href,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi<span class="sc">$</span>href)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The data dictionary contents are shown below</p>
 <div class="cell">
@@ -649,56 +645,53 @@ Note on data sources: England, Wales, Scotland and Northern Ireland independentl
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># request the data dictionary from the ONS api endpoint</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      path <span class="ot">&lt;-</span> config<span class="sc">$</span>data_dictionary_url</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> path)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>          </span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>      content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>      logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                       <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                       <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                       <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>                       <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>                       <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links.latest_version.href,</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>                       <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links.self.href,</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>                       <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi.href)</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a> file_latest_version <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(id <span class="sc">==</span> data_id) <span class="sc">%&gt;%</span></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a> <span class="fu">select</span>(links_latest_versions) <span class="sc">%&gt;%</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a> <span class="fu">pull</span>()</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Using the links_latest_versions we can get the meta data for the latest file</span></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and this meta data includes the url for the latest file in either csv or xlsx</span></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># format. We choose .csv here. Extract it from downloads$csv$href</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> file_latest_version)</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, file_latest_version))</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>  content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten=</span><span class="cn">TRUE</span>)</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  file_url <span class="ot">&lt;-</span> content_flat<span class="sc">$</span>downloads<span class="sc">$</span>csv<span class="sc">$</span>href</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">read_json</span>(path, <span class="at">simplifyVector =</span> T)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                   <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>latest_version<span class="sc">$</span>href,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>self<span class="sc">$</span>href,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                   <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi<span class="sc">$</span>href)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a> file_latest_version <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(id <span class="sc">==</span> data_id) <span class="sc">%&gt;%</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a> <span class="fu">select</span>(links_latest_versions) <span class="sc">%&gt;%</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a> <span class="fu">pull</span>()</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Using the links_latest_versions we can get the meta data for the latest file</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and this meta data includes the url for the latest file in either csv or xlsx</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># format. We choose .csv here. Extract it from downloads$csv$href</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> file_latest_version)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, file_latest_version))</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  file_url <span class="ot">&lt;-</span> content_flat<span class="sc">$</span>downloads<span class="sc">$</span>csv<span class="sc">$</span>href</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Read data from latest file endpoint</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  df_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_url)</span>
 <span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Read data from latest file endpoint</span></span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>  df_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_url)</span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>  data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, data_id, <span class="st">".csv"</span>)</span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(df_data, data_filepath)</span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data_filepath)</span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, data_id, <span class="st">".csv"</span>)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(df_data, data_filepath)</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data_filepath)</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The last steps are:</p>
 <ul>

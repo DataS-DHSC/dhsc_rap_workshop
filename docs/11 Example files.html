@@ -325,7 +325,7 @@ ylab : "Annual growth rate (%)"</code></pre>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Downloads a csv from the ONS API, and saves to input folder}</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Downloads a csv from the ONS API, and saves to input folder</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
@@ -340,56 +340,53 @@ ylab : "Annual growth rate (%)"</code></pre>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># request the data dictionary from the ONS api endpoint</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      path <span class="ot">&lt;-</span> config<span class="sc">$</span>data_dictionary_url</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> path)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>          </span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                       <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                       <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                       <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                       <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                       <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links.latest_version.href,</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>                       <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links.self.href,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>                       <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi.href)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a> file_latest_version <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(id <span class="sc">==</span> data_id) <span class="sc">%&gt;%</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a> <span class="fu">select</span>(links_latest_versions) <span class="sc">%&gt;%</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a> <span class="fu">pull</span>()</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Using the links_latest_versions we can get the meta data for the latest file</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and this meta data includes the url for the latest file in either csv or xlsx</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># format. We choose .csv here. Extract it from downloads$csv$href</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> file_latest_version)</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, file_latest_version))</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten=</span><span class="cn">TRUE</span>)</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  file_url <span class="ot">&lt;-</span> content_flat<span class="sc">$</span>downloads<span class="sc">$</span>csv<span class="sc">$</span>href</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">read_json</span>(path, <span class="at">simplifyVector =</span> T)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                   <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>latest_version<span class="sc">$</span>href,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>self<span class="sc">$</span>href,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                   <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi<span class="sc">$</span>href)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a> file_latest_version <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(id <span class="sc">==</span> data_id) <span class="sc">%&gt;%</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a> <span class="fu">select</span>(links_latest_versions) <span class="sc">%&gt;%</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a> <span class="fu">pull</span>()</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Using the links_latest_versions we can get the meta data for the latest file</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and this meta data includes the url for the latest file in either csv or xlsx</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># format. We choose .csv here. Extract it from downloads$csv$href</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> file_latest_version)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, file_latest_version))</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten=</span><span class="cn">TRUE</span>)</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  file_url <span class="ot">&lt;-</span> content_flat<span class="sc">$</span>downloads<span class="sc">$</span>csv<span class="sc">$</span>href</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Read data from latest file endpoint</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  df_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_url)</span>
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Read data from latest file endpoint</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  df_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_url)</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, data_id, <span class="st">".csv"</span>)</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(df_data, data_filepath)</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data_filepath)</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>  data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, data_id, <span class="st">".csv"</span>)</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(df_data, data_filepath)</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data_filepath)</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">

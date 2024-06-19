@@ -61,23 +61,21 @@ library(jsonlite)
 # request the data dictionary from the ONS api endpoint
 path <- config$data_dictionary_url
 
-request <- GET(url = path)
-      
-content <- rawToChar(request$content)
-      
-content_flat <- fromJSON(content, flatten = TRUE) 
-      
-logger$info(paste0("Response recieved from: ", path))
-      
-# create a dataframe with the downloaded data dictionary to what data is available
-df <- data.frame(id = content_flat$items$id,
-                 title = content_flat$items$title,
-                 release_frequency = content_flat$items$release_frequency,
-                 next_release = content_flat$items$next_release,
-                 description = content_flat$items$description,
-                 links_latest_versions = content_flat$items$links.latest_version.href,
-                 links_self_href= content_flat$items$links.self.href,
-                 qmi_href= content_flat$items$qmi.href)
+  content_flat <- read_json(path, simplifyVector = T)
+
+  logger$info(paste0("Response recieved from: ", path))
+
+  # create a dataframe with the downloaded data dictionary to what data is available
+  df <- data.frame(id = content_flat$items$id,
+                   title = content_flat$items$title,
+                   release_frequency = content_flat$items$release_frequency,
+                   next_release = content_flat$items$next_release,
+                   description = content_flat$items$description,
+                   links_latest_versions = content_flat$items$links$latest_version$href,
+                   links_self_href= content_flat$items$links$self$href,
+                   qmi_href= content_flat$items$qmi$href)
+
+
 ```
 
 The data dictionary contents are shown below
@@ -152,24 +150,22 @@ download_data_from_ons <- function(data_id){
 
     # request the data dictionary from the ONS api endpoint
       path <- config$data_dictionary_url
-    
-      request <- GET(url = path)
-            
-      content <- rawToChar(request$content)
-          
-      content_flat <- fromJSON(content, flatten = TRUE) 
-            
-      logger$info(paste0("Response recieved from: ", path))
-            
-        # create a dataframe with the downloaded data dictionary to what data is available
-      df <- data.frame(id = content_flat$items$id,
-                       title = content_flat$items$title,
-                       release_frequency = content_flat$items$release_frequency,
-                       next_release = content_flat$items$next_release,
-                       description = content_flat$items$description,
-                       links_latest_versions = content_flat$items$links.latest_version.href,
-                       links_self_href= content_flat$items$links.self.href,
-                       qmi_href= content_flat$items$qmi.href)
+
+  content_flat <- read_json(path, simplifyVector = T)
+
+  logger$info(paste0("Response recieved from: ", path))
+
+  # create a dataframe with the downloaded data dictionary to what data is available
+  df <- data.frame(id = content_flat$items$id,
+                   title = content_flat$items$title,
+                   release_frequency = content_flat$items$release_frequency,
+                   next_release = content_flat$items$next_release,
+                   description = content_flat$items$description,
+                   links_latest_versions = content_flat$items$links$latest_version$href,
+                   links_self_href= content_flat$items$links$self$href,
+                   qmi_href= content_flat$items$qmi$href)
+
+
       
       
  file_latest_version <- df %>%
