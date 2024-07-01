@@ -1,4 +1,4 @@
-# Plotting data 
+# Plotting data
 
 ::: callout-note
 ## Key Points
@@ -24,8 +24,8 @@ We use DHSC colours, which are a part of the `DHSCtools` package. We can add thi
 # plot
 
 ggplot(data = data_time_series_sorted,
-       aes(Time,
-           config$metric,
+       aes(x = Time,
+           y = v4_1,
            colour = config$industry)) +
   DHSCcolours::theme_dhsc() +
   geom_line(linewidth = 1) +
@@ -79,9 +79,9 @@ Again we should wrap this all up in a function to be called from the `run_analys
 ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, ylab){
 
   graph <- ggplot(data = data_time_series_sorted,
-         aes(Time,
-             metric,
-             industry)) +
+                  aes(x = Time,
+                      y = v4_1,
+                      colour = industry)) +
     DHSCcolours::theme_dhsc() +
     geom_line(linewidth = 1) +
     geom_point(size = 3) +
@@ -93,22 +93,21 @@ ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, yl
       x = xlab,
       y = ylab) +
     scale_x_continuous(breaks=seq(2013,2021,1))
-        
-        
+
+
   #save chart
   chart_path <- paste0("./output/", metric, "_", industry, "_chart.svg")
-    
+
   ggsave(chart_path,
          plot = graph,
          height = 5,
          width = 10,
          units="in",
          dpi=300)
-      
+
   logger$info(paste0("Graph saved to: ", chart_path))
-             
   return(graph)
-      
+
 }
 ```
 
