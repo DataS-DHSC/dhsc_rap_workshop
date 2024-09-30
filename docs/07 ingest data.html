@@ -222,9 +222,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#data-setup-and-loading-ons-meta-data" id="toc-data-setup-and-loading-ons-meta-data" class="nav-link active" data-scroll-target="#data-setup-and-loading-ons-meta-data"><span class="toc-section-number">7.1</span>  Data setup and loading ONS meta data</a></li>
   <li><a href="#get-a-list-of-data-that-can-be-extracted-using-this-ons-api-endpoint" id="toc-get-a-list-of-data-that-can-be-extracted-using-this-ons-api-endpoint" class="nav-link" data-scroll-target="#get-a-list-of-data-that-can-be-extracted-using-this-ons-api-endpoint"><span class="toc-section-number">7.2</span>  Get a list of data that can be extracted using this ONS API endpoint</a></li>
-  <li><a href="#get-the-url-for-the-latest-release-of-a-specified-ons-file" id="toc-get-the-url-for-the-latest-release-of-a-specified-ons-file" class="nav-link" data-scroll-target="#get-the-url-for-the-latest-release-of-a-specified-ons-file"><span class="toc-section-number">7.3</span>  Get the URL for the latest release of a specified ONS file</a></li>
-  <li><a href="#now-we-have-the-file-url-we-can-read-it-like-any-other-file" id="toc-now-we-have-the-file-url-we-can-read-it-like-any-other-file" class="nav-link" data-scroll-target="#now-we-have-the-file-url-we-can-read-it-like-any-other-file"><span class="toc-section-number">7.4</span>  Now we have the file url we can read it like any other file</a></li>
-  <li><a href="#wrap-in-function" id="toc-wrap-in-function" class="nav-link" data-scroll-target="#wrap-in-function"><span class="toc-section-number">7.5</span>  Wrap in function</a></li>
+  <li><a href="#now-we-have-the-file-url-we-can-read-it-like-any-other-file" id="toc-now-we-have-the-file-url-we-can-read-it-like-any-other-file" class="nav-link" data-scroll-target="#now-we-have-the-file-url-we-can-read-it-like-any-other-file"><span class="toc-section-number">7.3</span>  Now we have the file url we can read it like any other file</a></li>
+  <li><a href="#wrap-in-function" id="toc-wrap-in-function" class="nav-link" data-scroll-target="#wrap-in-function"><span class="toc-section-number">7.4</span>  Wrap in function</a></li>
   </ul>
 </nav>
     </div>
@@ -270,428 +269,175 @@ Key Points
 <h2 data-number="7.1" class="anchored" data-anchor-id="data-setup-and-loading-ons-meta-data"><span class="header-section-number">7.1</span> Data setup and loading ONS meta data</h2>
 <p>We start by adding the packages we will be using to the <code>main.R</code> script. Keeping the reading of your packages central means you only need to do it once.</p>
 <p>We can use the librarian package to manage installation and reading of our packages. It handles the installation of packages from a variety of sources, so if you are using a packages from Github as well as CRAN, the process is streamlined.</p>
-<p>The below code adds the packages we will need for the data ingest process. It loads <code>httr</code> and <code>jsonlite</code> for interacting with the api and it’s response, <code>dplyr</code> for manipulating data, and <code>DHSClogger</code> from the DHSC Data Science Github for logging. We use the <code>stock</code> function here which makes sure they’re installed, but doesn’t load them. We load the packages at the top of the scripts in which they are used.</p>
+<p>The below code adds the packages we will need for the data ingest process. It loads <code>httr2</code> for interacting with the api, <code>purrr</code> for simplifying the response, <code>dplyr</code> and <code>tidyr</code> for manipulating data, and <code>DHSClogger</code> from the DHSC Data Science Github for logging. We use the <code>stock</code> function here which makes sure they’re installed, but doesn’t load them. We load the packages at the top of the scripts in which they are used.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"librarian"</span>)) <span class="fu">install.packages</span>(<span class="st">"librarian"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">stock</span>(readr, httr2, jsonlite, dplyr, DataS<span class="sc">-</span>DHSC<span class="sc">/</span>DHSClogger)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required namespace: librarian</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+  The 'cran_repo' argument in shelf() was not set, so it will use
+  cran_repo = 'https://cran.r-project.org' by default.
+
+  To avoid this message, set the 'cran_repo' argument to a CRAN
+  mirror URL (see https://cran.r-project.org/mirrors.html) or set
+  'quiet = TRUE'.</code></pre>
+</div>
 </div>
 <p>It is best practice to define parameters needed in your code in configuration files outside of the scripts themselves. This means you don’t have to touch the code when you need to change any parameter values.</p>
 <p>In the DHSC Template, the main configuration file sits in the ./input directory and is called <code>config.yml</code>. A YAML is a human readable data serialization language, it is a useful method for storing parameters in an easily understandable way.</p>
-<p>The below parameters are the ones we will use to access data from the ONS api.</p>
+<p>The below parameters are the ones we will use to access data from the ONS api. Some code below shows how we find appropriate values.</p>
 <pre><code>data_dictionary_url: "https://api.beta.ons.gov.uk/v1/datasets"
 data_id: "regional-gdp-by-year"
+data_url: https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year/editions/time-series/versions/6
 input_dir: ./input
 output_dir: ./output</code></pre>
 <p>For our script to use the values stored in <code>config.yml</code> we need to read it in. We add this to a script called <code>run_analysis.R</code>, which is the script from which we run our analysis. We will source the scripts we srite to do the work here, and run the functions we create.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in configuration</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>config_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"input"</span>, <span class="st">"config.yml"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>config <span class="ot">&lt;-</span> yaml<span class="sc">::</span><span class="fu">read_yaml</span>(config_path)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># print the config file details</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(config)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data_dictionary_url
+[1] "https://api.beta.ons.gov.uk/v1/datasets"
+
+$data_id
+[1] "regional-gdp-by-year"
+
+$data_url
+[1] "https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year/editions/time-series/versions/6"
+
+$input_dir
+[1] "./input"
+
+$output_dir
+[1] "./output"
+
+$industry
+[1] "Q: Human health and social work activities"
+
+$geography
+[1] "England"
+
+$metric
+[1] "Annual growth rate"
+
+$chart_title
+[1] "Annual growth rate of Human health and social work activities, England"
+
+$subtitle
+[1] "2013 to 2021"
+
+$xlab
+[1] "Year"
+
+$ylab
+[1] "Annual growth rate (%)"</code></pre>
+</div>
 </div>
 </section>
 <section id="get-a-list-of-data-that-can-be-extracted-using-this-ons-api-endpoint" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="get-a-list-of-data-that-can-be-extracted-using-this-ons-api-endpoint"><span class="header-section-number">7.2</span> Get a list of data that can be extracted using this ONS API endpoint</h2>
-<p>We pass the data_dictionary_url to a GET function to download a list of available data.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load packages</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr2)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># request the data dictionary from the ONS api endpoint</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>path <span class="ot">&lt;-</span> config<span class="sc">$</span>data_dictionary_url</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">read_json</span>(path, <span class="at">simplifyVector =</span> T)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>latest_version<span class="sc">$</span>href,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>self<span class="sc">$</span>href,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi<span class="sc">$</span>href)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The data dictionary contents are shown below</p>
+<p>We use the data_dictionary_url to a request a list of available data.</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>New names:
-Rows: 20 Columns: 9
-── Column specification
-──────────────────────────────────────────────────────── Delimiter: "," chr
-(8): id, title, release_frequency, next_release, description, links_late... dbl
-(1): ...1
-ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-Specify the column types or set `show_col_types = FALSE` to quiet this message.
-• `` -&gt; `...1`</code></pre>
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
 </div>
-<div class="cell-output-display">
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
 
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
-<thead>
-<tr>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">...1</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">id</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">title</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">release_frequency</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">next_release</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">description</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">links_latest_versions</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">links_self_href</th>
-<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">qmi_href</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">wellbeing-quarterly</td>
-<td style="text-align: center;">Quarterly personal well-being estimates</td>
-<td style="text-align: center;">Quarterly</td>
-<td style="text-align: center;">TBC</td>
-<td style="text-align: center;">Seasonally and non seasonally-adjusted quarterly estimates of life satisfaction, feeling that the things done in life are worthwhile, happiness and anxiety in the UK.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/wellbeing-quarterly/editions/time-series/versions/9</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/wellbeing-quarterly</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/wellbeing/methodologies/personalwellbeingintheukqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">wellbeing-local-authority</td>
-<td style="text-align: center;">Personal well-being estimates by local authority</td>
-<td style="text-align: center;">Annual</td>
-<td style="text-align: center;">TBC</td>
-<td style="text-align: center;">Estimates of life satisfaction, feeling that the things done in life are worthwhile, happiness and anxiety at the UK, country, regional, county, local and unitary authority level.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/wellbeing-local-authority/editions/time-series/versions/4</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/wellbeing-local-authority</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/wellbeing/methodologies/personalwellbeingintheukqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">weekly-deaths-region</td>
-<td style="text-align: center;">Deaths registered weekly in England and Wales by region</td>
-<td style="text-align: center;">Weekly</td>
-<td style="text-align: center;">24 April 2024</td>
-<td style="text-align: center;">Provisional counts of the number of deaths registered in England and Wales, by region, in the latest weeks for which data are available.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-region/editions/time-series/versions/14</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-region</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">weekly-deaths-local-authority</td>
-<td style="text-align: center;">Death registrations and occurrences by local authority and place of death</td>
-<td style="text-align: center;">Weekly</td>
-<td style="text-align: center;">17 January 2024</td>
-<td style="text-align: center;">Provisional counts of the number of deaths registered in England and Wales, including deaths involving the coronavirus (COVID-19), by local authority, health board and place of death in the latest weeks for which data are available.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-local-authority/editions/2023/versions/50</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-local-authority</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">weekly-deaths-health-board</td>
-<td style="text-align: center;">Death registrations and occurrences by health board and place of death</td>
-<td style="text-align: center;">Weekly</td>
-<td style="text-align: center;">17 January 2024</td>
-<td style="text-align: center;">Provisional counts of the number of deaths registered in Wales, by health board and place of death, in the latest weeks for which data are available.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-health-board/editions/2023/versions/50</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-health-board</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">weekly-deaths-age-sex</td>
-<td style="text-align: center;">Deaths registered weekly in England and Wales by age and sex</td>
-<td style="text-align: center;">Weekly</td>
-<td style="text-align: center;">24 April 2024</td>
-<td style="text-align: center;">Provisional counts of the number of deaths registered in England and Wales, by age and sex, in the latest weeks for which data are available.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-age-sex/editions/time-series/versions/14</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/weekly-deaths-age-sex</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/mortalitystatisticsinenglandandwalesqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">uk-spending-on-cards</td>
-<td style="text-align: center;">UK spending on credit and debit cards</td>
-<td style="text-align: center;">Weekly</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">These data series are experimental faster indicators for monitoring UK spending using debit and credit cards.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/uk-spending-on-cards/editions/time-series/versions/125</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/uk-spending-on-cards</td>
-<td style="text-align: center;">https://www.bankofengland.co.uk/payment-and-settlement/chaps-faster-indicator</td>
-</tr>
-<tr>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">uk-business-by-enterprises-and-local-units</td>
-<td style="text-align: center;">UK Business: Activity, Size and Location</td>
-<td style="text-align: center;">Annual</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">The data contained in these tables are numbers of enterprises and local units produced from a snapshot of the Inter-Departmental Business Register (IDBR) taken on 12 March 2021. This dataset contains details of the number of VAT and/or PAYE based enterprises and local units in districts, counties and unitary authorities within region and country by broad industry group.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/uk-business-by-enterprises-and-local-units/editions/2022/versions/1</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/uk-business-by-enterprises-and-local-units</td>
-<td style="text-align: center;">https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">traffic-camera-activity</td>
-<td style="text-align: center;">Traffic Camera Activity</td>
-<td style="text-align: center;">Weekly</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">Experimental dataset for business indices covering the UK as part of the real-time indicators release to help better understand economic activity and social change in the UK.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/traffic-camera-activity/editions/time-series/versions/100</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/traffic-camera-activity</td>
-<td style="text-align: center;">https://datasciencecampus.ons.gov.uk/projects/estimating-vehicle-and-pedestrian-activity-from-town-and-city-traffic-cameras/</td>
-</tr>
-<tr>
-<td style="text-align: center;">10</td>
-<td style="text-align: center;">trade</td>
-<td style="text-align: center;">Trade in goods: country by commodity</td>
-<td style="text-align: center;">Monthly</td>
-<td style="text-align: center;">12 April 2024</td>
-<td style="text-align: center;">Country by commodity data on the UK's trade in goods, including trade by all countries and selected commodities, exports and imports, non seasonally adjusted.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/trade/editions/time-series/versions/42</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/trade</td>
-<td style="text-align: center;">https://www.ons.gov.uk/economy/nationalaccounts/balanceofpayments/methodologies/uktradeqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">11</td>
-<td style="text-align: center;">tax-benefits-statistics</td>
-<td style="text-align: center;">Effects of Taxes and Benefits on Household Income</td>
-<td style="text-align: center;">Annual</td>
-<td style="text-align: center;">TBA</td>
-<td style="text-align: center;">Estimates of mean and median annual incomes in the UK, by quintile groups.
-The redistribution effects on individuals of direct and indirect taxation and benefits received in cash or kind.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics/editions/time-series/versions/3</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/tax-benefits-statistics</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/incomeandwealth/methodologies/theeffectsoftaxesandbenefitsonukhouseholdincome</td>
-</tr>
-<tr>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">suicides-in-the-uk</td>
-<td style="text-align: center;">Suicide registrations in England and Wales by local authority</td>
-<td style="text-align: center;">Annually</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">Number of suicides by local authority in England and Wales, registered from 2001.
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
 
-If you are struggling to cope, please call Samaritans for free on 116 123 (UK and ROI) or contact other sources of support, such as those listed on the NHS’s help for suicidal thoughts webpage. Support is available round the clock, every single day of the year, providing a safe place for anyone struggling to cope, whoever they are, however they feel, whatever life has done to them.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/suicides-in-the-uk/editions/2022/versions/1</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/suicides-in-the-uk</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/suicideratesintheukqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">13</td>
-<td style="text-align: center;">sexual-orientation-by-region</td>
-<td style="text-align: center;">Sexual orientation by English regions and UK countries</td>
-<td style="text-align: center;">Annual</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">Sexual orientation in the UK from 2012 to 2020 by region.
-
-Data source: Annual Population Survey, ONS
-</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-region/editions/time-series/versions/3</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-region</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/methodologies/sexualidentityukqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">14</td>
-<td style="text-align: center;">sexual-orientation-by-age-and-sex</td>
-<td style="text-align: center;">Sexual orientation by age and sex</td>
-<td style="text-align: center;">Annual</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">Sexual orientation in the UK by sex and age, 2014 to 2020.
-
-Source: Annual Population Survey, ONS</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-age-and-sex/editions/time-series/versions/3</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/sexual-orientation-by-age-and-sex</td>
-<td style="text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/methodologies/sexualidentityukqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">15</td>
-<td style="text-align: center;">retail-sales-index-large-and-small-businesses</td>
-<td style="text-align: center;">Retail sales index - large and small businesses</td>
-<td style="text-align: center;">Monthly</td>
-<td style="text-align: center;">19 April 2024</td>
-<td style="text-align: center;">Value and volume of retail sales broken down by size of business</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-large-and-small-businesses/editions/time-series/versions/24</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-large-and-small-businesses</td>
-<td style="text-align: center;">https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">retail-sales-index-all-businesses</td>
-<td style="text-align: center;">Retail sales index - all businesses</td>
-<td style="text-align: center;">Monthly</td>
-<td style="text-align: center;">19 April 2024</td>
-<td style="text-align: center;">Value and volume of retail sales for all businesses.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-all-businesses/editions/time-series/versions/24</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index-all-businesses</td>
-<td style="text-align: center;">https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">17</td>
-<td style="text-align: center;">retail-sales-index</td>
-<td style="text-align: center;">Retail sales index</td>
-<td style="text-align: center;">Monthly</td>
-<td style="text-align: center;">19 April 2024</td>
-<td style="text-align: center;">Retail sales data for Great Britain in value and volume terms, seasonally and non-seasonally adjusted.</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index/editions/time-series/versions/24</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/retail-sales-index</td>
-<td style="text-align: center;">https://www.ons.gov.uk/businessindustryandtrade/retailindustry/methodologies/retailsalesindexrsiqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">18</td>
-<td style="text-align: center;">regional-gdp-by-year</td>
-<td style="text-align: center;">Annual GDP for England, Wales and the English regions</td>
-<td style="text-align: center;">Annual</td>
-<td style="text-align: center;">TBA</td>
-<td style="text-align: center;">Annual economic activity within England, Wales and the nine English regions (North East, North West, Yorkshire and the Humber, East Midlands, West Midlands, East of England, Greater London, South East, South West).</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year/editions/time-series/versions/6</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year</td>
-<td style="text-align: center;">https://www.ons.gov.uk/economy/grossdomesticproductgdp/methodologies/grossdomesticproductgdpukregionsandcountriesqmi</td>
-</tr>
-<tr>
-<td style="text-align: center;">19</td>
-<td style="text-align: center;">regional-gdp-by-quarter</td>
-<td style="text-align: center;">Quarterly GDP for England, Wales and the English regions</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">To be announced</td>
-<td style="text-align: center;">Quarterly economic activity within England, Wales and the nine English regions (North East, North West, Yorkshire and The Humber, East Midlands, West Midlands, East of England, London, South East, South West).</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-quarter/editions/time-series/versions/6</td>
-<td style="text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-quarter</td>
-<td style="text-align: center;">https://www.ons.gov.uk/economy/grossdomesticproductgdp/methodologies/grossdomesticproductgdpukregionsandcountriesqmi</td>
-</tr>
-<tr>
-<td style="border-bottom: 2px solid grey; text-align: center;">20</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">projections-older-people-sex-ratios</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">Local authority ageing statistics, projected sex ratios for older people</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">Biennial</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">To be announced</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">Projected indicators included are derived from the published 2018-based subnational population projections for England, Wales, Scotland and Northern Ireland up to the year 2043. The indicators are the projected sex ratio for those aged 65 years and over and the projected sex ratio for those aged 85 years and over. A sex ratio shows the number of males in the population for every 100 females.
-
-This dataset has been produced by the Ageing Analysis Team for inclusion in the subnational ageing tool, which was published on July 20, 2020 (see link in Related datasets). The tool is interactive, and users can compare latest and projected measures of ageing for up to four different areas through selection on a map or from a drop-down menu. 
-
-Note on data sources: England, Wales, Scotland and Northern Ireland independently publish subnational population projections and the data available here are a compilation of these datasets. The ONS publish national level data for the UK, England, Wales and England &amp; Wales, which has been included. National level data for Scotland and Northern Ireland have been taken from their subnational population projections datasets.</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/projections-older-people-sex-ratios/editions/time-series/versions/1</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">https://api.beta.ons.gov.uk/v1/datasets/projections-older-people-sex-ratios</td>
-<td style="border-bottom: 2px solid grey; text-align: center;">https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/methodologies/subnationalpopulationprojectionsqmi</td>
-</tr>
-</tbody>
-</table>
+    intersect, setdiff, setequal, union</code></pre>
 </div>
 </div>
-</section>
-<section id="get-the-url-for-the-latest-release-of-a-specified-ons-file" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="get-the-url-for-the-latest-release-of-a-specified-ons-file"><span class="header-section-number">7.3</span> Get the URL for the latest release of a specified ONS file</h2>
-<p>ONS data files have a unique identifier and this can be used to extract the data. The id we are interested in is specified in the config file and so use that to interrogate the data dictionary. In particular, we want to extract the latest version, the url for which can be extracted from the data dictionary in the links_latest_versions field we have just created.</p>
+<p>The name, id and the url for the latest data in the data dictionary are shown below</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load packages</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>file_latest_version <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> config<span class="sc">$</span>data_id) <span class="sc">%&gt;%</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(links_latest_versions) <span class="sc">%&gt;%</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>()</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the links_latest_versions we can get the meta data for the latest file</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># and this meta data includes the url for the latest file in either csv or xlsx</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># format. We choose .csv here. Extract it from downloads$csv$href</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> file_latest_version)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, file_latest_version))</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>content_flat <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(content, <span class="at">flatten=</span><span class="cn">TRUE</span>)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>file_url <span class="ot">&lt;-</span> content_flat<span class="sc">$</span>downloads<span class="sc">$</span>csv<span class="sc">$</span>href</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 3
+   id                                            title                     value
+   &lt;chr&gt;                                         &lt;chr&gt;                     &lt;chr&gt;
+ 1 wellbeing-quarterly                           Quarterly personal well-… http…
+ 2 wellbeing-local-authority                     Personal well-being esti… http…
+ 3 weekly-deaths-region                          Deaths registered weekly… http…
+ 4 weekly-deaths-local-authority                 Death registrations and … http…
+ 5 weekly-deaths-health-board                    Death registrations and … http…
+ 6 weekly-deaths-age-sex                         Deaths registered weekly… http…
+ 7 uk-spending-on-cards                          UK spending on credit an… http…
+ 8 uk-business-by-enterprises-and-local-units    UK Business: Activity, S… http…
+ 9 traffic-camera-activity                       Traffic Camera Activity   http…
+10 trade                                         Trade in goods: country … http…
+11 tax-benefits-statistics                       Effects of Taxes and Ben… http…
+12 suicides-in-the-uk                            Suicide registrations in… http…
+13 sexual-orientation-by-region                  Sexual orientation by En… http…
+14 sexual-orientation-by-age-and-sex             Sexual orientation by ag… http…
+15 retail-sales-index-large-and-small-businesses Retail sales index - lar… http…
+16 retail-sales-index-all-businesses             Retail sales index - all… http…
+17 retail-sales-index                            Retail sales index        http…
+18 regional-gdp-by-year                          Annual GDP for England, … http…
+19 regional-gdp-by-quarter                       Quarterly GDP for Englan… http…
+20 projections-older-people-sex-ratios           Local authority ageing s… http…</code></pre>
 </div>
-</section>
-<section id="now-we-have-the-file-url-we-can-read-it-like-any-other-file" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="now-we-have-the-file-url-we-can-read-it-like-any-other-file"><span class="header-section-number">7.4</span> Now we have the file url we can read it like any other file</h2>
+</div>
+<p>ONS data files have a unique identifier and this can be used to extract the data. We can add the id and URL of the data we are interested in to the config file. We can use this URL to find the download link for the data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load packages</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Read data from latest file endpoint</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_url)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, config<span class="sc">$</span>data_id, <span class="st">".csv"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(df_data, data_filepath)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 </section>
-<section id="wrap-in-function" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="wrap-in-function"><span class="header-section-number">7.5</span> Wrap in function</h2>
+<section id="now-we-have-the-file-url-we-can-read-it-like-any-other-file" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="now-we-have-the-file-url-we-can-read-it-like-any-other-file"><span class="header-section-number">7.3</span> Now we have the file url we can read it like any other file</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load packages</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Read data from latest file endpoint</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(download_url)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, data_id, <span class="st">".csv"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(df_data, data_filepath)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wrap-in-function" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="wrap-in-function"><span class="header-section-number">7.4</span> Wrap in function</h2>
 <p>Now we have all the code we need we can wrap it up in a function to be sourced and called in our <code>run_analysis.R</code> script, making sure to add our Roxygen documentation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Downloads a csv from the ONS API, and saves to input folder</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import dplyr</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import httr2</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import jsonlite</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import logger</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import readr</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>download_data_from_ons <span class="ot">&lt;-</span> <span class="cf">function</span>(data_id){</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># request the data dictionary from the ONS api endpoint</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      path <span class="ot">&lt;-</span> config<span class="sc">$</span>data_dictionary_url</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">read_json</span>(path, <span class="at">simplifyVector =</span> T)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, path))</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a dataframe with the downloaded data dictionary to what data is available</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>id,</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>title,</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">release_frequency =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>release_frequency,</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">next_release =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>next_release,</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                   <span class="at">description =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>description,</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_latest_versions =</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>latest_version<span class="sc">$</span>href,</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">links_self_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>links<span class="sc">$</span>self<span class="sc">$</span>href,</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                   <span class="at">qmi_href=</span> content_flat<span class="sc">$</span>items<span class="sc">$</span>qmi<span class="sc">$</span>href)</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a> file_latest_version <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(id <span class="sc">==</span> data_id) <span class="sc">%&gt;%</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a> <span class="fu">select</span>(links_latest_versions) <span class="sc">%&gt;%</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a> <span class="fu">pull</span>()</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Using the links_latest_versions we can get the meta data for the latest file</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and this meta data includes the url for the latest file in either csv or xlsx</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># format. We choose .csv here. Extract it from downloads$csv$href</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  request <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="at">url =</span> file_latest_version)</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"Response recieved from: "</span>, file_latest_version))</span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  content <span class="ot">&lt;-</span> <span class="fu">rawToChar</span>(request<span class="sc">$</span>content)</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  content_flat <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(content, <span class="at">flatten=</span><span class="cn">TRUE</span>)</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  file_url <span class="ot">&lt;-</span> content_flat<span class="sc">$</span>downloads<span class="sc">$</span>csv<span class="sc">$</span>href</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Read data from latest file endpoint</span></span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  df_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_url)</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, data_id, <span class="st">".csv"</span>)</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(df_data, data_filepath)</span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>  logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(data_filepath)</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Downloads a csv from the ONS API, and saves to input folder</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param data_url a string of the url of the data set to download. This is stored in config.yml as config$data_url</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import dplyr</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import httr2</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import logger</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import readr</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import purrr</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#' @import tidyr</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>download_data_from_ons <span class="ot">&lt;-</span> <span class="cf">function</span>(data_id, data_url){</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    download_url <span class="ot">&lt;-</span> <span class="fu">request</span>(data_url) <span class="sc">|&gt;</span> </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">req_perform</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">resp_body_json</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pluck</span>(<span class="st">"downloads"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pluck</span>(<span class="st">"csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pluck</span>(<span class="st">"href"</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(download_url)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    data_filepath <span class="ot">&lt;-</span> <span class="fu">paste0</span>(config<span class="sc">$</span>output_dir, <span class="st">"/"</span>, data_id, <span class="st">".csv"</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write_csv</span>(df_data, data_filepath)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    logger<span class="sc">$</span><span class="fu">info</span>(<span class="fu">paste0</span>(<span class="st">"data output to: "</span>, data_filepath))</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(data)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The last steps are:</p>
 <ul>

@@ -12,9 +12,10 @@ suppressWarnings(
   librarian::shelf(
     DataS-DHSC/DHSClogger,
     ggplot2,
-    httr,
+    httr2,
     jsonlite,
     dplyr,
+    purrr,
     readr,
     DHSCcolours,
     quiet = TRUE))
@@ -83,6 +84,7 @@ run_analysis <- function(){
 
     data_dictionary_url: "https://api.beta.ons.gov.uk/v1/datasets"
     data_id: "regional-gdp-by-year"
+    data_url: https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year/editions/time-series/versions/6
     input_dir: ./input
     output_dir: ./output
     industry : "Q: Human health and social work activities"
@@ -99,6 +101,7 @@ run_analysis <- function(){
 #' Downloads a csv from the ONS API, and saves to input folder
 #'
 #' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
+#' @param data_url a string of the url of the data set to download. This is stored in config.yml as config$data_url
 #'
 #' @import dplyr
 #' @import httr2
@@ -107,57 +110,25 @@ run_analysis <- function(){
 #' @import readr
 #'
 #'
-download_data_from_ons <- function(data_id){
+download_data_from_ons <- function(data_id, data_url){
+    
+    download_url <- request(data_url) |> 
+      req_perform() |> 
+      resp_body_json() |> 
+      pluck("downloads") |> 
+      pluck("csv") |> 
+      pluck("href")
+    
+    data <- read_csv(download_url)
+    
+    data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
+    
+    write_csv(df_data, data_filepath)
+    
+    logger$info(paste0("data output to: ", data_filepath))
 
-    # request the data dictionary from the ONS api endpoint
-      path <- config$data_dictionary_url
-
-  content_flat <- read_json(path, simplifyVector = T)
-
-  logger$info(paste0("Response recieved from: ", path))
-
-  # create a dataframe with the downloaded data dictionary to what data is available
-  df <- data.frame(id = content_flat$items$id,
-                   title = content_flat$items$title,
-                   release_frequency = content_flat$items$release_frequency,
-                   next_release = content_flat$items$next_release,
-                   description = content_flat$items$description,
-                   links_latest_versions = content_flat$items$links$latest_version$href,
-                   links_self_href= content_flat$items$links$self$href,
-                   qmi_href= content_flat$items$qmi$href)
-
-
-      
-      
- file_latest_version <- df %>%
- filter(id == data_id) %>%
- select(links_latest_versions) %>%
- pull()
-      
-  # Using the links_latest_versions we can get the meta data for the latest file
-  # and this meta data includes the url for the latest file in either csv or xlsx
-  # format. We choose .csv here. Extract it from downloads$csv$href
-      
-  request <- GET(url = file_latest_version)
-      
-  logger$info(paste0("Response recieved from: ", file_latest_version))
+    return(data)
         
-  content <- rawToChar(request$content)
-  content_flat <- fromJSON(content, flatten=TRUE)
-  file_url <- content_flat$downloads$csv$href
-      
-      
-  #Read data from latest file endpoint
-  df_data <- read_csv(file_url)
-      
-  data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
-      
-  write_csv(df_data, data_filepath)
-      
-  logger$info(paste0("data output to: ", data_filepath))
-  
-  return(data_filepath)
-      
 }
 ```
 
@@ -234,7 +205,7 @@ process_data <- function(data_id, industry, geography, metric){
 
 ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, ylab){
 
-  graph <- ggplot(data = data_time_series_sorted,
+  graph <- ggplot(data = data,
                   aes(x = Time,
                       y = v4_1,
                       colour = industry)) +

@@ -1,4 +1,4 @@
-# Processing Data 
+# Processing Data
 
 ::: callout-note
 ## Key Points

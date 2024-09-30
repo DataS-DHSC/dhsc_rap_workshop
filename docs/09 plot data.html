@@ -317,7 +317,7 @@ Key Points
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>ts_line_chart_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data, industry, metric, title, subtitle, xlab, ylab){</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  graph <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data_time_series_sorted,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  graph <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data,</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">x =</span> Time,</span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                      <span class="at">y =</span> v4_1,</span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                      <span class="at">colour =</span> industry)) <span class="sc">+</span></span>

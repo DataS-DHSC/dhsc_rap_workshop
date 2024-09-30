@@ -78,7 +78,7 @@ Again we should wrap this all up in a function to be called from the `run_analys
 
 ts_line_chart_data <- function(data, industry, metric, title, subtitle, xlab, ylab){
 
-  graph <- ggplot(data = data_time_series_sorted,
+  graph <- ggplot(data = data,
                   aes(x = Time,
                       y = v4_1,
                       colour = industry)) +

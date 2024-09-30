@@ -20,27 +20,28 @@ We start by adding the packages we will be using to the `main.R` script. Keeping
 
 We can use the librarian package to manage installation and reading of our packages. It handles the installation of packages from a variety of sources, so if you are using a packages from Github as well as CRAN, the process is streamlined.
 
-The below code adds the packages we will need for the data ingest process. It loads `httr` and `jsonlite` for interacting with the api and it's response, `dplyr` for manipulating data, and `DHSClogger` from the DHSC Data Science Github for logging. We use the `stock` function here which makes sure they're installed, but doesn't load them. We load the packages at the top of the scripts in which they are used.
+The below code adds the packages we will need for the data ingest process. It loads `httr2` for interacting with the api, `purrr` for simplifying the response, `dplyr` and `tidyr` for manipulating data, and `DHSClogger` from the DHSC Data Science Github for logging. We use the `stock` function here which makes sure they're installed, but doesn't load them. We load the packages at the top of the scripts in which they are used.
 
-```{r, eval = F}
+```{r, , echo = FALSE, warning = FALSE}
 if (!requireNamespace("librarian")) install.packages("librarian")
-librarian::stock(readr, httr2, jsonlite, dplyr, DataS-DHSC/DHSClogger)
+librarian::stock(readr, httr2, purrr, tidyr, dplyr, DataS-DHSC/DHSClogger)
 ```
 
 It is best practice to define parameters needed in your code in configuration files outside of the scripts themselves. This means you don't have to touch the code when you need to change any parameter values.
 
 In the DHSC Template, the main configuration file sits in the ./input directory and is called `config.yml`. A YAML is a human readable data serialization language, it is a useful method for storing parameters in an easily understandable way.
 
-The below parameters are the ones we will use to access data from the ONS api.
+The below parameters are the ones we will use to access data from the ONS api. Some code below shows how we find appropriate values.
 
     data_dictionary_url: "https://api.beta.ons.gov.uk/v1/datasets"
     data_id: "regional-gdp-by-year"
+    data_url: https://api.beta.ons.gov.uk/v1/datasets/regional-gdp-by-year/editions/time-series/versions/6
     input_dir: ./input
     output_dir: ./output
 
 For our script to use the values stored in `config.yml` we need to read it in. We add this to a script called `run_analysis.R`, which is the script from which we run our analysis. We will source the scripts we srite to do the work here, and run the functions we create.
 
-```{r, eval = F}
+```{r, , echo = FALSE, warning = FALSE}
 # read in configuration
 config_path <- file.path("input", "config.yml")
 config <- yaml::read_yaml(config_path)
@@ -51,67 +52,66 @@ print(config)
 
 ## Get a list of data that can be extracted using this ONS API endpoint
 
-We pass the data_dictionary_url to a GET function to download a list of available data.
-
-```{r, eval = F}
-#load packages
-library(httr2)
-library(jsonlite)
-
-# request the data dictionary from the ONS api endpoint
-path <- config$data_dictionary_url
-
-  content_flat <- read_json(path, simplifyVector = T)
-
-  logger$info(paste0("Response recieved from: ", path))
-
-  # create a dataframe with the downloaded data dictionary to what data is available
-  df <- data.frame(id = content_flat$items$id,
-                   title = content_flat$items$title,
-                   release_frequency = content_flat$items$release_frequency,
-                   next_release = content_flat$items$next_release,
-                   description = content_flat$items$description,
-                   links_latest_versions = content_flat$items$links$latest_version$href,
-                   links_self_href= content_flat$items$links$self$href,
-                   qmi_href= content_flat$items$qmi$href)
-
-
-```
-
-The data dictionary contents are shown below
+We use the data_dictionary_url to a request a list of available data.
 
 ```{r, echo = FALSE, warning = FALSE}
-library(readr)
-library(htmlTable)
-htmlTable(read_csv("input/data_dictionary_response.csv"), rnames = FALSE)
+#load packages
+library(httr2)
+library(purrr)
+library(tidyr)
+library(dplyr)
+
+# request the data dictionary from the ONS api endpoint
+dictionary_list <- request(config$data_dictionary_url) |> 
+  req_perform() |> 
+  resp_body_json() |>
+  pluck("items") 
+
+
+get_dictionary_info <- function(x){
+  
+   bind_cols(
+     x %>% 
+       unlist(recursive = F) %>% 
+       keep(names(.) %in% c("title", "id")) %>% 
+       as_tibble(), 
+    
+    x %>% 
+       pluck("links") %>% 
+       pluck("latest_version") %>%
+       pluck("href") %>% 
+       as_tibble()
+    ) %>%
+    
+  return()
+}
+
+dictionary <- map(.x = dictionary_list, .f = get_dictionary_info) %>%
+  bind_rows()
+
 
 ```
 
-## Get the URL for the latest release of a specified ONS file
+The name, id and the url for the latest data in the data dictionary are shown below
 
-ONS data files have a unique identifier and this can be used to extract the data. The id we are interested in is specified in the config file and so use that to interrogate the data dictionary. In particular, we want to extract the latest version, the url for which can be extracted from the data dictionary in the links_latest_versions field we have just created.
+```{r, echo = FALSE, warning = FALSE}
+dictionary
 
-```{r, eval = F}
-#load packages
-library(dplyr)
+```
 
+ONS data files have a unique identifier and this can be used to extract the data. We can add the id and URL of the data we are interested in to the config file. We can use this URL to find the download link for the data
 
-file_latest_version <- df %>%
-  filter(id == config$data_id) %>%
-  select(links_latest_versions) %>%
-  pull()
+```{r, echo = F, warning = F, eval = F}
 
-# Using the links_latest_versions we can get the meta data for the latest file
-# and this meta data includes the url for the latest file in either csv or xlsx
-# format. We choose .csv here. Extract it from downloads$csv$href
+download_url <- request(data_url) |> 
+  req_perform() |> 
+  resp_body_json() |> 
+  pluck("downloads") |> 
+  pluck("csv") |> 
+  pluck("href")
 
-request <- GET(url = file_latest_version)
-      
-logger$info(paste0("Response recieved from: ", file_latest_version))
-      
-content <- rawToChar(request$content)
-content_flat <- jsonlite::fromJSON(content, flatten=TRUE)
-file_url <- content_flat$downloads$csv$href
+download_url
+
 ```
 
 ## Now we have the file url we can read it like any other file
@@ -121,9 +121,9 @@ file_url <- content_flat$downloads$csv$href
 library(readr)
 
 #Read data from latest file endpoint
-df_data <- read_csv(file_url)
+data <- read_csv(download_url)
 
-data_filepath <- paste0(config$output_dir, "/", config$data_id, ".csv")
+data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
 
 write_csv(df_data, data_filepath)
 
@@ -138,65 +138,35 @@ Now we have all the code we need we can wrap it up in a function to be sourced a
 #' Downloads a csv from the ONS API, and saves to input folder
 #'
 #' @param data_id a string of the name of the data set to download. This is stored in config.yml as config$data_id
+#' @param data_url a string of the url of the data set to download. This is stored in config.yml as config$data_url
 #'
 #' @import dplyr
 #' @import httr2
-#' @import jsonlite
 #' @import logger
 #' @import readr
+#' @import purrr
+#' @import tidyr
 #'
 #'
-download_data_from_ons <- function(data_id){
+download_data_from_ons <- function(data_id, data_url){
+    
+    download_url <- request(data_url) |> 
+      req_perform() |> 
+      resp_body_json() |> 
+      pluck("downloads") |> 
+      pluck("csv") |> 
+      pluck("href")
+    
+    data <- read_csv(download_url)
+    
+    data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
+    
+    write_csv(df_data, data_filepath)
+    
+    logger$info(paste0("data output to: ", data_filepath))
 
-    # request the data dictionary from the ONS api endpoint
-      path <- config$data_dictionary_url
-
-  content_flat <- read_json(path, simplifyVector = T)
-
-  logger$info(paste0("Response recieved from: ", path))
-
-  # create a dataframe with the downloaded data dictionary to what data is available
-  df <- data.frame(id = content_flat$items$id,
-                   title = content_flat$items$title,
-                   release_frequency = content_flat$items$release_frequency,
-                   next_release = content_flat$items$next_release,
-                   description = content_flat$items$description,
-                   links_latest_versions = content_flat$items$links$latest_version$href,
-                   links_self_href= content_flat$items$links$self$href,
-                   qmi_href= content_flat$items$qmi$href)
-
-
-      
-      
- file_latest_version <- df %>%
- filter(id == data_id) %>%
- select(links_latest_versions) %>%
- pull()
-      
-  # Using the links_latest_versions we can get the meta data for the latest file
-  # and this meta data includes the url for the latest file in either csv or xlsx
-  # format. We choose .csv here. Extract it from downloads$csv$href
-      
-  request <- GET(url = file_latest_version)
-      
-  logger$info(paste0("Response recieved from: ", file_latest_version))
+    return(data)
         
-  content <- rawToChar(request$content)
-  content_flat <- fromJSON(content, flatten=TRUE)
-  file_url <- content_flat$downloads$csv$href
-      
-      
-  #Read data from latest file endpoint
-  df_data <- read_csv(file_url)
-      
-  data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
-      
-  write_csv(df_data, data_filepath)
-      
-  logger$info(paste0("data output to: ", data_filepath))
-  
-  return(data_filepath)
-      
 }
 ```
 
