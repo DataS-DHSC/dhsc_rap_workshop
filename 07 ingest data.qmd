@@ -22,7 +22,7 @@ We can use the librarian package to manage installation and reading of our packa
 
 The below code adds the packages we will need for the data ingest process. It loads `httr2` for interacting with the api, `purrr` for simplifying the response, `dplyr` and `tidyr` for manipulating data, and `DHSClogger` from the DHSC Data Science Github for logging. We use the `stock` function here which makes sure they're installed, but doesn't load them. We load the packages at the top of the scripts in which they are used.
 
-```{r, , echo = FALSE, warning = FALSE}
+```{r, echo=TRUE, warning = FALSE, message=FALSE}
 if (!requireNamespace("librarian")) install.packages("librarian")
 librarian::stock(readr, httr2, purrr, tidyr, dplyr, DataS-DHSC/DHSClogger)
 ```
@@ -41,7 +41,7 @@ The below parameters are the ones we will use to access data from the ONS api. S
 
 For our script to use the values stored in `config.yml` we need to read it in. We add this to a script called `run_analysis.R`, which is the script from which we run our analysis. We will source the scripts we srite to do the work here, and run the functions we create.
 
-```{r, , echo = FALSE, warning = FALSE}
+```{r, echo = TRUE, warning = FALSE}
 # read in configuration
 config_path <- file.path("input", "config.yml")
 config <- yaml::read_yaml(config_path)
@@ -54,7 +54,7 @@ print(config)
 
 We use the data_dictionary_url to a request a list of available data.
 
-```{r, echo = FALSE, warning = FALSE}
+```{r, echo = TRUE, warning = FALSE, message=TRUE}
 #load packages
 library(httr2)
 library(purrr)
