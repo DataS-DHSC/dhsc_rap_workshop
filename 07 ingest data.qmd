@@ -101,7 +101,7 @@ dictionary
 
 ONS data files have a unique identifier and this can be used to extract the data. We can add the id and URL of the data we are interested in to the config file. We can use this URL to find the download link for the data
 
-```{r, echo = F, warning = F, eval = F}
+```{r, echo = T, warning = F, eval = F}
 
 download_url <- request(data_url) |> 
   req_perform() |> 
