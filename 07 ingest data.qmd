@@ -125,7 +125,7 @@ data <- read_csv(download_url)
 
 data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
 
-write_csv(df_data, data_filepath)
+write_csv(data, data_filepath)
 
 logger$info(paste0("data output to: ", data_filepath))
 ```
@@ -161,7 +161,7 @@ download_data_from_ons <- function(data_id, data_url){
     
     data_filepath <- paste0(config$output_dir, "/", data_id, ".csv")
     
-    write_csv(df_data, data_filepath)
+    write_csv(data, data_filepath)
     
     logger$info(paste0("data output to: ", data_filepath))
 
